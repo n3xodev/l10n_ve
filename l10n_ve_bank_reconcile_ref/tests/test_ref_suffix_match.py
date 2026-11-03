@@ -1,6 +1,10 @@
 # Copyright 2026 andyengit
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import re
+from unittest.mock import patch
+
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 
 from .common import RefReconcileCommon
@@ -116,6 +120,24 @@ class TestRefSuffixMatch(RefReconcileCommon):
         self.assertFalse(st_line.reconcile_data_info["can_reconcile"])
         self.assertFalse(st_line.can_reconcile)
 
+    def test_ambiguous_direct_reconcile_is_refused(self):
+        first, second, st_line = self._create_ambiguous_case()
+        with self.assertRaises(UserError):
+            st_line.reconcile_bank_line()
+        self.assertFalse(st_line.is_reconciled)
+
+    def test_ambiguous_without_partner(self):
+        first = self._create_payment(100.0, "7654321")
+        second = self._create_payment(100.0, "1654321")
+        st_line = self._create_st_line(
+            100.0, "00099654321", partner=self.env["res.partner"]
+        )
+        self.assertFalse(st_line.is_reconciled)
+        self.assertEqual(
+            self._counterpart_amls(st_line),
+            self._payment_aml(first) | self._payment_aml(second),
+        )
+
     def test_ambiguous_proposal_survives_a_reload(self):
         first, second, st_line = self._create_ambiguous_case()
         st_line.invalidate_recordset()
@@ -157,3 +179,65 @@ class TestRefSuffixMatch(RefReconcileCommon):
             ),
             2,
         )
+
+    def test_separators_in_stored_reference(self):
+        payment = self._create_payment(1000.0, "78-131243")
+        st_line = self._create_st_line(1000.0, "REF 78131243")
+        self.assertReconciledWith(st_line, self._payment_aml(payment))
+
+    def test_slashes_in_invoice_name(self):
+        invoice = self._create_invoice(500.0, "UNRELATED")
+        digits = re.sub(r"\D", "", invoice.name)
+        st_line = self._create_st_line(500.0, f"FACT {digits}")
+        self.assertReconciledWith(st_line, self._invoice_aml(invoice))
+
+    def test_same_open_entry_is_not_claimed_twice_in_a_batch(self):
+        payment = self._create_payment(100.0, "345678")
+        lines = self._create_st_lines(
+            [
+                self._st_line_vals(100.0, "00012345678"),
+                self._st_line_vals(100.0, "99912345678"),
+            ]
+        )
+        self.assertEqual(len(lines.filtered("is_reconciled")), 1)
+        self.assertTrue(self._payment_aml(payment).reconciled)
+
+    def test_amount_mismatch_falls_through_to_next_step(self):
+        self._create_payment(400.0, "345678")
+        invoice = self._create_invoice(300.0, "345678")
+        st_line = self._create_st_line(300.0, "00012345678")
+        self.assertReconciledWith(st_line, self._invoice_aml(invoice))
+
+    def test_search_limit_reached_is_never_auto_reconciled(self):
+        self._create_payment(100.0, "345678")
+        with patch(
+            "odoo.addons.l10n_ve_bank_reconcile_ref.models."
+            "account_bank_statement_line.AML_SEARCH_LIMIT",
+            1,
+        ):
+            st_line = self._create_st_line(100.0, "00012345678")
+        self.assertFalse(st_line.is_reconciled)
+        self.assertFalse(self._counterpart_amls(st_line))
+
+    def test_outbound_payment_matches_vendor_bill_line(self):
+        payment = self._create_payment(
+            200.0, "345678", partner=self.partner_b, payment_type="outbound"
+        )
+        st_line = self._create_st_line(-200.0, "00012345678", partner=self.partner_b)
+        self.assertReconciledWith(st_line, self._payment_aml(payment))
+
+    def test_vendor_bill_matched_on_outbound_line(self):
+        bill = self._create_invoice(
+            200.0, "345678", partner=self.partner_b, move_type="in_invoice"
+        )
+        st_line = self._create_st_line(-200.0, "00012345678", partner=self.partner_b)
+        self.assertReconciledWith(st_line, self._invoice_aml(bill))
+
+    def test_partially_paid_invoice_uses_residual(self):
+        invoice = self._create_invoice(500.0, "345678")
+        self.env["account.payment.register"].with_context(
+            active_model="account.move", active_ids=invoice.ids
+        ).create({"amount": 200.0})._create_payments()
+        st_line = self._create_st_line(300.0, "00012345678")
+        self.assertReconciledWith(st_line, self._invoice_aml(invoice))
+        self.assertEqual(invoice.payment_state, "paid")

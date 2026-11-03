@@ -27,3 +27,6 @@ of the entry). Lines left over are matched by this module:
   the trash button; once a single entry covers the amount you can reconcile.
 - An amount that does not match: the line is not reconciled. Choose the entry
   in the reconcile widget.
+
+The **Clean** button of the reconcile widget resets the line and runs the
+automatic reconciliation again, so the candidates are proposed again.
