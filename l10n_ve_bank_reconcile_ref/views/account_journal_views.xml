@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_account_journal_form_ref_match" model="ir.ui.view">
+        <field name="name">account.journal.form.ref.match</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='bank_account_number']" position="after">
+                <group
+                    name="l10n_ve_ref_match"
+                    string="Reconcile by Reference"
+                    invisible="type != 'bank'"
+                >
+                    <field name="l10n_ve_ref_suffix_enabled" />
+                    <field
+                        name="l10n_ve_ref_suffix_lengths"
+                        invisible="not l10n_ve_ref_suffix_enabled"
+                    />
+                    <field
+                        name="l10n_ve_ref_match_payment_first"
+                        invisible="not l10n_ve_ref_suffix_enabled"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

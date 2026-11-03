@@ -1,0 +1,71 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_bank_reconcile_ref
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-03 22:10+0000\n"
+"PO-Revision-Date: 2026-11-03 22:10+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_VE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model,name:l10n_ve_bank_reconcile_ref.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Línea de extracto bancario"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model,name:l10n_ve_bank_reconcile_ref.model_account_journal
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model.fields,field_description:l10n_ve_bank_reconcile_ref.field_account_journal__l10n_ve_ref_suffix_enabled
+msgid "Match by reference"
+msgstr "Conciliar por referencia"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model.fields,field_description:l10n_ve_bank_reconcile_ref.field_account_journal__l10n_ve_ref_match_payment_first
+msgid "Match payments before invoices"
+msgstr "Conciliar pagos antes que facturas"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model_terms:ir.ui.view,arch_db:l10n_ve_bank_reconcile_ref.view_account_journal_form_ref_match
+msgid "Reconcile by Reference"
+msgstr "Conciliar por referencia"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model.fields,help:l10n_ve_bank_reconcile_ref.field_account_journal__l10n_ve_ref_suffix_enabled
+msgid ""
+"Reconcile statement lines automatically with the open payment or invoice "
+"whose reference matches the bank reference, exactly or by its last digits."
+msgstr ""
+"Concilia automáticamente las líneas del extracto con el pago o la factura "
+"abiertos cuya referencia coincide con la referencia del banco, de forma "
+"exacta o por sus últimos dígitos."
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model.fields,help:l10n_ve_bank_reconcile_ref.field_account_journal__l10n_ve_ref_match_payment_first
+msgid "Search open payments first, then open invoices and bills."
+msgstr "Busca primero en los pagos abiertos y luego en las facturas abiertas."
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model.fields,field_description:l10n_ve_bank_reconcile_ref.field_account_journal__l10n_ve_ref_suffix_lengths
+msgid "Suffix lengths"
+msgstr "Longitudes del sufijo"
+
+#. module: l10n_ve_bank_reconcile_ref
+#: model:ir.model.fields,help:l10n_ve_bank_reconcile_ref.field_account_journal__l10n_ve_ref_suffix_lengths
+msgid ""
+"Comma-separated suffix lengths to try in order, for example: 6,4. Values "
+"below 4 are ignored."
+msgstr ""
+"Longitudes de sufijo separadas por comas, que se prueban en orden, por "
+"ejemplo: 6,4. Los valores menores que 4 se ignoran."
