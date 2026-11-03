@@ -18,6 +18,8 @@ of the entry). Lines left over are matched by this module:
   references, `0` and all-zero references are ignored.
 - Candidates are searched by exact digits and then by each suffix length, in
   payments first and then in invoices and bills.
+- Payments are only considered when they were registered in the same bank
+  journal as the statement line.
 - If the line has a partner, only the entries of that partner are considered.
 - Exactly one candidate whose open amount equals the line amount: the line is
   reconciled automatically. There is no tolerance, the amount must match.

@@ -239,7 +239,10 @@ class AccountBankStatementLine(models.Model):
 
     def _l10n_ve_source_amls_domain(self, base_domain, source):
         if source == "payment":
-            return base_domain & Domain("payment_id", "!=", False)
+            # Payments must come from the journal of the statement line.
+            return base_domain & Domain(
+                "payment_id.journal_id", "=", self.journal_id.id
+            )
         return base_domain & Domain(
             [
                 ("payment_id", "=", False),

@@ -26,7 +26,7 @@ class RefReconcileCommon(AccountTestInvoicingCommon):
         return invoice
 
     def _create_payment(
-        self, amount, reference, partner=None, payment_type="inbound"
+        self, amount, reference, partner=None, payment_type="inbound", journal=None
     ):
         payment = self.env["account.payment"].create(
             {
@@ -36,7 +36,7 @@ class RefReconcileCommon(AccountTestInvoicingCommon):
                 "partner_id": (partner or self.partner).id,
                 "payment_reference": reference,
                 "memo": reference,
-                "journal_id": self.bank_journal.id,
+                "journal_id": (journal or self.bank_journal).id,
             }
         )
         payment.action_post()

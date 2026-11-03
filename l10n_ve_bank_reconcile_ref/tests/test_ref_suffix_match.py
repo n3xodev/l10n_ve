@@ -241,3 +241,17 @@ class TestRefSuffixMatch(RefReconcileCommon):
         st_line = self._create_st_line(300.0, "00012345678")
         self.assertReconciledWith(st_line, self._invoice_aml(invoice))
         self.assertEqual(invoice.payment_state, "paid")
+
+    def test_payment_from_another_journal_is_not_matched(self):
+        other_journal = self.env["account.journal"].create(
+            {"name": "Other bank", "type": "bank", "code": "OBNK"}
+        )
+        self._create_payment(100.0, "345678", journal=other_journal)
+        st_line = self._create_st_line(100.0, "00012345678")
+        self.assertFalse(st_line.is_reconciled)
+        self.assertFalse(self._counterpart_amls(st_line))
+
+    def test_payment_from_same_journal_is_matched(self):
+        payment = self._create_payment(100.0, "345678", journal=self.bank_journal)
+        st_line = self._create_st_line(100.0, "00012345678")
+        self.assertReconciledWith(st_line, self._payment_aml(payment))
