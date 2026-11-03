@@ -100,11 +100,60 @@ class TestRefSuffixMatch(RefReconcileCommon):
         )
         self.assertReconciledWith(st_line, self._payment_aml(payment))
 
-    def test_ambiguous_candidates_are_not_reconciled(self):
+    def _create_ambiguous_case(self):
         first = self._create_payment(100.0, "7654321")
         second = self._create_payment(100.0, "1654321")
         st_line = self._create_st_line(100.0, "00099654321")
+        return first, second, st_line
+
+    def test_ambiguous_candidates_are_proposed_not_reconciled(self):
+        first, second, st_line = self._create_ambiguous_case()
         self.assertFalse(st_line.is_reconciled)
-        self.assertFalse(self._counterpart_amls(st_line))
-        self.assertFalse(first.move_id.line_ids.filtered("reconciled"))
-        self.assertFalse(second.move_id.line_ids.filtered("reconciled"))
+        self.assertEqual(
+            self._counterpart_amls(st_line),
+            self._payment_aml(first) | self._payment_aml(second),
+        )
+        self.assertFalse(st_line.reconcile_data_info["can_reconcile"])
+        self.assertFalse(st_line.can_reconcile)
+
+    def test_ambiguous_proposal_survives_a_reload(self):
+        first, second, st_line = self._create_ambiguous_case()
+        st_line.invalidate_recordset()
+        self.assertEqual(
+            self._counterpart_amls(st_line),
+            self._payment_aml(first) | self._payment_aml(second),
+        )
+        self.assertFalse(st_line.can_reconcile)
+
+    def test_ambiguous_user_removes_extra_candidate_and_reconciles(self):
+        first, second, st_line = self._create_ambiguous_case()
+        extra = self._payment_aml(second)
+        # Same server path the widget uses to trash a line.
+        st_line.manual_reference = f"account.move.line;{extra.id}"
+        st_line.manual_delete = True
+        st_line._onchange_manual_reconcile_reference()
+        self.assertTrue(st_line.reconcile_data_info["can_reconcile"])
+        self.assertEqual(self._counterpart_amls(st_line), self._payment_aml(first))
+        st_line.reconcile_bank_line()
+        self.assertTrue(st_line.is_reconciled)
+        self.assertTrue(self._payment_aml(first).reconciled)
+        self.assertFalse(extra.reconciled)
+
+    def test_rerunning_auto_reconcile_does_not_duplicate_proposal(self):
+        first, second, st_line = self._create_ambiguous_case()
+        st_line._auto_reconcile()
+        self.assertFalse(st_line.is_reconciled)
+        self.assertEqual(
+            self._counterpart_amls(st_line),
+            self._payment_aml(first) | self._payment_aml(second),
+        )
+        self.assertEqual(
+            len(
+                [
+                    line
+                    for line in st_line.reconcile_data_info["data"]
+                    if line["kind"] == "other"
+                ]
+            ),
+            2,
+        )

@@ -25,20 +25,26 @@ class AccountBankStatementLine(models.Model):
         """Complete the OCA containment match with the Venezuelan reference match.
 
         Lines left over by OCA are matched by exact reference or reference suffix.
-        A single candidate with the exact amount is reconciled automatically. When
-        several candidates match, the line is left for the user: the reconcile
-        widget cannot propose alternatives, because each counterpart added to its
-        data is applied in full and the amounts would add up.
+        A single candidate with the exact amount is reconciled automatically.
+        Several candidates are all proposed on the line, flagged as not
+        reconcilable: each one covers the whole amount, so the user must remove the
+        extra ones in the reconcile widget. That edit recomputes `can_reconcile`.
         """
         not_done, done = super()._do_auto_reconcile_invoices()
+        proposed = self.browse()
         for line in not_done.filtered("journal_id.l10n_ve_ref_suffix_enabled"):
             amls = line._l10n_ve_find_reference_amls()
-            if len(amls) != 1:
+            if not amls:
                 continue
-            line.reconcile_data_info = line._l10n_ve_build_reconcile_data(amls)
-            if line.reconcile_data_info.get("can_reconcile"):
+            data_info = line._l10n_ve_build_reconcile_data(amls)
+            if len(amls) > 1:
+                data_info["can_reconcile"] = False
+                line.reconcile_data_info = data_info
+                proposed |= line
+            elif data_info.get("can_reconcile"):
+                line.reconcile_data_info = data_info
                 done |= line
-        return not_done - done, done
+        return not_done - done - proposed, done
 
     # ------------------------------------------------------------------
     # Reconcile data
