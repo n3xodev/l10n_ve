@@ -2,3 +2,4 @@
 
 from . import test_pos_loyalty_invoice_discount
 from . import test_pos_ewallet_partner_hook
+from . import test_pos_consolidated_invoice
