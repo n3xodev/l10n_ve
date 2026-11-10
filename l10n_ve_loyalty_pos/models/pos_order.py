@@ -199,22 +199,28 @@ class PosOrder(models.Model):
 
     def _create_invoice(self, move_vals):
         invoice = super()._create_invoice(move_vals)
-        self._l10n_ve_pos_transfer_loyalty_discounts_to_invoice(invoice)
+        # ``pos.make.invoice`` may invoice several orders on a single move.
+        for order in self:
+            order._l10n_ve_pos_transfer_loyalty_discounts_to_invoice(invoice)
         self._l10n_ve_pos_set_ewallet_payment_note(invoice)
         return invoice
 
     def _l10n_ve_pos_set_ewallet_payment_note(self, invoice):
-        self.ensure_one()
-        if not invoice or not self._l10n_ve_pos_company_is_venezuela():
+        """Write one eWallet payment note for ``self``, summing every order."""
+        orders = self.filtered(lambda o: o._l10n_ve_pos_company_is_venezuela())
+        if not invoice or not orders:
             return
-        amount = self._l10n_ve_pos_ewallet_spend_amount(with_tax=True)
-        if float_is_zero(amount, precision_rounding=self.currency_id.rounding):
+        currency = orders[0].currency_id
+        amount = currency.round(
+            sum(order._l10n_ve_pos_ewallet_spend_amount(with_tax=True) for order in orders)
+        )
+        if float_is_zero(amount, precision_rounding=currency.rounding):
             return
-        label = self._l10n_ve_ewallet_payment_label()
+        label = orders[0]._l10n_ve_ewallet_payment_label()
         note = _(
             "Pagado con: %(payment)s (%(amount)s)",
             payment=label,
-            amount=formatLang(self.env, amount, currency_obj=self.currency_id),
+            amount=formatLang(self.env, amount, currency_obj=currency),
         )
         existing = invoice.narration or ""
         if label in existing:
