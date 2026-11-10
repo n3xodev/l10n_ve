@@ -19,7 +19,16 @@ patch(PosStore.prototype, {
         return super.getPotentialFreeProductRewards(...arguments);
     },
 
+    /**
+     * Hook: id of the partner whose eWallet cards are fetched for `partnerId`.
+     * The default is the partner itself; other modules may map it elsewhere.
+     */
+    _l10nVeEwalletPartnerId(partnerId) {
+        return partnerId;
+    },
+
     async _l10nVeRefreshPartnerEwalletCards(partnerId) {
+        partnerId = this._l10nVeEwalletPartnerId(partnerId);
         if (!isVenezuelaCompany(this) || !partnerId) {
             return;
         }
@@ -47,6 +56,7 @@ patch(PosStore.prototype, {
     },
 
     async fetchLoyaltyCard(programId, partnerId) {
+        partnerId = this._l10nVeEwalletPartnerId(partnerId);
         const program = this.models["loyalty.program"]?.get?.(programId);
         if (
             isVenezuelaCompany(this) &&
