@@ -286,20 +286,29 @@ class PosOrder(models.Model):
             conversion_date,
         )
 
+    def _l10n_ve_ewallet_partner(self):
+        """Partner whose eWallet card is looked up and credited for this order.
+
+        Hook for other modules; the default is the order customer.
+        """
+        self.ensure_one()
+        return self.partner_id
+
     def _l10n_ve_get_ewallet_program(self):
         self.ensure_one()
+        ewallet_partner = self._l10n_ve_ewallet_partner()
         programs = self.config_id._get_program_ids().filtered(
             lambda program: program.program_type == "ewallet"
         )
         if not programs:
             return programs
-        if self.partner_id:
+        if ewallet_partner:
             card = (
                 self.env["loyalty.card"]
                 .sudo()
                 .search(
                     [
-                        ("partner_id", "=", self.partner_id.id),
+                        ("partner_id", "=", ewallet_partner.id),
                         ("program_id", "in", programs.ids),
                     ],
                     limit=1,
@@ -400,7 +409,8 @@ class PosOrder(models.Model):
             amount = order._l10n_ve_get_pay_later_refund_credit_amount()
             if float_is_zero(amount, precision_rounding=order.currency_id.rounding):
                 continue
-            if not order.partner_id:
+            ewallet_partner = order._l10n_ve_ewallet_partner()
+            if not ewallet_partner:
                 continue
             program = order._l10n_ve_get_ewallet_program()
             if not program:
@@ -415,7 +425,7 @@ class PosOrder(models.Model):
             card = LoyaltyCard.search(
                 [
                     ("program_id", "=", program.id),
-                    ("partner_id", "=", order.partner_id.id),
+                    ("partner_id", "=", ewallet_partner.id),
                 ],
                 limit=1,
             )
@@ -423,7 +433,7 @@ class PosOrder(models.Model):
                 card = LoyaltyCard.create(
                     {
                         "program_id": program.id,
-                        "partner_id": order.partner_id.id,
+                        "partner_id": ewallet_partner.id,
                         "points": 0,
                         "code": order.env["loyalty.card"]._generate_code(),
                     }

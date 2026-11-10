@@ -22,6 +22,9 @@
         "point_of_sale._assets_pos": [
             "l10n_ve_pos/static/src/**/*",
         ],
+        "web.assets_tests": [
+            "l10n_ve_pos/static/tests/tours/**/*",
+        ],
     },
     "license": "AGPL-3",
     "installable": True,
