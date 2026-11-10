@@ -105,9 +105,7 @@ class TestPosEwalletPartnerHook(L10nVeSeniatCommon):
 
     def _hook_returning(self, partner):
         # Patch the registry class: it sits ahead of the base class in the MRO.
-        return patch.object(
-            type(self.env["pos.order"]), HOOK, lambda order: partner, create=True
-        )
+        return patch.object(type(self.env["pos.order"]), HOOK, lambda order: partner)
 
     def test_default_hook_returns_the_order_partner(self):
         order = self._create_refund_order()
