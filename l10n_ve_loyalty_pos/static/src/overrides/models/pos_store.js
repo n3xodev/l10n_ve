@@ -20,7 +20,9 @@ patch(PosStore.prototype, {
     },
 
     /**
-     * Hook: id of the partner whose eWallet cards are fetched for `partnerId`.
+     * Hook: id of the partner whose loyalty cards are fetched for `partnerId`.
+     * It applies to every program that goes through `fetchLoyaltyCard` (all
+     * nominative programs, not only eWallet) and to the eWallet refresh.
      * The default is the partner itself; other modules may map it elsewhere.
      */
     _l10nVeEwalletPartnerId(partnerId) {
@@ -81,7 +83,8 @@ patch(PosStore.prototype, {
                 return remote;
             }
         }
-        return await super.fetchLoyaltyCard(...arguments);
+        // `arguments` still holds the original partner id: pass the mapped one.
+        return await super.fetchLoyaltyCard(programId, partnerId);
     },
 
     async selectPartner(partner) {
