@@ -7,3 +7,4 @@ from . import test_sale_order_native_report
 from . import test_sale_order_invoice_split_discount
 from . import test_sale_order_create_invoice
 from . import test_sale_order_confirm
+from . import test_sale_order_create_invoice_non_ve

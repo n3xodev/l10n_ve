@@ -475,7 +475,9 @@ class SaleOrder(models.Model):
         ve = self.filtered(lambda o: o.country_code == "VE")
         non_ve = self - ve
         moves = (
-            non_ve._create_invoices(grouped=grouped, final=final, date=date)
+            super(SaleOrder, non_ve)._create_invoices(
+                grouped=grouped, final=final, date=date
+            )
             if non_ve
             else self.env["account.move"]
         )

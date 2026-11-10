@@ -19,7 +19,18 @@ patch(PosStore.prototype, {
         return super.getPotentialFreeProductRewards(...arguments);
     },
 
+    /**
+     * Hook: id of the partner whose loyalty cards are fetched for `partnerId`.
+     * It applies to every program that goes through `fetchLoyaltyCard` (all
+     * nominative programs, not only eWallet) and to the eWallet refresh.
+     * The default is the partner itself; other modules may map it elsewhere.
+     */
+    _l10nVeEwalletPartnerId(partnerId) {
+        return partnerId;
+    },
+
     async _l10nVeRefreshPartnerEwalletCards(partnerId) {
+        partnerId = this._l10nVeEwalletPartnerId(partnerId);
         if (!isVenezuelaCompany(this) || !partnerId) {
             return;
         }
@@ -47,6 +58,7 @@ patch(PosStore.prototype, {
     },
 
     async fetchLoyaltyCard(programId, partnerId) {
+        partnerId = this._l10nVeEwalletPartnerId(partnerId);
         const program = this.models["loyalty.program"]?.get?.(programId);
         if (
             isVenezuelaCompany(this) &&
@@ -71,7 +83,8 @@ patch(PosStore.prototype, {
                 return remote;
             }
         }
-        return await super.fetchLoyaltyCard(...arguments);
+        // `arguments` still holds the original partner id: pass the mapped one.
+        return await super.fetchLoyaltyCard(programId, partnerId);
     },
 
     async selectPartner(partner) {

@@ -11,13 +11,21 @@ patch(PartnerList.prototype, {
         ev.stopPropagation();
         this.onEnter();
     },
+    _l10nVeGetAllPartners() {
+        // Core renders the preloaded and the server-loaded partners as two lists;
+        // Enter acts on both, and Odoo 19's getPartners() requires the list.
+        return this.getPartners([
+            ...this.state.initialPartners,
+            ...this.state.loadedPartners,
+        ]);
+    },
     async onEnter() {
         const query = (this.state.query || "").trim();
         if (!query) {
             return;
         }
 
-        const localPartners = this.getPartners();
+        const localPartners = this._l10nVeGetAllPartners();
         if (localPartners.length === 1) {
             this.clickPartner(localPartners[0]);
             return;
@@ -25,7 +33,7 @@ patch(PartnerList.prototype, {
 
         if (localPartners.length === 0) {
             await this.searchPartner();
-            const partnersAfterSearchMore = this.getPartners();
+            const partnersAfterSearchMore = this._l10nVeGetAllPartners();
 
             if (partnersAfterSearchMore.length === 1) {
                 this.clickPartner(partnersAfterSearchMore[0]);
@@ -44,7 +52,7 @@ patch(PartnerList.prototype, {
         }
 
         this.notification.add(
-            _t('%s customer(s) found for "%s".', this.getPartners().length, query),
+            _t('%s customer(s) found for "%s".', this._l10nVeGetAllPartners().length, query),
             3000
         );
     },
