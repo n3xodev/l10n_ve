@@ -14,8 +14,8 @@
         "l10n_ve_loyalty",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "wizard/sale_order_discount_views.xml",
+        'security/ir.access.csv',
     ],
     "license": "AGPL-3",
     "installable": True,

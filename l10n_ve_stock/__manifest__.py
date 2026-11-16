@@ -22,7 +22,6 @@
         "stock_picking_invoice_link",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "wizard/l10n_ve_stock_picking_validate_confirmation_views.xml",
         "views/l10n_ve_stock_transfer_reason_views.xml",
         "views/res_config_settings_views.xml",
@@ -36,6 +35,7 @@
         "report/report_dispatch_guide.xml",
         "report/stock_report_dispatch_actions.xml",
         "views/stock_report_actions.xml",
+        'security/ir.access.csv',
     ],
     "license": "AGPL-3",
     "auto_install": ["stock", "l10n_ve_seniat"],

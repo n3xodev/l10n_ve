@@ -19,7 +19,6 @@
     "external_dependencies": {"python": ["pandas"]},
     "data": [
         "security/ir.model.access.csv",
-        "security/ir_rule.xml",
         "data/tax.unit.csv",
         "data/sequence_data.xml",
         "data/account.withholding.type.csv",
@@ -61,6 +60,7 @@
         "wizard/wizard_retention_islr.xml",
         "wizard/wizard_retention_iva.xml",
         "views/menu.xml",
+        'security/ir.access.csv',
     ],
     "application": False,
 }

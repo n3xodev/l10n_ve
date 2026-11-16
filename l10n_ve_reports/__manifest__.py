@@ -19,7 +19,6 @@ only account and web, no localization dependency.
     """,
     "depends": ["account", "web"],
     "data": [
-        "security/ir.model.access.csv",
         "data/pdf_export_templates.xml",
         "data/balance_sheet.xml",
         "data/cash_flow_report.xml",
@@ -55,6 +54,7 @@ only account and web, no localization dependency.
         "wizard/mail_activity_schedule_views.xml",
         "views/account_account_views.xml",
         "views/account_tax_views.xml",
+        'security/ir.access.csv',
     ],
     "installable": True,
     "license": "OEEL-1",

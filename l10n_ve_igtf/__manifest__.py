@@ -8,12 +8,12 @@
     "category": "Accounting/Localizations",
     "depends": ["web", "account", "l10n_ve_seniat", "currency_account"],
     "data": [
-        "security/ir.model.access.csv",
         "views/account_move_views.xml",
         "views/account_payment_views.xml",
         "views/account_payment_register_views.xml",
         "views/res_config_settings.xml",
         "wizard/unreconcile_igtf_payment_views.xml",
+        'security/ir.access.csv',
     ],
     "assets": {
         "web.assets_backend": [

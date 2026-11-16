@@ -1,0 +1,28 @@
+id,name,model_id,group_id/id,operation,domain
+access_res_country_parish,access_res_country_parish,res.country.parish,base.group_user,r,
+access_res_country_parish_manager,access_res_country_parish_manager,res.country.parish,account.group_account_manager,crud,
+access_res_country_municipality,access_res_country_municipality,res.country.municipality,base.group_user,r,
+access_res_country_municipality_manager,access_res_country_municipality_manager,res.country.municipality,account.group_account_manager,crud,
+access_account_book_readonly,access_account_book_readonly,account.book,account.group_account_readonly,r,
+access_account_book_invoice,access_account_book_invoice,account.book,account.group_account_invoice,cru,
+access_account_book_manager,access_account_book_manager,account.book,account.group_account_manager,crud,
+account_book_company_rule,account.book: multi-company,account.book,,crud,"[('company_id', 'in', company_ids)]"
+access_account_book_section_readonly,access_account_book_section_readonly,account.book.section,account.group_account_readonly,r,
+access_account_book_section_invoice,access_account_book_section_invoice,account.book.section,account.group_account_invoice,cru,
+access_account_book_section_manager,access_account_book_section_manager,account.book.section,account.group_account_manager,crud,
+account_book_section_company_rule,account.book.section: multi-company,account.book.section,,crud,"[('company_id', 'in', company_ids)]"
+access_account_book_document_readonly,access_account_book_document_readonly,account.book.document,account.group_account_readonly,r,
+access_account_book_document_invoice,access_account_book_document_invoice,account.book.document,account.group_account_invoice,cru,
+access_account_book_document_manager,access_account_book_document_manager,account.book.document,account.group_account_manager,crud,
+account_book_document_company_rule,account.book.document: multi-company,account.book.document,,crud,"[('company_id', 'in', company_ids)]"
+access_l10n_ve_invoice_cancel_reason_readonly,access_l10n_ve_invoice_cancel_reason_readonly,l10n_ve.invoice.cancel.reason,account.group_account_readonly,r,
+access_l10n_ve_invoice_cancel_reason_invoice,access_l10n_ve_invoice_cancel_reason_invoice,l10n_ve.invoice.cancel.reason,account.group_account_invoice,r,
+access_l10n_ve_invoice_cancel_reason_manager,access_l10n_ve_invoice_cancel_reason_manager,l10n_ve.invoice.cancel.reason,account.group_account_manager,crud,
+access_l10n_ve_emission_medium_user,access_l10n_ve_emission_medium_user,l10n.ve.emission.medium,base.group_user,r,
+access_l10n_ve_account_move_cancel_wizard,access_l10n_ve_account_move_cancel_wizard,l10n_ve.account.move.cancel.wizard,l10n_ve_seniat.group_l10n_ve_invoice_void,crud,
+access_l10n_ve_account_move_debit_credit_wizard,access_l10n_ve_account_move_debit_credit_wizard,l10n_ve.account.move.debit.credit.wizard,account.group_account_invoice,crud,
+access_l10n_ve_book_folio_void_readonly,access_l10n_ve_book_folio_void_readonly,l10n_ve.book.folio.void,account.group_account_readonly,r,
+access_l10n_ve_book_folio_void_invoice,access_l10n_ve_book_folio_void_invoice,l10n_ve.book.folio.void,account.group_account_invoice,cr,
+access_l10n_ve_book_folio_void_manager,access_l10n_ve_book_folio_void_manager,l10n_ve.book.folio.void,account.group_account_manager,crud,
+l10n_ve_book_folio_void_company_rule,l10n_ve.book.folio.void: multi-company,l10n_ve.book.folio.void,,crud,"[('company_id', 'in', company_ids)]"
+access_l10n_ve_book_folio_void_wizard_invoice,access_l10n_ve_book_folio_void_wizard_invoice,l10n_ve.book.folio.void.wizard,account.group_account_invoice,crud,
