@@ -2,7 +2,7 @@ import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment
 import OrderPaymentValidation from "@point_of_sale/app/utils/order_payment_validation";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
-import { onMounted, useState } from "@odoo/owl";
+import { onMounted, proxy } from "@odoo/owl";
 
 function isVenezuelaCompany(pos) {
     return (
@@ -16,7 +16,7 @@ patch(PaymentScreen.prototype, {
         super.setup(...arguments);
         const orderJournal = this.currentOrder?.invoice_journal_id;
         const configJournal = this.pos.config?.invoice_journal_id;
-        this.l10nVeEmission = useState({
+        this.l10nVeEmission = proxy({
             emission_medium:
                 orderJournal?.l10n_ve_emission_medium ||
                 configJournal?.l10n_ve_emission_medium ||

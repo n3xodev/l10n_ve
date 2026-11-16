@@ -3,12 +3,12 @@
     <t t-name="l10n_ve_reports.SalesReportFilterCode">
         <Dropdown>
             <button class="btn btn-secondary">
-                <i class="oi oi-filled me-1" data-icon="filter_alt" /> Codes: <t t-esc="selectedEcTaxName" />
+                <i class="oi oi-filled me-1" data-icon="filter_alt" /> Codes: <t t-out="this.selectedEcTaxName" />
             </button>
 
             <t t-set-slot="content">
                 <t
-                    t-foreach="controller.options.ec_tax_filter_selection"
+                    t-foreach="this.controller.options.ec_tax_filter_selection"
                     t-as="ecTax"
                     t-key="ecTax_index"
                 >

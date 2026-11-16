@@ -5,8 +5,8 @@
             <button
                 type="button"
                 class="btn btn-secondary"
-                t-on-click="onUpdatePort"
-                t-att-disabled="state.busy or !props.record.resId"
+                t-on-click="this.onUpdatePort"
+                t-att-disabled="this.state.busy or !this.props.record.resId"
             >
                 <i class="oi me-1" data-icon="usb" />
                 Actualizar puerto (este PC)

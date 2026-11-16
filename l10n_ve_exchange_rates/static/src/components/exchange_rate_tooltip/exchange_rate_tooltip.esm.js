@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import {Component, onWillStart, useState} from "@odoo/owl";
+import { Component, onWillStart, proxy } from "@odoo/owl";
 import {useService} from "@web/core/utils/hooks";
 import {Dropdown} from "@web/core/dropdown/dropdown";
 import {DropdownItem} from "@web/core/dropdown/dropdown_item";
@@ -10,7 +10,7 @@ export class ExchangeRateTooltip extends Component {
     static components = {Dropdown, DropdownItem};
     setup() {
         this.orm = useService("orm");
-        this.state = useState({
+        this.state = proxy({
             rates: [],
             company_currency: null,
             featured: false,

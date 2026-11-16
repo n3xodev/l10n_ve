@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="l10n_ve_reports.AccountReportFilters">
-        <t t-call="{{ env.template('AccountReportFilters') }}" />
+        <t t-call="{{ this.env.template('AccountReportFilters') }}" />
     </t>
 
     <t t-name="l10n_ve_reports.AccountReportFiltersCustomizable">
         <!-- Date filter -->
-        <t t-if="'date' in controller.options">
+        <t t-if="'date' in this.controller.options">
             <div id="filter_date" class="filter_date">
                 <t t-call="l10n_ve_reports.AccountReportFilterDate" />
             </div>
         </t>
 
         <!-- Comparison filter -->
-        <t t-if="controller.filters.show_period_comparison">
+        <t t-if="this.controller.filters.show_period_comparison">
             <div id="filter_comparison" class="filter_comparison">
                 <t t-call="l10n_ve_reports.AccountReportFilterComparison" />
             </div>
         </t>
 
         <!-- Journal filter -->
-        <t t-if="'journals' in controller.options">
+        <t t-if="'journals' in this.controller.options">
             <div id="filter_journal">
                 <t t-call="l10n_ve_reports.AccountReportFilterJournal" />
             </div>
         </t>
 
         <!-- Account type filter -->
-        <t t-if="'account_type' in controller.options">
+        <t t-if="'account_type' in this.controller.options">
             <div id="filter_account_type">
                 <t t-call="l10n_ve_reports.AccountReportFilterAccountType" />
             </div>
@@ -35,7 +35,7 @@
 
         <!-- Analytic filter -->
         <t
-            t-if="controller.groups.analytic_accounting and controller.filters.show_analytic"
+            t-if="this.controller.groups.analytic_accounting and this.controller.filters.show_analytic"
         >
             <div id="filter_analytic" class="filter_analytic">
                 <t t-call="l10n_ve_reports.AccountReportFilterAnalytic" />
@@ -43,41 +43,41 @@
         </t>
 
         <!-- Analytic groupby filter -->
-        <t t-if="hasAnalyticGroupbyFilter">
+        <t t-if="this.hasAnalyticGroupbyFilter">
             <div id="filter_analytic_groupby" class="filter_analytic_groupby">
                 <t t-call="l10n_ve_reports.AccountReportFilterAnalyticGroupby" />
             </div>
         </t>
 
         <!-- Horizontal groups filter -->
-        <t t-if="controller.options.available_horizontal_groups.length > 0">
+        <t t-if="this.controller.options.available_horizontal_groups.length > 0">
             <div id="filter_horizontal_groups">
                 <t t-call="l10n_ve_reports.AccountReportFilterHorizontalGroups" />
             </div>
         </t>
 
         <!-- Partner filter -->
-        <t t-if="'partner' in controller.options">
+        <t t-if="'partner' in this.controller.options">
             <div id="filter_partner" class="filter_partner">
                 <t t-call="l10n_ve_reports.AccountReportFilterPartner" />
             </div>
         </t>
 
-        <t t-if="'salesperson' in controller.options">
+        <t t-if="'salesperson' in this.controller.options">
             <div id="filter_salesperson" class="filter_salesperson">
                 <t t-call="l10n_ve_reports.AccountReportFilterSalesperson" />
             </div>
         </t>
 
         <!-- Extra options filter -->
-        <t t-if="hasExtraOptionsFilter">
+        <t t-if="this.hasExtraOptionsFilter">
             <div id="filter_extra_options">
                 <t t-call="l10n_ve_reports.AccountReportFilterExtraOptions" />
             </div>
         </t>
 
         <!-- Variant filter -->
-        <t t-if="controller.options.available_variants.length > 1">
+        <t t-if="this.controller.options.available_variants.length > 1">
             <div id="filter_variant">
                 <t t-call="l10n_ve_reports.AccountReportFilterVariant" />
             </div>
@@ -85,7 +85,7 @@
 
         <!-- Tax unit filter -->
         <t
-            t-if="'available_tax_units' in this.controller.options and controller.options.available_tax_units.length > 0"
+            t-if="'available_tax_units' in this.controller.options and this.controller.options.available_tax_units.length > 0"
         >
             <div id="filter_tax_unit">
                 <t t-call="l10n_ve_reports.AccountReportFilterTaxUnit" />
@@ -93,14 +93,14 @@
         </t>
 
         <!-- Fiscal position filter -->
-        <t t-if="hasFiscalPositionFilter">
+        <t t-if="this.hasFiscalPositionFilter">
             <div id="filter_fiscal_position">
                 <t t-call="l10n_ve_reports.AccountReportFilterFiscalPosition" />
             </div>
         </t>
 
         <!-- Budget filter -->
-        <t t-if="'budgets' in controller.options">
+        <t t-if="'budgets' in this.controller.options">
             <div id="filter_budget">
                 <t t-call="l10n_ve_reports.AccountReportFilterBudget" />
             </div>
@@ -108,7 +108,7 @@
 
         <!-- User defined filter on journal items -->
         <t
-            t-if="'aml_ir_filters' in controller.options and controller.options.aml_ir_filters.length > 0"
+            t-if="'aml_ir_filters' in this.controller.options and this.controller.options.aml_ir_filters.length > 0"
         >
             <div id="filter_aml_ir_filters">
                 <t t-call="l10n_ve_reports.AccountReportAmlIrFilters" />
@@ -117,7 +117,7 @@
 
         <!-- Display Currency filter -->
         <t
-            t-if="'available_currencies' in controller.options and controller.options.available_currencies.length > 1"
+            t-if="'available_currencies' in this.controller.options and this.controller.options.available_currencies.length > 1"
         >
             <div id="filter_display_currency">
                 <t t-call="l10n_ve_reports.AccountReportFilterDisplayCurrency" />
@@ -128,7 +128,7 @@
             <t t-call="l10n_ve_reports.AccountReportFilterRoundingUnit" />
         </div>
 
-        <t t-if="env.debug">
+        <t t-if="this.env.debug">
             <div
                 id="filter_configuration"
                 class="o-dropdown dropdown o-dropdown--no-caret"

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="l10n_ve_reports.AccountReportFilterJournal">
-        <Dropdown disabled="!controller.options.journals.length">
+        <Dropdown disabled="!this.controller.options.journals.length">
             <button class="btn btn-secondary">
                 <i class="oi me-1" data-icon="book" />
-                <t t-out="controller.options.name_journal_group" />
+                <t t-out="this.controller.options.name_journal_group" />
             </button>
 
             <t t-set-slot="content">
                 <t
-                    t-foreach="controller.options.journals"
+                    t-foreach="this.controller.options.journals"
                     t-as="journal"
                     t-key="journal_index"
                 >

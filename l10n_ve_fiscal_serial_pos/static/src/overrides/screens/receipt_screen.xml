@@ -26,7 +26,7 @@
                 t-on-click="() => this.l10nVeFiscalReprint.call()"
             >
                 <i t-attf-class="oi {{l10nVeFiscalReprint.status === 'loading' ? 'oi-fw oi-spin fa-circle-o-notch' : 'fa-print'}} me-1"/>
-                <t t-esc="l10nVeFiscalReprintLabel"/>
+                <t t-out="l10nVeFiscalReprintLabel"/>
             </button>
         </xpath>
     </t>

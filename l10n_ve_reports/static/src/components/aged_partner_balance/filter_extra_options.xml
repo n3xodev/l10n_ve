@@ -9,15 +9,15 @@
             position="after"
         >
             <DropdownItem
-                t-if="controller.options.multi_currency"
-                class="{ 'selected': controller.options.show_currency }"
+                t-if="this.controller.options.multi_currency"
+                class="{ 'selected': this.controller.options.show_currency }"
                 onSelected="() => this.filterClicked({ optionKey: 'show_currency', reload: true})"
                 closingMode="'none'"
             >
                 Show Currency
             </DropdownItem>
             <DropdownItem
-                class="{ 'selected': controller.options.show_account }"
+                class="{ 'selected': this.controller.options.show_account }"
                 onSelected="() => this.filterClicked({ optionKey: 'show_account', reload: true})"
                 closingMode="'none'"
             >

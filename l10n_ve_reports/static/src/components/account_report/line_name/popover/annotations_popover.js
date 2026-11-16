@@ -1,8 +1,9 @@
-import {Component, useState, useRef, onWillDestroy} from "@odoo/owl";
-import {useService} from "@web/core/utils/hooks";
+import { Component, onWillDestroy, proxy, usePlugin } from "@odoo/owl";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import {DateTimeInput} from "@web/core/datetime/datetime_input";
 import {AnnotationPopoverLine} from "@l10n_ve_reports/components/account_report/line_name/popover_line/annotation_popover_line";
 import {removeTaxGroupingFromLineId} from "@l10n_ve_reports/js/util";
+import { useRef } from "@web/owl2/utils";
 
 const {DateTime} = luxon;
 
@@ -21,13 +22,13 @@ export class AccountReportAnnotationsPopover extends Component {
     };
 
     setup() {
-        this.notificationService = useService("notification");
+        this.notificationService = usePlugin(NotificationPlugin);
 
-        this.newAnnotation = useState({
+        this.newAnnotation = proxy({
             value: this.props.isAddingAnnotation ? this._getNewAnnotation() : {},
         });
 
-        this.annotations = useState(
+        this.annotations = proxy(
             this.props.controller.visibleAnnotations[
                 removeTaxGroupingFromLineId(this.props.lineID)
             ]

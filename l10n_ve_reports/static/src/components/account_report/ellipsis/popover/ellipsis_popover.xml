@@ -2,10 +2,10 @@
 <templates>
     <t t-name="l10n_ve_reports.AccountReportEllipsisPopover">
         <div class="account_report_popover_ellipsis">
-            <p t-out="props.name" />
+            <p t-out="this.props.name" />
             <button
                 class="btn account_report_btn_clone"
-                t-on-click="() => props.copyEllipsisText()"
+                t-on-click="() => this.props.copyEllipsisText()"
             >
                 <i class="oi" data-icon="content_copy" />
             </button>

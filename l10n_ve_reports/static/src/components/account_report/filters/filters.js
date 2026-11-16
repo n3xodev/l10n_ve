@@ -1,6 +1,7 @@
 import {_t} from "@web/core/l10n/translation";
-import {Component, useState} from "@odoo/owl";
+import { Component, proxy, usePlugin } from "@odoo/owl";
 
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import {useService} from "@web/core/utils/hooks";
 import {user} from "@web/core/user";
 import {WarningDialog} from "@web/core/errors/error_dialogs";
@@ -28,20 +29,20 @@ export class AccountReportFilters extends Component {
     setup() {
         this.dialog = useService("dialog");
         this.orm = useService("orm");
-        this.notification = useService("notification");
-        this.controller = useState(this.env.controller);
+        this.notification = usePlugin(NotificationPlugin);
+        this.controller = proxy(this.env.controller);
         if (this.env.controller.options.date) {
-            this.dateFilter = useState(this.initDateFilters());
+            this.dateFilter = proxy(this.initDateFilters());
             logAccountReportDate("setup:afterInitDateFilters", {
                 dateFilter: {...this.dateFilter},
                 optionsDate: this.env.controller.options.date,
             });
         }
-        this.budgetName = useState({
+        this.budgetName = proxy({
             value: "",
             invalid: false,
         });
-        this.currencyDateLoadingState = useState({isLoading: false});
+        this.currencyDateLoadingState = proxy({isLoading: false});
         this.timeout = null;
     }
 

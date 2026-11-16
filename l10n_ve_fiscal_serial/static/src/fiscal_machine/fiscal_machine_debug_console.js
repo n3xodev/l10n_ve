@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
-import { Component, onWillUnmount, useState } from "@odoo/owl";
+import { Component, onWillUnmount, proxy, usePlugin } from "@odoo/owl";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
+import { UIPlugin } from "@web/core/ui/ui_plugin";
 import { useService } from "@web/core/utils/hooks";
 import { createFiscalSerialAuditLogger } from "../fiscal_serial/fiscal_serial_audit";
 
@@ -22,12 +24,12 @@ export class FiscalMachineDebugConsole extends Component {
 
     setup() {
         this.fiscalSerial = useService("l10n_ve_fiscal_serial");
-        this.notification = useService("notification");
+        this.notification = usePlugin(NotificationPlugin);
         this.orm = useService("orm");
-        this.ui = useService("ui");
+        this.ui = usePlugin(UIPlugin);
         const defaults = this._getRecordDefaults();
         this.machineId = defaults.machineId;
-        this.state = useState({
+        this.state = proxy({
             phase: PHASE.DISCONNECTED,
             busy: false,
             estado: "",

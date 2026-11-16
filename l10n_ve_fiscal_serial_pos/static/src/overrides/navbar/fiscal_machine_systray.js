@@ -5,8 +5,7 @@ import {
     onMounted,
     onWillStart,
     onWillUnmount,
-    useEffect,
-    useState,
+    proxy,
 } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { useService } from "@web/core/utils/hooks";
@@ -19,6 +18,7 @@ import {
     l10nVeFiscalSerialPosGetInvoiceJournal,
     l10nVeFiscalSerialPosIsFiscalMachine,
 } from "../../fiscal_serial_pos_print";
+import { useLayoutEffect } from "@web/owl2/utils";
 
 export class PosFiscalMachineSystray extends Component {
     static template = "l10n_ve_fiscal_serial_pos.PosFiscalMachineSystray";
@@ -31,7 +31,7 @@ export class PosFiscalMachineSystray extends Component {
     setup() {
         this.pos = usePos();
         this.connection = useService("l10n_ve_fiscal_connection");
-        this.state = useState(this.connection.state);
+        this.state = proxy(this.connection.state);
         this._onJournalChanged = (ev) => {
             const detail = ev?.detail || {};
             void this._syncMachineFromJournal({
@@ -57,7 +57,7 @@ export class PosFiscalMachineSystray extends Component {
                 this._onJournalChanged
             );
         });
-        useEffect(
+        useLayoutEffect(
             () => {
                 void this._syncMachineFromJournal({ reconnect: true });
             },

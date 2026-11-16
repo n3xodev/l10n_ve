@@ -21,7 +21,7 @@
                     accesskey="Q"
                     placeholder="Search..."
                     role="searchbox"
-                    t-ref="search_bar_input"
+                    t-custom-ref="search_bar_input"
                     t-on-input="() => this.search()"
                 />
             </div>

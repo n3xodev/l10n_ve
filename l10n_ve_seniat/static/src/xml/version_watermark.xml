@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates>
     <t t-name="l10n_ve_seniat.VersionLabel">
-        <span t-if="version" t-esc="version" class="l10n_ve_version_label" />
+        <span t-if="this.version" t-out="this.version" class="l10n_ve_version_label" />
     </t>
 </templates>

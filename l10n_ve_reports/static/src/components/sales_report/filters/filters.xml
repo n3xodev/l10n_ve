@@ -4,8 +4,8 @@
         t-name="l10n_ve_reports.SalesReportFilters"
         t-inherit="l10n_ve_reports.AccountReportFiltersCustomizable"
     >
-        <xpath expr="//t[@t-if='hasExtraOptionsFilter']" position="before">
-            <t t-if='hasCodesFilter' t-call="l10n_ve_reports.SalesReportFilterCode" />
+        <xpath expr="//t[@t-if='this.hasExtraOptionsFilter']" position="before">
+            <t t-if='this.hasCodesFilter' t-call="l10n_ve_reports.SalesReportFilterCode" />
         </xpath>
     </t>
 </templates>

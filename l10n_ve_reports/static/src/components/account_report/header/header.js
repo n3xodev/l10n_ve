@@ -4,7 +4,7 @@ import {Dropdown} from "@web/core/dropdown/dropdown";
 import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 import {useService} from "@web/core/utils/hooks";
 
-import {Component, useState} from "@odoo/owl";
+import { Component, proxy } from "@odoo/owl";
 
 export class AccountReportHeader extends Component {
     static template = "l10n_ve_reports.AccountReportHeader";
@@ -16,7 +16,7 @@ export class AccountReportHeader extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.controller = useState(this.env.controller);
+        this.controller = proxy(this.env.controller);
     }
     // -----------------------------------------------------------------------------------------------------------------
     // Headers

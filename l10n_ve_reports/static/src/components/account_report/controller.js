@@ -1,5 +1,6 @@
 /* global owl:readonly */
 
+import { usePlugin } from "@odoo/owl";
 import {browser} from "@web/core/browser/browser";
 import {user} from "@web/core/user";
 import {useService} from "@web/core/utils/hooks";
@@ -7,11 +8,12 @@ import {useService} from "@web/core/utils/hooks";
 import {removeTaxGroupingFromLineId} from "@l10n_ve_reports/js/util";
 
 import {logAccountReportDate} from "./account_report_date_debug";
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportController {
     constructor(action) {
         this.action = action;
-        this.actionService = useService("action");
+        this.actionService = usePlugin(ActionManagerPlugin);
         this.dialog = useService("dialog");
         this.orm = useService("orm");
     }

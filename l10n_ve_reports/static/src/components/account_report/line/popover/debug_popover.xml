@@ -3,7 +3,7 @@
     <t t-name="l10n_ve_reports.AccountReportDebugPopover">
         <div class="account_report_popover_debug">
             <t
-                t-foreach="props.expressionsDetail"
+                t-foreach="this.props.expressionsDetail"
                 t-as="expressionEngineAndTotals"
                 t-key="expressionEngineAndTotals_index"
             >

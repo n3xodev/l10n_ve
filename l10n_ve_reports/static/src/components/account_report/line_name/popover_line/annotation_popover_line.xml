@@ -5,20 +5,20 @@
             <td class="w-25">
                 <DateTimeInput
                     type="'date'"
-                    value="annotation.date"
+                    value="this.annotation.date"
                     onChange="(date) => this.annotationEditDate(date)"
                 />
             </td>
             <td>
                 <textarea
                     class="annotation_popover_editable_cell annotation_popover_autoresize_textarea w-100"
-                    t-att-value="annotation.text"
-                    t-on-change="annotationEditText"
-                    t-ref="annotationText"
+                    t-att-value="this.annotation.text"
+                    t-on-change="this.annotationEditText"
+                    t-custom-ref="annotationText"
                 />
             </td>
             <td>
-                <button class="btn btn_annotation_delete" t-on-click="deleteAnnotation">
+                <button class="btn btn_annotation_delete" t-on-click="this.deleteAnnotation">
                     <i class="oi" data-icon="delete" />
                 </button>
             </td>

@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
-import { onWillStart, useState } from "@odoo/owl";
+import { onWillStart, proxy, usePlugin } from "@odoo/owl";
 import { ClosePosPopup } from "@point_of_sale/app/components/popups/closing_popup/closing_popup";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
@@ -25,9 +26,9 @@ function l10nVeFiscalMachineLabel(machine) {
 patch(ClosePosPopup.prototype, {
     setup() {
         super.setup(...arguments);
-        this.notification = useService("notification");
+        this.notification = usePlugin(NotificationPlugin);
         this.l10nVeFiscalConnection = useService("l10n_ve_fiscal_connection");
-        this.l10nVeFiscalClose = useState({
+        this.l10nVeFiscalClose = proxy({
             machineId: false,
             machines: [],
         });

@@ -4,8 +4,8 @@
         <Dropdown>
             <button class="btn btn-secondary">
                 <i class="oi me-1" data-icon="tune" />
-                <t t-if="selectedExtraOptions">
-                    <t t-out="selectedExtraOptions" />
+                <t t-if="this.selectedExtraOptions">
+                    <t t-out="this.selectedExtraOptions" />
                 </t>
                 <t t-else="">
                     Options
@@ -14,10 +14,10 @@
 
             <t t-set-slot="content">
                 <t
-                    t-if="controller.groups.account_readonly and controller.filters.show_draft"
+                    t-if="this.controller.groups.account_readonly and this.controller.filters.show_draft"
                 >
                     <DropdownItem
-                        class="{ 'filter_show_draft_hook': true, 'selected': controller.options.all_entries }"
+                        class="{ 'filter_show_draft_hook': true, 'selected': this.controller.options.all_entries }"
                         onSelected="() => this.filterClicked({ optionKey: 'all_entries', reload: true})"
                         closingMode="'none'"
                     >
@@ -26,10 +26,10 @@
                 </t>
 
                 <t
-                    t-if="controller.groups.account_readonly and controller.filters.show_analytic_groupby"
+                    t-if="this.controller.groups.account_readonly and this.controller.filters.show_analytic_groupby"
                 >
                     <DropdownItem
-                        class="{ 'selected': controller.options.include_analytic_without_aml }"
+                        class="{ 'selected': this.controller.options.include_analytic_without_aml }"
                         onSelected="() => this.filterClicked({ optionKey: 'include_analytic_without_aml', reload: true})"
                         closingMode="'none'"
                     >
@@ -37,9 +37,9 @@
                     </DropdownItem>
                 </t>
 
-                <t t-if="controller.filters.show_hierarchy">
+                <t t-if="this.controller.filters.show_hierarchy">
                     <DropdownItem
-                        class="{ 'selected': controller.options.hierarchy }"
+                        class="{ 'selected': this.controller.options.hierarchy }"
                         onSelected="() => this.filterClicked({ optionKey: 'hierarchy', reload: true})"
                         closingMode="'none'"
                     >
@@ -47,9 +47,9 @@
                     </DropdownItem>
                 </t>
 
-                <t t-if="controller.filters.show_unreconciled">
+                <t t-if="this.controller.filters.show_unreconciled">
                     <DropdownItem
-                        class="{ 'selected': controller.options.unreconciled }"
+                        class="{ 'selected': this.controller.options.unreconciled }"
                         onSelected="() => this.filterClicked({ optionKey: 'unreconciled', reload: true})"
                         closingMode="'none'"
                     >
@@ -57,9 +57,9 @@
                     </DropdownItem>
                 </t>
 
-                <t t-if="controller.filters.show_all">
+                <t t-if="this.controller.filters.show_all">
                     <DropdownItem
-                        class="{ 'filter_show_all_hook': true, 'selected': controller.options.unfold_all }"
+                        class="{ 'filter_show_all_hook': true, 'selected': this.controller.options.unfold_all }"
                         onSelected="() => this.filterClicked({ optionKey: 'unfold_all', reload: true})"
                         closingMode="'none'"
                     >
@@ -67,9 +67,9 @@
                     </DropdownItem>
                 </t>
 
-                <t t-if="controller.options.integer_rounding">
+                <t t-if="this.controller.options.integer_rounding">
                     <DropdownItem
-                        class="{ 'selected': controller.options.integer_rounding_enabled }"
+                        class="{ 'selected': this.controller.options.integer_rounding_enabled }"
                         onSelected="() => this.filterClicked({ optionKey: 'integer_rounding_enabled'})"
                         closingMode="'none'"
                     >
@@ -77,20 +77,20 @@
                     </DropdownItem>
                 </t>
 
-                <div class="dropdown-divider" t-if="hasUIFilter" />
+                <div class="dropdown-divider" t-if="this.hasUIFilter" />
 
-                <t t-if="controller.filters.show_hide_0_lines !== 'never'">
+                <t t-if="this.controller.filters.show_hide_0_lines !== 'never'">
                     <DropdownItem
-                        class="{ 'selected': controller.options.hide_0_lines }"
+                        class="{ 'selected': this.controller.options.hide_0_lines }"
                         onSelected="() => this.toggleHideZeroLines()"
                     >
                         Hide lines at 0
                     </DropdownItem>
                 </t>
 
-                <t t-if="'horizontal_split' in controller.options">
+                <t t-if="'horizontal_split' in this.controller.options">
                     <DropdownItem
-                        class="{ 'selected': controller.options.horizontal_split }"
+                        class="{ 'selected': this.controller.options.horizontal_split }"
                         onSelected="() => this.toggleHorizontalSplit()"
                     >
                         Split Horizontally

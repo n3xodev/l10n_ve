@@ -2,8 +2,9 @@
 
 import {_t} from "@web/core/l10n/translation";
 import {localization} from "@web/core/l10n/localization";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import {useService} from "@web/core/utils/hooks";
-import {Component, useState} from "@odoo/owl";
+import { Component, proxy, usePlugin } from "@odoo/owl";
 
 import {AccountReportEllipsisPopover} from "@l10n_ve_reports/components/account_report/ellipsis/popover/ellipsis_popover";
 
@@ -18,8 +19,8 @@ export class AccountReportEllipsis extends Component {
 
     setup() {
         this.popover = useService("popover");
-        this.notification = useService("notification");
-        this.controller = useState(this.env.controller);
+        this.notification = usePlugin(NotificationPlugin);
+        this.controller = proxy(this.env.controller);
     }
 
     //------------------------------------------------------------------------------------------------------------------

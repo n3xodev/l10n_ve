@@ -10,7 +10,7 @@
                 <div class="dropdown-item gap-2 align-items-center">
                     <label>Vendedor</label>
                     <MultiRecordSelector
-                        t-props="getMultiRecordSelectorProps('res.users', 'salesperson_ids')"
+                        t-props="this.getMultiRecordSelectorProps('res.users', 'salesperson_ids')"
                         domain="[['share', '=', false]]"
                     />
                 </div>

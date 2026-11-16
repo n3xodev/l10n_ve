@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="l10n_ve_reports.MoveLineListView" t-inherit="web.ListView">
-        <xpath expr="//div[@t-ref='root']" position="attributes" type="add">
+        <xpath expr="//div[@t-custom-ref='root']" position="attributes" type="add">
             <attribute name="class" add="o_move_line_list_view" separator=" " />
         </xpath>
         <xpath expr="//t[@t-component='props.Renderer']" position="attributes">
@@ -14,12 +14,12 @@
 
     <t t-name="l10n_ve_reports.AttachmentPreview">
         <div
-            t-if="previewEnabled"
+            t-if="this.previewEnabled"
             class="o_attachment_preview d-print-none"
-            t-att-class="{'hidden': !attachmentPreviewState.displayAttachment || mailPopoutService.externalWindow}"
+            t-att-class="{'hidden': !this.attachmentPreviewState.displayAttachment || this.mailPopoutService.externalWindow}"
         >
             <t
-                t-if="this.attachmentPreviewState.displayAttachment || mailPopoutService.externalWindow"
+                t-if="this.attachmentPreviewState.displayAttachment || this.mailPopoutService.externalWindow"
             >
                 <t
                     t-if="this.attachmentPreviewState.thread and this.attachmentPreviewState.thread.attachmentsInWebClientView.length > 0"
@@ -39,8 +39,8 @@
             </t>
             <div
                 class="o_attachment_control toggle"
-                t-on-click="togglePreview"
-                t-if="!mailPopoutService.externalWindow"
+                t-on-click="this.togglePreview"
+                t-if="!this.mailPopoutService.externalWindow"
             />
         </div>
         <t t-else="">

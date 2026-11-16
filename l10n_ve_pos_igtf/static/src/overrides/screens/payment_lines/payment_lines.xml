@@ -6,7 +6,7 @@
                 t-att-class="selectedLineClass(line)">
                 <div class="d-flex align-items-center w-100">
                     <div class="payment-infos d-flex align-items-center justify-content-between flex-grow-1 px-3 py-3 text-truncate cursor-pointer fs-2" t-on-click="() => this.selectLine(line)">
-                        <span class="payment-name"><t t-esc="line.payment_method_id.name"/></span>
+                        <span class="payment-name"><t t-out="line.payment_method_id.name"/></span>
                         <div class="payment-amount px-3 text-end">
                             <!-- currency_pos's own PaymentScreenPaymentLines extension
                                  (payment_screen.xml) replaces this same inner div to show
@@ -20,10 +20,10 @@
                                  that case). -->
                             <t t-if="line.isForeignCurrencyPayment?.()">
                                 <div class="lh-sm">
-                                    <t t-esc="getPaymentLineForeignAmountDisplay(line)"/>
+                                    <t t-out="getPaymentLineForeignAmountDisplay(line)"/>
                                 </div>
                                 <div class="small text-muted lh-sm">
-                                    <t t-esc="getPaymentLineOrderAmountDisplay(line)"/>
+                                    <t t-out="getPaymentLineOrderAmountDisplay(line)"/>
                                 </div>
                             </t>
                             <t t-else="">
@@ -46,8 +46,8 @@
                 </div>
                 <div t-if="line.include_igtf and line.igtf_amount" class="d-flex align-items-center w-100">
                     <div class="d-flex justify-content-between flex-grow-1 px-3 pb-2 pt-1 fs-5 text-muted">
-                        <span t-esc="l10nVePosIgtfLineLabel(line)"/>
-                        <span class="px-3" t-esc="l10nVePosFormatIgtfLine(line)"/>
+                        <span t-out="l10nVePosIgtfLineLabel(line)"/>
+                        <span class="px-3" t-out="l10nVePosFormatIgtfLine(line)"/>
                     </div>
                     <div class="mx-2 px-3" style="visibility: hidden;" aria-hidden="true">
                         <i class="oi" data-icon="close_small"/>
@@ -60,16 +60,16 @@
                 t-att-class="unselectedLineClass(line)">
                 <div class="d-flex align-items-center w-100">
                     <div class="payment-infos d-flex align-items-center justify-content-between flex-grow-1 px-3 py-3 text-truncate cursor-pointer fs-2" t-on-click="() => this.selectLine(line)">
-                        <span class="payment-name"><t t-esc="line.payment_method_id.name"/></span>
+                        <span class="payment-name"><t t-out="line.payment_method_id.name"/></span>
                         <div class="payment-amount px-3 text-end">
                             <!-- Same currency_pos-composition fix as the selected-line
                                  block above; see the comment there. -->
                             <t t-if="line.isForeignCurrencyPayment?.()">
                                 <div class="lh-sm">
-                                    <t t-esc="getPaymentLineForeignAmountDisplay(line)"/>
+                                    <t t-out="getPaymentLineForeignAmountDisplay(line)"/>
                                 </div>
                                 <div class="small text-muted lh-sm">
-                                    <t t-esc="getPaymentLineOrderAmountDisplay(line)"/>
+                                    <t t-out="getPaymentLineOrderAmountDisplay(line)"/>
                                 </div>
                             </t>
                             <t t-else="">
@@ -87,8 +87,8 @@
                 </div>
                 <div t-if="line.include_igtf and line.igtf_amount" class="d-flex align-items-center w-100">
                     <div class="d-flex justify-content-between flex-grow-1 px-3 pb-2 pt-1 fs-5 text-muted">
-                        <span t-esc="l10nVePosIgtfLineLabel(line)"/>
-                        <span class="px-3" t-esc="l10nVePosFormatIgtfLine(line)"/>
+                        <span t-out="l10nVePosIgtfLineLabel(line)"/>
+                        <span class="px-3" t-out="l10nVePosFormatIgtfLine(line)"/>
                     </div>
                     <div class="mx-2 px-3" style="visibility: hidden;" aria-hidden="true">
                         <i class="oi" data-icon="close_small"/>

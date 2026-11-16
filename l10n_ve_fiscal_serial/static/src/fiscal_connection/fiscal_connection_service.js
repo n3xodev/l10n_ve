@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { reactive } from "@odoo/owl";
+import { proxy } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { TfhkaWebSerialTransport } from "../fiscal_serial/tfhka_transport_webserial";
 
@@ -22,7 +22,7 @@ const CLOSE_TIMEOUT_MS = 2000;
 export const l10nVeFiscalConnectionService = {
     dependencies: ["l10n_ve_fiscal_serial", "orm", "action"],
     start(env, { l10n_ve_fiscal_serial: fiscalSerial, orm, action }) {
-        const state = reactive({
+        const state = proxy({
             visible: false,
             status: CONNECTION_STATUS.HIDDEN,
             message: "",

@@ -1,10 +1,13 @@
 /** @odoo-module **/
 
-import { Component, xml } from "@odoo/owl";
+import { Component, usePlugin, xml } from "@odoo/owl";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
+import { UIPlugin } from "@web/core/ui/ui_plugin";
 import { useService } from "@web/core/utils/hooks";
 import { createFiscalSerialAuditLogger } from "../fiscal_serial/fiscal_serial_audit";
 import { TfhkaWebSerialTransport } from "../fiscal_serial/tfhka_transport_webserial";
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 const ACTION_TO_CHECK_METHOD = {
     print_out_invoice: "check_print_out_invoice",
@@ -37,18 +40,18 @@ const ACTION_AUDIT_SOURCE = {
 export class FiscalMoveButton extends Component {
     static props = ["*"];
     static template = xml`
-        <button t-att-class="buttonClass" type="button" t-on-click="onClick">
-            <span t-esc="label"/>
+        <button t-att-class="this.buttonClass" type="button" t-on-click="this.onClick">
+            <span t-out="this.label"/>
         </button>
     `;
 
     setup() {
         this.orm = useService("orm");
-        this.action = useService("action");
-        this.notification = useService("notification");
+        this.action = usePlugin(ActionManagerPlugin);
+        this.notification = usePlugin(NotificationPlugin);
         this.fiscalSerial = useService("l10n_ve_fiscal_serial");
         this.connection = useService("l10n_ve_fiscal_connection");
-        this.ui = useService("ui");
+        this.ui = usePlugin(UIPlugin);
         this._uiBlocked = false;
     }
 

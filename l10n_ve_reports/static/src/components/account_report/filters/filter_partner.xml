@@ -10,7 +10,7 @@
                 <div class="dropdown-item gap-2 align-items-center">
                     <label>Partners</label>
                     <MultiRecordSelector
-                        t-props="getMultiRecordSelectorProps('res.partner', 'partner_ids')"
+                        t-props="this.getMultiRecordSelectorProps('res.partner', 'partner_ids')"
                         domain="[['parent_id', '=', false]]"
                     />
                 </div>
@@ -18,7 +18,7 @@
                 <div class="dropdown-item gap-2 align-items-center">
                     <label>Tags</label>
                     <MultiRecordSelector
-                        t-props="getMultiRecordSelectorProps('res.partner.category', 'partner_categories')"
+                        t-props="this.getMultiRecordSelectorProps('res.partner.category', 'partner_categories')"
                     />
                 </div>
             </t>

@@ -6,7 +6,8 @@ import {useService} from "@web/core/utils/hooks";
 import {AccountReportCarryoverPopover} from "@l10n_ve_reports/components/account_report/line_cell/popover/carryover_popover";
 import {AccountReportEditPopover} from "@l10n_ve_reports/components/account_report/line_cell/popover/edit_popover";
 
-import {Component, markup, useState} from "@odoo/owl";
+import { Component, markup, proxy, usePlugin } from "@odoo/owl";
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportLineCell extends Component {
     static template = "l10n_ve_reports.AccountReportLineCell";
@@ -19,10 +20,10 @@ export class AccountReportLineCell extends Component {
     };
 
     setup() {
-        this.action = useService("action");
+        this.action = usePlugin(ActionManagerPlugin);
         this.orm = useService("orm");
         this.popover = useService("popover");
-        this.controller = useState(this.env.controller);
+        this.controller = proxy(this.env.controller);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

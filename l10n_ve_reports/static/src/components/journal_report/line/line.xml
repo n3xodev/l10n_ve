@@ -5,17 +5,17 @@
         t-inherit="l10n_ve_reports.AccountReportLineCustomizable"
     >
         <xpath expr="//tr[@data-id='line']" position="attributes">
-            <attribute name="t-if">!('is_tax_section_line' in props.line)</attribute>
+            <attribute name="t-if">!('is_tax_section_line' in this.props.line)</attribute>
         </xpath>
 
         <xpath expr="//tr[@data-id='line']" position="after">
             <t t-else="">
-                <tr id="line" class="subtable" t-att-class="lineClasses">
+                <tr id="line" class="subtable" t-att-class="this.lineClasses">
                     <td t-att-colspan="2">
-                        <t t-if="'tax_report_lines' in props.line">
+                        <t t-if="'tax_report_lines' in this.props.line">
                             <t
                                 t-set="taxesByCountry"
-                                t-value="props.line.tax_report_lines"
+                                t-value="this.props.line.tax_report_lines"
                             />
                             <t
                                 t-set="hasTaxesSeveralCountries"
@@ -23,7 +23,7 @@
                             />
                             <t
                                 t-set="extraColumns"
-                                t-value="props.line.extra_columns"
+                                t-value="this.props.line.extra_columns"
                             />
 
                             <table class="table">
@@ -33,7 +33,7 @@
                                             t-att-colspan="(taxesByCountry.length > 1 ? 4 : 3) + extraColumns"
                                         >
                                             Taxes Applied
-                                            <t t-if="controller.groups.account_user">
+                                            <t t-if="this.controller.groups.account_user">
                                             <a
                                                 class="btn btn_action"
                                                 t-on-click="(ev) => this.openTaxJournalItems(ev, 'Taxes Applied', 'tax')"
@@ -51,15 +51,15 @@
                                         <th class="text-end">Base Amount</th>
                                         <th class="text-end">Tax Amount</th>
                                         <th
-                                            t-if="props.line.tax_non_deductible_column"
+                                            t-if="this.props.line.tax_non_deductible_column"
                                             class="text-end"
                                         >Non-Deductible</th>
                                         <th
-                                            t-if="props.line.tax_deductible_column"
+                                            t-if="this.props.line.tax_deductible_column"
                                             class="text-end"
                                         >Deductible</th>
                                         <th
-                                            t-if="props.line.tax_due_column"
+                                            t-if="this.props.line.tax_due_column"
                                             class="text-end"
                                         >Due</th>
                                     </tr>
@@ -71,7 +71,7 @@
                                         t-key="country_index"
                                     >
                                         <t
-                                            t-foreach="props.line.tax_report_lines[country]"
+                                            t-foreach="this.props.line.tax_report_lines[country]"
                                             t-as="tax"
                                             t-key="tax_index"
                                         >
@@ -85,11 +85,11 @@
                                                 <td>
                                                     <a
                                                         class="link"
-                                                        t-on-click="(ev) => controller.reportAction(ev,
+                                                        t-on-click="(ev) => this.controller.reportAction(ev,
                                                             'journal_report_action_dropdown_audit_default_tax_report', {
                                                                 line_id: tax.line_id,
-                                                                date_form: props.line.date_from,
-                                                                date_to: props.line.date_to,
+                                                                date_form: this.props.line.date_from,
+                                                                date_to: this.props.line.date_to,
                                                         })"
                                                     >
                                                         <t t-out="tax.name" />
@@ -105,17 +105,17 @@
                                                     t-out="tax.tax_amount"
                                                 />
                                                 <td
-                                                    t-if="props.line.tax_non_deductible_column"
+                                                    t-if="this.props.line.tax_non_deductible_column"
                                                     class="text-end"
                                                     t-out="tax.tax_non_deductible"
                                                 />
                                                 <td
-                                                    t-if="props.line.tax_deductible_column"
+                                                    t-if="this.props.line.tax_deductible_column"
                                                     class="text-end"
                                                     t-out="tax.tax_deductible"
                                                 />
                                                 <td
-                                                    t-if="props.line.tax_due_column"
+                                                    t-if="this.props.line.tax_due_column"
                                                     class="text-end"
                                                     t-out="tax.tax_due"
                                                 />
@@ -130,11 +130,11 @@
                     <td t-att-colspan="5">
                         <t
                             t-set="taxGrids"
-                            t-value="props.line.tax_grid_summary_lines"
+                            t-value="this.props.line.tax_grid_summary_lines"
                         />
 
                         <t
-                            t-if="'tax_grid_summary_lines' in props.line and Object.keys(taxGrids).length"
+                            t-if="'tax_grid_summary_lines' in this.props.line and Object.keys(taxGrids).length"
                         >
                             <t
                                 t-set="hasTaxesGridsSeveralCountries"
@@ -147,7 +147,7 @@
                                             t-att-colspan="(hasTaxesGridsSeveralCountries) ? 5 : 4"
                                         >
                                             Impacted Tax Grids
-                                            <t t-if="controller.groups.account_user">
+                                            <t t-if="this.controller.groups.account_user">
                                             <a
                                                 class="btn btn_action"
                                                 t-on-click="(ev) => this.openTaxJournalItems(ev, 'Impacted Tax Grids', 'tag')"
@@ -179,7 +179,7 @@
                                             t-key="grid_index"
                                         >
                                             <tr>
-                                                <t t-if="hasSeveralGrids">
+                                                <t t-if="this.hasSeveralGrids">
                                                     <td
                                                         t-out="(grid_index == 0) ? country : ''"
                                                     />
@@ -188,11 +188,11 @@
                                                 <td>
                                                     <a
                                                         class="link"
-                                                        t-on-click="(ev) => controller.reportAction(ev,
+                                                        t-on-click="(ev) => this.controller.reportAction(ev,
                                                             'journal_report_tax_tag_template_open_aml', {
                                                                 tag_ids: taxGrids[country][grid]['tag_ids'],
-                                                                date_form: props.line.date_from,
-                                                                date_to: props.line.date_to,
+                                                                date_form: this.props.line.date_from,
+                                                                date_to: this.props.line.date_to,
                                                         })"
                                                     >
                                                         <t t-out="grid" />

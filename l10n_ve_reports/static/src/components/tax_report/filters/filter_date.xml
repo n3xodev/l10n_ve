@@ -11,7 +11,7 @@
             <DropdownItem
                 t-if="this.controller.options.show_tax_period_filter"
                 class="{ 'd-flex justify-content-between date_filter': true, 'selected': (this.isPeriodSelected('tax_period')) }"
-                onSelected="() => this.selectDateFilter('tax_period', controller.options.date.period_type != 'tax_period')"
+                onSelected="() => this.selectDateFilter('tax_period', this.controller.options.date.period_type != 'tax_period')"
                 closingMode="'none'"
             >
                 <div class="filter_name pe-3">

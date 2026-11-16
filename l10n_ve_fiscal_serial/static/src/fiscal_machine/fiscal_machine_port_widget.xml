@@ -5,8 +5,8 @@
             <button
                 type="button"
                 class="btn btn-primary"
-                t-on-click="onDetectPort"
-                t-att-disabled="state.busy"
+                t-on-click="this.onDetectPort"
+                t-att-disabled="this.state.busy"
             >
                 Seleccionar puerto y detectar máquina
             </button>
