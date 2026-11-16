@@ -1,6 +1,6 @@
 {
     "name": "Venezuela - Anticipos de clientes y proveedores en pagos",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "andyengit, Odoo Community Association (OCA)",
     "maintainers": ["andyengit"],

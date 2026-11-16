@@ -1,7 +1,7 @@
 {
     "name": "Venezuela  - Tasas de Cambio en Tooltip",
     "icon": "/poweredbyandy_saas/static/description/icon.png",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Extra Tools",
     "author": "Andyengit,Odoo Community Association (OCA)",
     "summary": "Muestra las tasas de cambio configuradas en un tooltip de la navbar principal.",  # noqa: E501

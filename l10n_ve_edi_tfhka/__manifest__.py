@@ -1,7 +1,7 @@
 {
     "name": "Venezuela TFHKA EDI",
     "summary": "Conector The Factory HKA para facturacion digital Venezuela",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "andyengit",
     "maintainer": "andyengit",

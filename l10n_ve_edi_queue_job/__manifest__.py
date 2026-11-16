@@ -1,7 +1,7 @@
 {
     "name": "Venezuela EDI Queue Job",
     "summary": "Encola envios EDI Venezuela con queue_job",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "andyengit",
     "maintainer": "andyengit",

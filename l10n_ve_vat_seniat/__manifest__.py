@@ -1,7 +1,7 @@
 {
     "name": "Venezuela — Consulta RIF SENIAT (captcha)",
     "summary": "Botón en contactos para consultar datos del contribuyente en el portal BuscaRif del SENIAT.",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Localization",
     "author": "andyengit",
     "maintainer": "andyengit",

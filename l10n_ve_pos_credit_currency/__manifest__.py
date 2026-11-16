@@ -1,7 +1,7 @@
 {
     "name": "Venezuela - POS Credit Invoice Currency",
     "summary": "Issue POS credit (pay later) invoices in a configurable currency.",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Point of Sale/Localizations",
     "author": "andyengit, Odoo Community Association (OCA)",
     "maintainer": "andyengit",

@@ -9,7 +9,7 @@
     "author": "BinauralDev, Anderson Armeya, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/l10n-venezuela",
     "category": "Accountant/Accountant",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "depends": [
         "base",
         "account",

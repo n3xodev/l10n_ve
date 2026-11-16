@@ -8,7 +8,7 @@
     "author": "andyengit, Odoo Community Association (OCA)",
     "maintainers": ["andyengit"],
     "category": "Sales/Localizations",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "depends": [
         "l10n_ve_seniat_sale",
         "l10n_ve_loyalty",
