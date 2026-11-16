@@ -17,7 +17,7 @@
                     class="btn btn_ellipsis"
                     t-on-click="(ev) => this.showEllipsisPopover(ev)"
                 >
-                    <i class="fa fa-ellipsis-h" />
+                    <i class="oi" data-icon="more_horiz" />
                 </button>
             </t>
         </t>

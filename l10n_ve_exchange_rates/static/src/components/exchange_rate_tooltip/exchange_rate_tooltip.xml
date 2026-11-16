@@ -3,7 +3,7 @@
     <t t-name="l10n_ve_exchange_rates.ExchangeRateTooltip" owl="xml">
         <Dropdown>
             <button class="btn btn-light">
-                <i class="fa fa-money" role="img" title="Tasas de Cambio Activas" />
+                <i class="oi" data-icon="payments" role="img" title="Tasas de Cambio Activas" />
                 <t t-if="state.featured">
                     <span class="ms-1 fw-bold">
                         <t t-esc="state.featured.rate" />

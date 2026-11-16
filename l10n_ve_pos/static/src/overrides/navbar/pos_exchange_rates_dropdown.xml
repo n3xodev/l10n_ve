@@ -3,7 +3,7 @@
     <t t-name="l10n_ve_pos.PosExchangeRatesDropdown">
         <Dropdown>
             <button class="btn btn-light btn-lg lh-lg d-flex align-items-center" type="button">
-                <i class="fa fa-fw fa-lg fa-money" t-att-title="exchangeRatesTitle"/>
+                <i class="oi oi-fw oi-lg" data-icon="payments" t-att-title="exchangeRatesTitle"/>
                 <span class="ms-1" t-esc="ratesColonLabel"/>
                 <span t-if="displayCurrencyName" class="ms-1 fw-bold" t-esc="displayCurrencyName"/>
                 <span t-if="displayCurrencyRate" class="ms-1" t-esc="displayCurrencyRate"/>

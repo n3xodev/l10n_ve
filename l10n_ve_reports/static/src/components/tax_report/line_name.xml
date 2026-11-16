@@ -6,7 +6,7 @@
     >
         <xpath expr="//div[@data-id='content']" position="before">
             <t t-if="props.line.alert">
-                <i class="fa fa-exclamation-circle consistency_warning" />
+                <i class="oi oi-filled consistency_warning" data-icon="error" />
             </t>
         </xpath>
     </t>

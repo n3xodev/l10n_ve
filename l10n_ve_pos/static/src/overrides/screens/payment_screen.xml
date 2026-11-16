@@ -6,15 +6,15 @@
                 class="button js_invoice btn btn-light btn-lg d-flex justify-content-between align-items-baseline w-100 w-md-50 lh-lg"
                 t-att-class="{ 'highlight active': currentOrder.isToInvoice() }"
                 t-on-click="toggleIsToInvoice">
-                <span><i class="fa fa-file-text-o me-2" />Invoice</span>
-                <i class="fa me-2" t-attf-class="{{ currentOrder.isToInvoice() ? 'fa-check-square text-action' : 'fa-square-o' }}" />
+                <span><i class="oi me-2" data-icon="article" />Invoice</span>
+                <i class="oi me-2" t-attf-class="{{ currentOrder.isToInvoice() ? 'text-action' : '' }}"  t-attf-data-icon="{{ currentOrder.isToInvoice() ? 'check_box' : 'square' }}"/>
             </button>
             <button t-if="isVenezuelaPos"
                 class="button js_invoice_journal btn btn-light btn-lg d-flex align-items-center text-start w-100 w-md-50 lh-lg"
                 t-att-class="{ 'highlight active': true, disabled: !canChangeInvoiceJournal }"
                 t-att-disabled="!canChangeInvoiceJournal"
                 t-on-click="clickInvoiceJournal">
-                <i class="fa fa-book me-2" />
+                <i class="oi me-2" data-icon="book" />
                 <span class="text-truncate">
                     <t t-esc="l10nVeInvoiceJournalDisplayName"/>
                 </span>

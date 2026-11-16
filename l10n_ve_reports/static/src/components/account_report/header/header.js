@@ -111,11 +111,11 @@ export class AccountReportHeader extends Component {
     sortableClasses(columIndex) {
         switch (this.controller.linesCurrentOrderByColumn(columIndex)) {
             case "ASC":
-                return "fa fa-long-arrow-up";
+                return "north";
             case "DESC":
-                return "fa fa-long-arrow-down";
+                return "south";
             default:
-                return "fa fa-arrows-v";
+                return "swap_vert";
         }
     }
 

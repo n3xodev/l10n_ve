@@ -10,7 +10,7 @@
                     name="action_l10n_ve_edi_send"
                     type="object"
                     string="Enviar facturacion digital"
-                    icon="fa-upload"
+                    icon="upload"
                     class="oe_highlight"
                     invisible="state != 'emitted' or type != 'in_invoice' or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'not_sent'"
                 />
@@ -20,7 +20,7 @@
                 <div class="alert alert-warning" role="alert"
                     invisible="state != 'emitted' or type != 'in_invoice' or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'not_sent'">
                     <span>Este comprobante aun no se ha enviado a facturacion digital. Pulse </span>
-                    <button name="action_l10n_ve_edi_send" type="object" string="Enviar facturacion digital" icon="fa-upload" class="oe_link p-0 align-baseline"/>
+                    <button name="action_l10n_ve_edi_send" type="object" string="Enviar facturacion digital" icon="upload" class="oe_link p-0 align-baseline"/>
                     <span> cuando corresponda.</span>
                 </div>
                 <div class="alert alert-info" role="alert"
@@ -68,7 +68,7 @@
                     name="action_l10n_ve_edi_send"
                     type="object"
                     string="Enviar facturacion digital"
-                    icon="fa-upload"
+                    icon="upload"
                     class="oe_highlight"
                     invisible="state != 'emitted' or type != 'in_invoice' or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'not_sent'"
                 />
@@ -78,7 +78,7 @@
                 <div class="alert alert-warning" role="alert"
                     invisible="state != 'emitted' or type != 'in_invoice' or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'not_sent'">
                     <span>Este comprobante aun no se ha enviado a facturacion digital. Pulse </span>
-                    <button name="action_l10n_ve_edi_send" type="object" string="Enviar facturacion digital" icon="fa-upload" class="oe_link p-0 align-baseline"/>
+                    <button name="action_l10n_ve_edi_send" type="object" string="Enviar facturacion digital" icon="upload" class="oe_link p-0 align-baseline"/>
                     <span> cuando corresponda.</span>
                 </div>
                 <div class="alert alert-info" role="alert"

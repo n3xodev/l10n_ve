@@ -34,13 +34,13 @@
         <xpath expr="//button[@data-id='btn_foldable']" position="after">
             <t t-if="props.line.trust === 'good'">
                 <i
-                    class="fa fa-circle text-success partner_trust"
+                    class="oi oi-filled text-success partner_trust" data-icon="circle"
                     title="Partner is good"
                 />
             </t>
             <t t-elif="props.line.trust === 'bad'">
                 <i
-                    class="fa fa-circle text-danger partner_trust"
+                    class="oi oi-filled text-danger partner_trust" data-icon="circle"
                     title="Partner is bad"
                 />
             </t>

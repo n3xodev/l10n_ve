@@ -23,7 +23,7 @@
                         tabindex="-1"
                     >
                         <i
-                            t-att-class="props.line.unfolded ? 'fa fa-caret-down' : 'fa fa-caret-right'"
+                            t-att-data-icon="props.line.unfolded ? 'arrow_drop_down' : 'arrow_right'"
                         />
                     </button>
                 </t>
@@ -69,7 +69,7 @@
                                 class="btn btn_annotation"
                                 t-on-click="toggleAnnotationPopover"
                             >
-                                <i class="fa fa-commenting" />
+                                <i class="oi oi-filled" data-icon="mode_comment" />
                             </button>
                         </t>
 
@@ -77,7 +77,7 @@
                             <!-- Caret options -->
                             <Dropdown position="'right-start'">
                                 <button class="btn btn_dropdown" tabindex="-1">
-                                    <i class="fa fa-ellipsis-v" />
+                                    <i class="oi" data-icon="more_vert" />
                                 </button>
                                 <t t-set-slot="content">
                                     <div data-id="caret_options">

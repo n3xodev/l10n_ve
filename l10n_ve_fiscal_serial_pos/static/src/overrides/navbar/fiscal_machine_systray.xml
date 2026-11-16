@@ -7,7 +7,7 @@
                 type="button"
                 title="Estado de la máquina fiscal"
             >
-                <i class="fa fa-fw fa-lg fa-print" role="img" aria-label="Máquina fiscal"/>
+                <i class="oi oi-fw oi-lg" data-icon="print" role="img" aria-label="Máquina fiscal"/>
                 <span t-att-class="statusClass"/>
                 <span class="d-none d-xl-inline small" t-esc="statusLabel"/>
             </button>

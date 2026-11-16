@@ -8,7 +8,7 @@
                 t-on-click="onUpdatePort"
                 t-att-disabled="state.busy or !props.record.resId"
             >
-                <i class="fa fa-usb me-1" />
+                <i class="oi me-1" data-icon="usb" />
                 Actualizar puerto (este PC)
             </button>
             <div class="text-muted small mt-1">

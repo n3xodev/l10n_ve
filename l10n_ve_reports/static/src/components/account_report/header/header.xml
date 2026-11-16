@@ -46,7 +46,7 @@
                         <!-- We only want to display it once on the first row -->
                         <t t-if="columnHeader_first">
                             <th class="column_percent_comparison_header">
-                                <i class="fa fa-percent" />
+                                <i class="oi" data-icon="percent" />
                             </th>
                         </t>
                     </t>
@@ -56,7 +56,7 @@
                         <!-- We only want to display it once on the first row -->
                         <t t-if="columnHeader_first">
                             <th class="debug_header">
-                                <i class="fa fa-bug" />
+                                <i class="oi" data-icon="bug_report" />
                             </th>
                         </t>
                     </t>

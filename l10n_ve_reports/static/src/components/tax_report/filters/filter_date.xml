@@ -20,7 +20,7 @@
 
                 <div class="d-flex justify-content-between">
                     <button
-                        class="btn_previous_date fa fa-caret-left"
+                        class="oi btn_previous_date" data-icon="arrow_left"
                         t-on-click="() => this.selectPreviousPeriod('tax_period')"
                     />
                     <time
@@ -30,7 +30,7 @@
                         <t t-out="this.displayPeriod('tax_period')" />
                     </time>
                     <button
-                        class="btn_next_date fa fa-caret-right"
+                        class="oi btn_next_date" data-icon="arrow_right"
                         t-on-click="() => this.selectNextPeriod('tax_period')"
                     />
                 </div>

@@ -14,7 +14,7 @@
                 role="button"
                 title="Abrir en imprenta digital"
             >
-                <i class="fa fa-external-link" title="Abrir en imprenta digital" role="img"/>
+                <i class="oi" data-icon="open_in_new" title="Abrir en imprenta digital" role="img"/>
                 Abrir en imprenta
             </a>
         </xpath>

@@ -10,7 +10,7 @@
                     class="btn btn-secondary"
                     t-att-disabled="currencyDateLoadingState.isLoading"
                 >
-                    <i class="fa fa-money me-1" />
+                    <i class="oi me-1" data-icon="payments" />
                     <t t-out="selectedDisplayCurrencyName" />
                 </button>
 
@@ -39,7 +39,7 @@
                     class="btn btn-secondary"
                     t-att-disabled="currencyDateLoadingState.isLoading"
                 >
-                    <i class="fa fa-calendar me-1" />
+                    <i class="oi oi-filled me-1" data-icon="calendar_today" />
                     <t t-out="selectedCurrencyRateDateTypeName" />
                 </button>
 
@@ -78,7 +78,7 @@
             <!-- Loading indicator (visible for any currency-related reload) -->
             <t t-if="currencyDateLoadingState.isLoading">
                 <i
-                    class="fa fa-spinner fa-spin text-primary"
+                    class="oi oi-spin text-primary" data-icon="progress_activity"
                     title="Actualizando reporte..."
                 />
             </t>

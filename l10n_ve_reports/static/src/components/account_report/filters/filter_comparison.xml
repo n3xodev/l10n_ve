@@ -22,7 +22,7 @@
             navigationOptions="dropdownProps"
         >
             <button class="btn btn-secondary">
-                <i class="fa fa-percent me-1" />
+                <i class="oi me-1" data-icon="percent" />
                 <span>Comparison</span>
                 <t t-if="controller.options.comparison.string">
                     <span>: </span>

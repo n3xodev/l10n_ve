@@ -68,7 +68,7 @@
                             class="btn btn_debug"
                             t-on-click="(ev) => this.showDebugPopover(ev)"
                         >
-                            <i class="fa fa-info-circle" />
+                            <i class="oi oi-filled" data-icon="info" />
                         </button>
                     </t>
                 </td>

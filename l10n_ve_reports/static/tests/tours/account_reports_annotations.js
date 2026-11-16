@@ -41,7 +41,7 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
             trigger: ".o_content",
             run: () => {
                 const annotations = document.querySelectorAll(
-                    ".btn_annotation .fa-commenting"
+                    ".btn_annotation [data-icon='mode_comment'].oi-filled"
                 );
 
                 // Check the number of annotated lines
@@ -52,13 +52,13 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
                     annotations[0] ===
                         document
                             .querySelector("tr:nth-child(5)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
                 Asserts.isTrue(
                     annotations[1] ===
                         document
                             .querySelector("tr:nth-child(12)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
             },
         },
@@ -97,7 +97,7 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
         },
         {
             content: "Wait for annotation created",
-            trigger: "tr:nth-child(8) .btn_annotation .fa-commenting",
+            trigger: "tr:nth-child(8) .btn_annotation [data-icon='mode_comment'].oi-filled",
         },
         {
             content: "Close annotation",
@@ -109,7 +109,7 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
             trigger: ".o_content",
             run: () => {
                 const annotations = document.querySelectorAll(
-                    ".btn_annotation .fa-commenting"
+                    ".btn_annotation [data-icon='mode_comment'].oi-filled"
                 );
 
                 // Check the number of annotated lines
@@ -120,19 +120,19 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
                     annotations[0] ===
                         document
                             .querySelector("tr:nth-child(5)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
                 Asserts.isTrue(
                     annotations[1] ===
                         document
                             .querySelector("tr:nth-child(8)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
                 Asserts.isTrue(
                     annotations[2] ===
                         document
                             .querySelector("tr:nth-child(12)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
             },
         },
@@ -176,10 +176,10 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
         },
         {
             content: "Check there are now only two lines annotated",
-            trigger: "tr:nth-child(8):not(:has(.fa-commenting))",
+            trigger: "tr:nth-child(8):not(:has([data-icon='mode_comment'].oi-filled))",
             run: () => {
                 const annotations = document.querySelectorAll(
-                    ".btn_annotation .fa-commenting"
+                    ".btn_annotation [data-icon='mode_comment'].oi-filled"
                 );
 
                 // Check the number of annotated lines
@@ -190,13 +190,13 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
                     annotations[0] ===
                         document
                             .querySelector("tr:nth-child(5)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
                 Asserts.isTrue(
                     annotations[1] ===
                         document
                             .querySelector("tr:nth-child(12)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
             },
         },
@@ -231,7 +231,7 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
             trigger: ".o_content",
             run: () => {
                 const annotations = document.querySelectorAll(
-                    ".btn_annotation .fa-commenting"
+                    ".btn_annotation [data-icon='mode_comment'].oi-filled"
                 );
 
                 // Check there is only one annotated line
@@ -242,13 +242,13 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
                     annotations[0] ===
                         document
                             .querySelector("tr:nth-child(5)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
                 Asserts.isTrue(
                     annotations[1] ===
                         document
                             .querySelector("tr:nth-child(12)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
             },
         },
@@ -283,7 +283,7 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
         },
         {
             content: "Check that there is no annotation anymore on line 12",
-            trigger: "tr:nth-child(12):not(:has(.fa-commenting))",
+            trigger: "tr:nth-child(12):not(:has([data-icon='mode_comment'].oi-filled))",
         },
         {
             content: "change date filter",
@@ -311,10 +311,10 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
         },
         {
             content: "Check there is one annotation on line 12",
-            trigger: "tr:nth-child(12):has(.fa-commenting)",
+            trigger: "tr:nth-child(12):has([data-icon='mode_comment'].oi-filled)",
             run: () => {
                 const annotations = document.querySelectorAll(
-                    ".btn_annotation .fa-commenting"
+                    ".btn_annotation [data-icon='mode_comment'].oi-filled"
                 );
 
                 // Check there is only one annotated line
@@ -325,7 +325,7 @@ registry.category("web_tour.tours").add("account_reports_annotations", {
                     annotations[0] ===
                         document
                             .querySelector("tr:nth-child(12)")
-                            .querySelector(".fa-commenting")
+                            .querySelector("[data-icon='mode_comment'].oi-filled")
                 );
             },
         },

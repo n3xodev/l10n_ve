@@ -15,7 +15,7 @@
                 <t t-if="!controller.filters.show_totals or !props.line.unfolded">
                     <t t-if="props.cell.info_popup_data">
                         <a
-                            class="fa fa-question-circle me-2"
+                            class="oi oi-filled me-2" data-icon="help"
                             t-on-click="(ev) => this.carryoverPopover(ev)"
                         />
                     </t>
@@ -25,7 +25,7 @@
                             class="btn btn_edit me-auto"
                             t-on-click="(ev) => this.editPopover(ev)"
                         >
-                            <i class="fa fa-pencil" />
+                            <i class="oi oi-filled" data-icon="edit" />
                         </button>
                     </t>
 

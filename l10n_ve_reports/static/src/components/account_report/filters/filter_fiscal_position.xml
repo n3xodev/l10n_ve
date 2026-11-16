@@ -3,7 +3,7 @@
     <t t-name="l10n_ve_reports.AccountReportFilterFiscalPosition">
         <Dropdown>
             <button class="btn btn-secondary">
-                <i class="fa fa-book me-1" />Fiscal Position: <t
+                <i class="oi me-1" data-icon="book" />Fiscal Position: <t
                 t-esc="selectedFiscalPositionName"
             />
             </button>

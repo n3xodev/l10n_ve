@@ -37,7 +37,7 @@
                                     t-if="record.vat.raw_value"
                                     class="o_seniat_company_vat text-muted"
                                 >
-                                    <i class="fa fa-id-card-o me-1" title="RIF" />
+                                    <i class="oi me-1" data-icon="badge" title="RIF" />
                                     <field name="vat" />
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                             >
                                 <div class="o_seniat_company_meta_row">
                                     <i
-                                        class="fa fa-map-marker o_seniat_company_meta_icon"
+                                        class="oi o_seniat_company_meta_icon" data-icon="location_on"
                                         title="Domicilio fiscal"
                                     />
                                     <div class="o_seniat_company_meta_content">
@@ -99,7 +99,7 @@
                             >
                                 <div class="o_seniat_company_meta_row">
                                     <i
-                                        class="fa fa-money o_seniat_company_meta_icon"
+                                        class="oi o_seniat_company_meta_icon" data-icon="payments"
                                         title="Moneda"
                                     />
                                     <div class="o_seniat_company_meta_content">

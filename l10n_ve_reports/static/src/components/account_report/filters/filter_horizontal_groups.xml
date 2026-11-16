@@ -3,7 +3,7 @@
     <t t-name="l10n_ve_reports.AccountReportFilterHorizontalGroups">
         <Dropdown>
             <button class="btn btn-secondary">
-                <i class="fa fa-filter me-1" />Horizontal Group: <t
+                <i class="oi oi-filled me-1" data-icon="filter_alt" />Horizontal Group: <t
                 t-out="selectedHorizontalGroupName"
             />
             </button>

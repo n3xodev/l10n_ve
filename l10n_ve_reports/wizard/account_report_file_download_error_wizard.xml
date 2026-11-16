@@ -22,7 +22,7 @@
                         />
                         <p invisible="file_content">
                             <i>Errors marked with <i
-                                class="fa fa-warning"
+                                class="oi" data-icon="warning"
                             /> are critical and prevent the file generation.</i>
                         </p>
                     </div>

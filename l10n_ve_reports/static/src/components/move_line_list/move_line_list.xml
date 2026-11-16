@@ -45,7 +45,7 @@
         </div>
         <t t-else="">
             <div class="o_popout_icon" t-on-click="() => this.setPopout(true)">
-                <i class="fa fa-window-restore" title="Open attachment in pop out" />
+                <i class="oi" data-icon="fullscreen_exit" title="Open attachment in pop out" />
             </div>
             <t t-if="this.popout.active">
                 <div

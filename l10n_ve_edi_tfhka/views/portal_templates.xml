@@ -26,14 +26,14 @@
                     target="_blank"
                     class="btn btn-sm btn-outline-primary"
                 >
-                    <i class="fa fa-external-link"/> Guia digital TFHKA
+                    <i class="oi" data-icon="open_in_new"/> Guia digital TFHKA
                 </a>
                 <a
                     t-att-href="'/my/picking/pdf/%s?%s&amp;tfhka=pdf' % (picking.id, keep_query())"
                     target="_blank"
                     class="btn btn-sm btn-outline-secondary ms-1"
                 >
-                    <i class="fa fa-download"/> PDF
+                    <i class="oi" data-icon="download"/> PDF
                 </a>
             </div>
         </xpath>

@@ -6,7 +6,7 @@
                 class="o_l10n_ve_fiscal_systray_btn btn btn-light d-flex align-items-center gap-1"
                 title="Estado de la máquina fiscal"
             >
-                <i class="fa fa-print" role="img" aria-label="Máquina fiscal" />
+                <i class="oi" data-icon="print" role="img" aria-label="Máquina fiscal" />
                 <span t-att-class="statusClass" />
                 <span class="d-none d-md-inline small" t-esc="statusLabel" />
             </button>

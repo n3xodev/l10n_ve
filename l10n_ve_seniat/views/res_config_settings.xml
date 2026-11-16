@@ -99,7 +99,7 @@
                                     type="object"
                                     string="Configurar grupos de impuestos"
                                     class="btn-link"
-                                    icon="oi-arrow-right"
+                                    icon="east"
                                 />
                             </div>
                         </div>

@@ -60,7 +60,7 @@
                     <t t-set="record" t-value="this.props.list.records[line.index]" />
 
                     <!-- Handle -->
-                    <span class="oi oi-draggable o_row_handle" />
+                    <span class="oi o_row_handle" data-icon="drag_indicator" />
 
                     <!-- Columns -->
                     <t t-foreach="columns" t-as="column" t-key="column.id">
@@ -84,7 +84,7 @@
                                     data-tooltip="This line is placed before its parent, which is not allowed. You can fix it by dragging it to the proper position."
                                 >
                                     <i
-                                    class="fa fa-exclamation-circle text-danger ms-2 me-1"
+                                    class="oi oi-filled text-danger ms-2 me-1" data-icon="error"
                                 />
                                     This line is out of sequence.
                                 </span>
@@ -98,7 +98,7 @@
                             class="trash"
                             t-on-click="() => this.onDeleteRecord(line.index)"
                         >
-                            <i class="fa fa-trash-o" />
+                            <i class="oi" data-icon="delete" />
                         </button>
                     </t>
                 </div>

@@ -34,7 +34,7 @@
                             title="Quitar descuento"
                             t-on-click="() => this.onRemoveClick(line.id)"
                         >
-                            <i class="fa fa-trash" />
+                            <i class="oi oi-filled" data-icon="delete" />
                         </button>
                     </li>
                 </ul>
@@ -76,7 +76,7 @@
                             title="Ver detalle de descuentos"
                             t-on-click="onGlobalDiscountInfoClick"
                         >
-                            <i class="fa fa-info-circle" />
+                            <i class="oi oi-filled" data-icon="info" />
                         </button>
                     </label>
                 </td>
@@ -135,7 +135,7 @@
                             title="Ver detalle de descuentos"
                             t-on-click="onGlobalDiscountInfoClick"
                         >
-                            <i class="fa fa-info-circle" />
+                            <i class="oi oi-filled" data-icon="info" />
                         </button>
                     </label>
                 </td>

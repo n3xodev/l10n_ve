@@ -14,7 +14,7 @@
                 t-att-class="buttonClass"
                 t-on-click="() => this.onClickL10nVeGlobalDiscount()"
             >
-                <i class="fa fa-percent me-1" />
+                <i class="oi me-1" data-icon="percent" />
                 Descuento global
             </button>
         </xpath>

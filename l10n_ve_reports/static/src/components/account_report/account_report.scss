@@ -341,8 +341,8 @@
         }
     }
 
-    .btn_sortable > .fa-long-arrow-up,
-    .btn_sortable > .fa-long-arrow-down {
+    .btn_sortable > [data-icon='north'],
+    .btn_sortable > [data-icon='south'] {
         color: $o-enterprise-action-color;
     }
     .btn_foldable {

@@ -9,7 +9,7 @@
                     name="action_l10n_ve_edi_send"
                     type="object"
                     string="Enviar facturacion digital"
-                    icon="fa-upload"
+                    icon="upload"
                     class="oe_highlight"
                     groups="account.group_account_invoice"
                     invisible="state != 'posted' or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'not_sent'"
@@ -19,7 +19,7 @@
                 <field name="l10n_ve_edi_show_tab" invisible="1"/>
                 <div class="alert alert-warning" role="alert" invisible="state != 'posted' or move_type not in ('out_invoice', 'out_refund') or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'not_sent'">
                     <span>Esta factura aun no se ha enviado a facturacion digital. Pulse </span>
-                    <button name="action_l10n_ve_edi_send" type="object" string="Enviar facturacion digital" icon="fa-upload" class="oe_link p-0 align-baseline"/>
+                    <button name="action_l10n_ve_edi_send" type="object" string="Enviar facturacion digital" icon="upload" class="oe_link p-0 align-baseline"/>
                     <span> cuando corresponda.</span>
                 </div>
                 <div class="alert alert-info" role="alert" invisible="state != 'posted' or move_type not in ('out_invoice', 'out_refund') or not l10n_ve_edi_show_tab or l10n_ve_edi_send_state != 'queued'">

@@ -17,14 +17,14 @@
 
                 <div class="d-flex justify-content-between">
                     <button
-                        class="btn_previous_date fa fa-caret-left"
+                        class="oi btn_previous_date" data-icon="arrow_left"
                         t-on-click="(ev) => { ev.stopPropagation(); this.selectPreviousPeriod(dateFilter.period); }"
                     />
                     <time class="d-flex justify-content-center time_text">
                         <t t-out="this.displayPeriod(dateFilter.period)" />
                     </time>
                     <button
-                        class="btn_next_date fa fa-caret-right"
+                        class="oi btn_next_date" data-icon="arrow_right"
                         t-on-click="(ev) => { ev.stopPropagation(); this.selectNextPeriod(dateFilter.period); }"
                     />
                 </div>
@@ -35,7 +35,7 @@
     <t t-name="l10n_ve_reports.AccountReportFilterDate">
         <Dropdown menuClass="'account_report_filter date'">
             <button class="btn btn-secondary">
-                <i class="fa fa-calendar me-1" />
+                <i class="oi oi-filled me-1" data-icon="calendar_today" />
                 <t t-out="controller.options.date.string" />
             </button>
 

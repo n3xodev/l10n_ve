@@ -5,7 +5,7 @@
              no "Receipt Number" column title to relabel anymore. -->
         <xpath expr="//div[@class='control-buttons d-flex gap-2 pb-2']/button[last()]" position="replace">
             <button t-if="!isVenezuelaPos" class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1" t-on-click="() => doPrint.call(_selectedSyncedOrder)">
-                <i t-attf-class="fa {{doPrint.status === 'loading' ? 'fa-fw fa-spin fa-circle-o-notch' : 'fa-print'}} me-1" />
+                <i t-attf-class="oi {{doPrint.status === 'loading' ? 'oi-fw oi-spin fa-circle-o-notch' : 'fa-print'}} me-1" />
                 <t t-esc="ticketScreenSyncedPrintLabel"/>
             </button>
         </xpath>

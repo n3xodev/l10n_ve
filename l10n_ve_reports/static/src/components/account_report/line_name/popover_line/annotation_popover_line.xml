@@ -19,7 +19,7 @@
             </td>
             <td>
                 <button class="btn btn_annotation_delete" t-on-click="deleteAnnotation">
-                    <i class="fa fa-trash-o" />
+                    <i class="oi" data-icon="delete" />
                 </button>
             </td>
         </tr>
