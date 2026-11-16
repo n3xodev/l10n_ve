@@ -7,14 +7,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
-                                <h3 class="card-title mb-0" t-esc="this.machineTitle"/>
+                                <h3 class="card-title mb-0" t-out="this.machineTitle"/>
                                 <div class="d-flex flex-column align-items-end gap-1 text-end" style="max-width: min(100%, 520px);">
-                                    <span t-attf-class="badge rounded-pill {{ this.statusClass }}" t-esc="this.statusLabel"/>
-                                    <span t-if="this.state.phase === 'connected' and this.fpMachineLine" class="small text-muted text-break" t-esc="this.fpMachineLine"/>
+                                    <span t-attf-class="badge rounded-pill {{ this.statusClass }}" t-out="this.statusLabel"/>
+                                    <span t-if="this.state.phase === 'connected' and this.fpMachineLine" class="small text-muted text-break" t-out="this.fpMachineLine"/>
                                 </div>
                             </div>
                             <p t-if="this.state.serialPortHint" class="text-muted small mb-2">
-                                Puerto registrado: <strong t-esc="this.state.serialPortHint"/>
+                                Puerto registrado: <strong t-out="this.state.serialPortHint"/>
                             </p>
                             <p class="text-muted small mb-3">Web Serial (Chrome/Edge, HTTPS). Los pasos y la consola del navegador registran el mismo flujo.</p>
                             <div class="row g-2 mb-3">
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                             <p class="text-muted small mb-2">
-                                FLAG_21 configurada: <strong><t t-esc="this.state.flag21"/></strong>
+                                FLAG_21 configurada: <strong><t t-out="this.state.flag21"/></strong>
                             </p>
                             <p class="text-muted small mb-2">Si no responde el ENQ, pruebe <strong>8N1</strong> y el baud del manual; el flujo de apertura replica el DLL (DSR/DTR, CTS/RTS, luego ENQ con 5 bytes).</p>
                             <div class="d-flex gap-2 mb-3 flex-wrap">
@@ -97,10 +97,10 @@
                                 </button>
                             </div>
                             <div t-if="this.state.lastCmdResult" class="alert alert-secondary mb-3" role="status">
-                                <t t-esc="this.state.lastCmdResult"/>
+                                <t t-out="this.state.lastCmdResult"/>
                             </div>
                             <div t-if="this.state.estado" class="alert alert-info mb-0" role="status">
-                                <t t-esc="this.state.estado"/>
+                                <t t-out="this.state.estado"/>
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                     <div class="card mb-3">
                         <div class="card-header py-2">Registro de sesión</div>
                         <div class="card-body p-2">
-                            <pre class="o_fiscal_serial_log mb-0 small font-monospace text-muted" style="max-height: 220px; overflow: auto; white-space: pre-wrap;"><t t-esc="this.logDisplayText"/></pre>
+                            <pre class="o_fiscal_serial_log mb-0 small font-monospace text-muted" style="max-height: 220px; overflow: auto; white-space: pre-wrap;"><t t-out="this.logDisplayText"/></pre>
                         </div>
                     </div>
                     <div t-if="!this.embedded" class="card">
