@@ -144,11 +144,8 @@
                                 <t t-if="journal_vals.get('tax_summary')">
                                     <t
                                         t-call="l10n_ve_reports.pdf_journal_report_taxes_summary"
+                                        tax_summary="journal_vals['tax_summary']"
                                     >
-                                        <t
-                                            t-set="tax_summary"
-                                            t-value="journal_vals['tax_summary']"
-                                        />
                                     </t>
                                 </t>
                             </section>
@@ -160,11 +157,8 @@
                         </div>
                             <t
                                 t-call="l10n_ve_reports.pdf_journal_report_taxes_summary"
+                                tax_summary="document_data['global_tax_summary']"
                             >
-                                <t
-                                    t-set="tax_summary"
-                                    t-value="document_data['global_tax_summary']"
-                                />
                             </t>
                         </section>
                     </div>

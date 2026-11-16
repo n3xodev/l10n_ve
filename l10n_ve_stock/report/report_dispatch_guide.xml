@@ -45,11 +45,7 @@
     </template>
 
     <template id="report_dispatch_guide_document">
-        <t t-call="web.basic_layout">
-            <t
-                t-set="company"
-                t-value="o.company_id.sudo()"
-            />
+        <t t-call="web.basic_layout" company="o.company_id.sudo()">
             <t t-set="origin_p" t-value="o._l10n_ve_dispatch_origin_partner()" />
             <t
                 t-set="delivery_addr_p"
