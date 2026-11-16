@@ -77,7 +77,7 @@ class TestL10nVeEmissionMediumSession(HttpCase):
             }
         )
         self.authenticate("admin", "admin")
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache()
         self.opener.cookies["cids"] = str(default_company.id)
         res_default = self.url_open("/web/webclient/load_menus/test-default")
         self.assertEqual(res_default.status_code, 200)
