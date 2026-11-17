@@ -248,48 +248,6 @@
     </template>
 
     <template
-        id="external_layout_striped_hide_account_move_header"
-        inherit_id="web.external_layout_striped"
-    >
-        <xpath
-            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
-            position="attributes"
-        >
-            <attribute
-                name="t-if"
-            >display_report_header is not False</attribute>
-        </xpath>
-    </template>
-
-    <template
-        id="external_layout_boxed_hide_account_move_header"
-        inherit_id="web.external_layout_boxed"
-    >
-        <xpath
-            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
-            position="attributes"
-        >
-            <attribute
-                name="t-if"
-            >display_report_header is not False</attribute>
-        </xpath>
-    </template>
-
-    <template
-        id="external_layout_bold_hide_account_move_header"
-        inherit_id="web.external_layout_bold"
-    >
-        <xpath
-            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
-            position="attributes"
-        >
-            <attribute
-                name="t-if"
-            >display_report_header is not False</attribute>
-        </xpath>
-    </template>
-
-    <template
         id="external_layout_standard_hide_account_move_header"
         inherit_id="web.external_layout_standard"
     >
@@ -334,6 +292,62 @@
     <template
         id="external_layout_bubble_hide_account_move_header"
         inherit_id="web.external_layout_bubble"
+    >
+        <xpath
+            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
+            position="attributes"
+        >
+            <attribute
+                name="t-if"
+            >display_report_header is not False</attribute>
+        </xpath>
+    </template>
+
+    <template
+        id="external_layout_center_hide_account_move_header"
+        inherit_id="web.external_layout_center"
+    >
+        <xpath
+            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
+            position="attributes"
+        >
+            <attribute
+                name="t-if"
+            >display_report_header is not False</attribute>
+        </xpath>
+    </template>
+
+    <template
+        id="external_layout_dual_hide_account_move_header"
+        inherit_id="web.external_layout_dual"
+    >
+        <xpath
+            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
+            position="attributes"
+        >
+            <attribute
+                name="t-if"
+            >display_report_header is not False</attribute>
+        </xpath>
+    </template>
+
+    <template
+        id="external_layout_lines_hide_account_move_header"
+        inherit_id="web.external_layout_lines"
+    >
+        <xpath
+            expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"
+            position="attributes"
+        >
+            <attribute
+                name="t-if"
+            >display_report_header is not False</attribute>
+        </xpath>
+    </template>
+
+    <template
+        id="external_layout_compact_hide_account_move_header"
+        inherit_id="web.external_layout_compact"
     >
         <xpath
             expr="//div[contains(concat(' ', normalize-space(@t-attf-class), ' '), ' header ')]"

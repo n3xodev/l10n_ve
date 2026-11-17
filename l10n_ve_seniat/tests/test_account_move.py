@@ -1451,13 +1451,14 @@ class TestAccountMove(L10nVeSeniatCommon):
             self._create_invoice_vals(self.partner_ve)
         )
         layout_xmlids = (
-            "web.external_layout_striped",
-            "web.external_layout_boxed",
-            "web.external_layout_bold",
             "web.external_layout_standard",
             "web.external_layout_folder",
             "web.external_layout_wave",
             "web.external_layout_bubble",
+            "web.external_layout_center",
+            "web.external_layout_dual",
+            "web.external_layout_lines",
+            "web.external_layout_compact",
         )
 
         for layout_xmlid in layout_xmlids:

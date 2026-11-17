@@ -37,7 +37,8 @@
                     readonly="type == 'contact' and parent_id"
                 />
             </xpath>
-            <xpath expr="//field[@name='company_type']" position="after">
+            <!-- 20.0: company_type left the form; anchor on the name heading instead. -->
+            <xpath expr="//field[@name='name']/.." position="after">
                 <h1 invisible="country_code != 'VE'">
                     <field name="vat" placeholder="VAT" />
                 </h1>
