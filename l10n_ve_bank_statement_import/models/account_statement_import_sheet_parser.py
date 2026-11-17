@@ -63,9 +63,6 @@ class _HtmlTableParser(HTMLParser):
 class AccountStatementImportSheetParser(models.TransientModel):
     _inherit = "account.statement.import.sheet.parser"
 
-    def _is_openpyxl_worksheet(self, sheet):
-        return hasattr(sheet, "max_row") and not hasattr(sheet, "nrows")
-
     def _is_html_table(self, data_file):
         sample = data_file.lstrip()[:2048].lower()
         return sample.startswith(b"<table") or b"<table" in sample
@@ -182,15 +179,37 @@ class AccountStatementImportSheetParser(models.TransientModel):
         return lines
 
     def _parse_lines_html(self, mapping, data_file, currency_code):
-        rows = self._read_html_table_rows(data_file, mapping)
-        return self._parse_lines_from_rows(mapping, rows, currency_code)
+        try:
+            rows = self._read_html_table_rows(data_file, mapping)
+            return self._parse_lines_from_rows(mapping, rows, currency_code)
+        except Exception as error:
+            _logger.warning("No se pudo leer el archivo HTML: %s", error)
+            return self._parse_lines_csv(mapping, data_file, currency_code)
 
     def _parse_lines_bdv_comprobante(self, mapping, data_file, currency_code):
-        rows = self._read_bdv_comprobante_rows(data_file, mapping)
-        return self._parse_lines_from_rows(mapping, rows, currency_code)
+        try:
+            rows = self._read_bdv_comprobante_rows(data_file, mapping)
+            return self._parse_lines_from_rows(mapping, rows, currency_code)
+        except Exception as error:
+            _logger.warning("No se pudo leer el comprobante BDVenlínea: %s", error)
+            return self._parse_lines_csv(mapping, data_file, currency_code)
+
+    def _get_sheet_type(self, data_file):
+        """Detect the Venezuelan bank formats the OCA parser does not know.
+
+        In 20.0 the OCA parser dispatches on ``_parse_lines_<sheet type>``
+        instead of the former ``_parse_lines`` override point.
+        """
+        if self._is_html_table(data_file):
+            return "html"
+        if self._is_bdv_comprobante(data_file):
+            return "bdv_comprobante"
+        if data_file[:2] == b"PK":
+            return "xlsx"
+        return super()._get_sheet_type(data_file)
 
     @api.model
-    def parse_header(self, csv_or_xlsx, mapping):
+    def parse_header_csv(self, csv_or_xlsx, mapping):
         if (
             not isinstance(csv_or_xlsx, tuple)
             and mapping.no_header
@@ -202,7 +221,7 @@ class AccountStatementImportSheetParser(models.TransientModel):
                     next(csv_or_xlsx)
                 except StopIteration:
                     break
-        return super().parse_header(csv_or_xlsx, mapping)
+        return super().parse_header_csv(csv_or_xlsx, mapping)
 
     def _openpyxl_header(self, sheet, mapping):
         if mapping.no_header:
@@ -217,47 +236,25 @@ class AccountStatementImportSheetParser(models.TransientModel):
             header.append(str(value).strip() if value is not None else "")
         return header
 
-    def _parse_lines(self, mapping, data_file, currency_code):
-        if self._is_html_table(data_file):
-            try:
-                return self._parse_lines_html(mapping, data_file, currency_code)
-            except Exception as error:
-                _logger.warning("No se pudo leer el archivo HTML: %s", error)
-        if self._is_bdv_comprobante(data_file):
-            try:
-                return self._parse_lines_bdv_comprobante(
-                    mapping, data_file, currency_code
-                )
-            except Exception as error:
-                _logger.warning(
-                    "No se pudo leer el comprobante BDVenlínea: %s", error
-                )
-        if data_file[:2] == b"PK":
-            try:
-                from io import BytesIO
+    def _parse_lines_xlsx(self, mapping, data_file, currency_code):
+        try:
+            from io import BytesIO
 
-                from openpyxl import load_workbook
+            from openpyxl import load_workbook
 
-                workbook = load_workbook(
-                    BytesIO(data_file), read_only=True, data_only=True
-                )
-                sheet = workbook.active
-                header = self._openpyxl_header(sheet, mapping)
-                columns = {
-                    column_name: self._get_column_indexes(
-                        header, column_name, mapping
-                    )
-                    for column_name in self._get_column_names()
-                }
-                return self._parse_rows(
-                    mapping,
-                    currency_code,
-                    ((workbook, sheet), data_file),
-                    columns,
-                )
-            except Exception as error:
-                _logger.warning("No se pudo leer el archivo xlsx: %s", error)
-        return super()._parse_lines(mapping, data_file, currency_code)
+            workbook = load_workbook(BytesIO(data_file), read_only=True, data_only=True)
+            sheet = workbook.active
+            header = self._openpyxl_header(sheet, mapping)
+            columns = {
+                column_name: self._get_column_indexes(header, column_name, mapping)
+                for column_name in self._get_column_names()
+            }
+            return self._parse_rows_openpyxl(
+                mapping, currency_code, sheet, columns, data_file
+            )
+        except Exception as error:
+            _logger.warning("No se pudo leer el archivo xlsx: %s", error)
+            return self._parse_lines_csv(mapping, data_file, currency_code)
 
     def _parse_column_index(self, column_str):
         if not column_str:
@@ -502,58 +499,23 @@ class AccountStatementImportSheetParser(models.TransientModel):
         return lines
 
     def _parse_rows(self, mapping, currency_code, data, columns):
-        csv_or_xlsx, data_file = data
-        if isinstance(csv_or_xlsx, tuple):
-            sheet = csv_or_xlsx[1]
-            if self._is_openpyxl_worksheet(sheet):
-                return self._parse_rows_openpyxl(
-                    mapping, currency_code, sheet, columns, data_file
-                )
-
+        """CSV rows: ``data`` is ``(rows, label_line, footer_line)`` in 20.0."""
         lines_skip_after = getattr(mapping, "lines_skip_after_header", 0) or 0
         if not lines_skip_after:
             return super()._parse_rows(mapping, currency_code, data, columns)
 
-        if isinstance(csv_or_xlsx, tuple):
-            numrows = csv_or_xlsx[1].max_row
-        else:
-            numrows = len(str(data_file.strip()).split("\n"))
-
-        label_line = mapping.header_lines_skip_count
-        footer_line = numrows - mapping.footer_lines_skip_count
+        rows, label_line, footer_line = data
         start_line = label_line + 1 + lines_skip_after
-
         lines = []
-        if isinstance(csv_or_xlsx, tuple):
-            sheet = csv_or_xlsx[1]
-            max_col = sheet.max_column
-            for row_num in range(start_line, footer_line + 1):
-                values = [
-                    sheet.cell(row_num, col).value
-                    for col in range(mapping.offset_column + 1, max_col + 1)
-                ]
-                if mapping.skip_empty_lines and not any(values):
-                    continue
-                line = self._process_row_values(
-                    values, mapping, currency_code, columns
-                )
-                if line:
-                    lines.append(line)
-        else:
-            rows = csv_or_xlsx
-            for row_idx, row in enumerate(rows, label_line):
-                if row_idx < start_line - 1:
-                    continue
-                if row_idx >= footer_line:
-                    continue
-                values = list(row)
-                if mapping.skip_empty_lines and not any(values):
-                    continue
-                line = self._process_row_values(
-                    values, mapping, currency_code, columns
-                )
-                if line:
-                    lines.append(line)
+        for row_idx, row in enumerate(rows, label_line):
+            if row_idx < start_line - 1 or row_idx >= footer_line:
+                continue
+            values = list(row)
+            if mapping.skip_empty_lines and not any(values):
+                continue
+            line = self._process_row_values(values, mapping, currency_code, columns)
+            if line:
+                lines.append(line)
         return lines
 
     @api.model
