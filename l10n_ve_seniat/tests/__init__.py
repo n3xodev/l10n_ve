@@ -19,3 +19,4 @@ from . import test_res_currency_rate
 from . import test_account_journal_dashboard
 from . import test_account_tax_group
 from . import test_account_fiscal_position
+from . import test_ir_access
