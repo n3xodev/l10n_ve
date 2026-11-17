@@ -2,6 +2,7 @@ from io import BytesIO
 
 from openpyxl import Workbook
 
+from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
 
 HEADER = ["Fecha", "Descripcion", "Monto"]
@@ -103,3 +104,9 @@ class TestSheetParserDispatch(TransactionCase):
         lines = [",".join(HEADER), "ignored,row,0"] + [",".join(r) for r in ROWS]
         data = "\n".join(lines).encode()
         self._assert_statement(self._parse(data, "statement.csv"))
+
+    def test_parse_corrupt_xlsx_raises_user_error(self):
+        corrupt = b"PK\x03\x04" + b"not a real workbook" * 8
+        self.assertEqual(self.parser._get_sheet_type(corrupt), "xlsx")
+        with self.assertRaisesRegex(UserError, "XLSX file could not be read"):
+            self._parse(corrupt, "statement.xlsx")

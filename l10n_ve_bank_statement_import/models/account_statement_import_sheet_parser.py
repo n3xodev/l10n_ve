@@ -209,19 +209,15 @@ class AccountStatementImportSheetParser(models.TransientModel):
         return super()._get_sheet_type(data_file)
 
     @api.model
-    def parse_header_csv(self, csv_or_xlsx, mapping):
-        if (
-            not isinstance(csv_or_xlsx, tuple)
-            and mapping.no_header
-            and getattr(mapping, "csv_leading_rows_skip", 0)
-        ):
-            skip = mapping.csv_leading_rows_skip
-            for _ in range(skip):
+    def parse_header_csv(self, rows, mapping):
+        # The only caller is ``_parse_lines_csv`` and always passes a csv reader.
+        if mapping.no_header and mapping.csv_leading_rows_skip:
+            for _ in range(mapping.csv_leading_rows_skip):
                 try:
-                    next(csv_or_xlsx)
+                    next(rows)
                 except StopIteration:
                     break
-        return super().parse_header_csv(csv_or_xlsx, mapping)
+        return super().parse_header_csv(rows, mapping)
 
     def _openpyxl_header(self, sheet, mapping):
         if mapping.no_header:
@@ -252,9 +248,16 @@ class AccountStatementImportSheetParser(models.TransientModel):
             return self._parse_rows_openpyxl(
                 mapping, currency_code, sheet, columns, data_file
             )
+        except UserError:
+            raise
         except Exception as error:
-            _logger.warning("No se pudo leer el archivo xlsx: %s", error)
-            return self._parse_lines_csv(mapping, data_file, currency_code)
+            _logger.warning("Could not read the XLSX file: %s", error)
+            raise UserError(
+                self.env._(
+                    "The XLSX file could not be read. Check that it is a valid, "
+                    "uncorrupted Excel workbook and that it matches the selected mapping."
+                )
+            ) from error
 
     def _parse_column_index(self, column_str):
         if not column_str:
