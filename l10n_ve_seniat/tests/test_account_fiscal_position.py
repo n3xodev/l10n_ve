@@ -10,9 +10,9 @@ class TestAccountFiscalPosition(L10nVeSeniatCommon):
         cls.Fpos = cls.env["account.fiscal.position"]
         cls.ne_state = cls.env.ref("l10n_ve_seniat.res_country_state_17")
         cls.caracas_state = cls.env.ref("l10n_ve_seniat.res_country_state_1")
-        cls.free_port_fpos = cls.env.ref(
-            "l10n_ve_seniat.fiscal_position_puerto_libre",
-            raise_if_not_found=False,
+        # Chart template records live under the company-prefixed xmlid in 20.0.
+        cls.free_port_fpos = cls.env["account.chart.template"].ref(
+            "fiscal_position_puerto_libre", raise_if_not_found=False
         )
         if not cls.free_port_fpos or cls.free_port_fpos.company_id != cls.env.company:
             cls.free_port_fpos = cls.Fpos.create(
