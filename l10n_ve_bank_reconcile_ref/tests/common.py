@@ -11,7 +11,7 @@ class RefReconcileCommon(AccountTestInvoicingCommon):
         cls.partner = cls.partner_a
         cls.bank_journal = cls.company_data["default_journal_bank"]
 
-    def _create_invoice(self, amount, reference, partner=None, move_type="out_invoice"):
+    def _make_invoice(self, amount, reference, partner=None, move_type="out_invoice"):
         invoice = self.init_invoice(
             move_type,
             partner=partner or self.partner,
