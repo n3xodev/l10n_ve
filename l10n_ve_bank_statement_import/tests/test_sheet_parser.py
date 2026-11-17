@@ -4,6 +4,7 @@ from openpyxl import Workbook
 
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
+from odoo.tools import file_open
 
 HEADER = ["Fecha", "Descripcion", "Monto"]
 ROWS = [
@@ -110,3 +111,19 @@ class TestSheetParserDispatch(TransactionCase):
         self.assertEqual(self.parser._get_sheet_type(corrupt), "xlsx")
         with self.assertRaisesRegex(UserError, "XLSX file could not be read"):
             self._parse(corrupt, "statement.xlsx")
+
+    def test_parse_banesco_sample(self):
+        with file_open(
+            "l10n_ve_bank_statement_import/tests/data/banesco_sample.xls", "rb"
+        ) as sample:
+            data = sample.read()
+        mapping = self.env.ref(
+            "l10n_ve_bank_statement_import.banco_banesco_statement_map"
+        )
+        parser = self.parser.with_context(journal_id=self.journal.id)
+        _currency, _account, statements = parser.parse(data, mapping, "banesco.xls")
+        amounts = [float(tx["amount"]) for tx in statements[0]["transactions"]]
+        self.assertEqual(len(amounts), 9)
+        self.assertIn(9825.58, amounts)
+        self.assertIn(-4000.00, amounts)
+        self.assertAlmostEqual(sum(amounts), 7378.08, places=2)
