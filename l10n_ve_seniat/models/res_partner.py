@@ -76,8 +76,8 @@ class ResPartner(models.Model):
         self.ensure_one()
         if self.country_id:
             return self.country_id
-        if not self.is_company:
-            return self.env["res.country"]
+        # 20.0: is_company is computed from the VAT, so a company's own partner
+        # without VAT is not flagged; look the company up directly.
         company = (
             self.env["res.company"]
             .sudo()
@@ -217,7 +217,7 @@ class ResPartner(models.Model):
         for partner in self:
             name = partner.with_context(lang=self.env.lang)._get_complete_name()
             if partner.env.context.get("show_address"):
-                name = name + "\n" + partner._display_address(without_company=True)
+                name = name + "\n" + partner._display_address(without_name=True)
             name = re.sub(r"\s+\n", "\n", name)
             if partner.env.context.get("partner_show_db_id"):
                 name = f"{name} ({partner.id})"
@@ -353,6 +353,27 @@ class ResPartner(models.Model):
             for v in self._l10n_ve_vat_search_variants(str(value).strip())
         ]
         return Domain.OR([domain, *variant_domains])
+
+    @api.model
+    def format_vat_ve(self, vat):
+        """Keep the RIF/CI exactly as typed.
+
+        Core 20.0 validates every partner VAT in ``base`` and would compact
+        it with stdnum first; the SENIAT format is validated on the raw value
+        by ``check_vat_ve`` and the company-gated ``_check_l10n_ve_vat_format``.
+        """
+        return vat
+
+    @api.model
+    def _check_vat_number(self, country_code, vat_number):
+        """Venezuelan VAT validation is owned by ``_check_l10n_ve_vat_format``.
+
+        It only applies to customers and suppliers and can be disabled per
+        company, so the unconditional core 20.0 validation is bypassed for VE.
+        """
+        if (country_code or "").upper() == VE_CODE:
+            return True
+        return super()._check_vat_number(country_code, vat_number)
 
     def check_vat_ve(self, vat):
         """Valida formato de RIF/CI venezolano.

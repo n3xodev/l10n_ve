@@ -115,7 +115,7 @@
                                 <strong class="me-1">Dirección:</strong>
                                 <span
                                     class="flex-grow-1"
-                                    t-out="(o.partner_id._display_address(without_company=True) or '').replace('\n', ', ')"
+                                    t-out="(o.partner_id._display_address(without_name=True) or '').replace('\n', ', ')"
                                 />
                             </div>
                             <div t-if="o.ref" class="d-block text-uppercase">

@@ -94,7 +94,7 @@ class TestAccountPayment(L10nVeSeniatCommon):
         payments = wizard._create_payments()
         payment = payments[0] if len(payments) > 1 else payments
         payment.action_post()
-        self.assertIn(payment.state, ("in_process", "paid"))
+        self.assertIn(payment.state, ("paid", "reconciled"))
         self.assertEqual(payment.l10n_ve_process_date, fields.Date.today())
         self.assertEqual(payment.move_id.l10n_ve_process_date, fields.Date.today())
 
@@ -288,7 +288,9 @@ class TestAccountPaymentRegisterSameDay(L10nVeSeniatCommon):
     def test_later_day_ves_payment_uses_current_rate(self):
         invoice = self._create_usd_invoice([10.17, 25.33, 8.91])
         later = self.invoice_date + relativedelta(days=2)
-        self._set_usd_inverse_rate(later, 450.5)
+        # 20.0 res.currency._get_rates only uses rates dated strictly before the
+        # conversion date, so the new rate must predate the payment day.
+        self._set_usd_inverse_rate(later - relativedelta(days=1), 450.5)
         wizard = self._create_payment_register(invoice, later, self.ves)
         expected = self.usd._convert(
             invoice.amount_residual,

@@ -8,7 +8,6 @@ from lxml import html as lxml_html
 from odoo import Command, fields
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import tagged
-from odoo.tools import frozendict
 
 from .common import L10nVeSeniatCommon
 
@@ -1949,33 +1948,29 @@ class TestAccountMove(L10nVeSeniatCommon):
             self._create_invoice_vals(self.partner_ve)
         )
         due_date = fields.Date.today()
-        move.needed_terms = {
-            frozendict(
+        move.needed_terms = [
+            [
                 {
                     "move_id": move.id,
                     "date_maturity": None,
                     "discount_date": False,
-                }
-            ): {
-                "balance": 50.0,
-                "amount_currency": 50.0,
-            },
-            frozendict(
+                },
+                {"balance": 50.0, "amount_currency": 50.0},
+            ],
+            [
                 {
                     "move_id": move.id,
-                    "date_maturity": due_date,
+                    "date_maturity": fields.Date.to_string(due_date),
                     "discount_date": False,
-                }
-            ): {
-                "balance": 50.0,
-                "amount_currency": 50.0,
-            },
-        }
+                },
+                {"balance": 50.0, "amount_currency": 50.0},
+            ],
+        ]
         move._l10n_ve_fill_needed_term_dates()
         self.assertTrue(
             all(
                 key.get("date_maturity")
-                for key in move.needed_terms
+                for key, _values in move.needed_terms
                 if key
             )
         )

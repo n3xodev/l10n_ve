@@ -26,7 +26,7 @@ class AccountPayment(models.Model):
 
     def _l10n_ve_set_process_date_on_validation(self):
         today = fields.Date.context_today(self)
-        validated = self.filtered(lambda pay: pay.state in ("in_process", "paid"))
+        validated = self.filtered(lambda pay: pay.state in ("paid", "reconciled"))
         for payment in validated.filtered(lambda pay: not pay.l10n_ve_process_date):
             payment.l10n_ve_process_date = today
         validated._l10n_ve_sync_process_date_to_move()
