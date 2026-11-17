@@ -127,3 +127,29 @@ class TestSheetParserDispatch(TransactionCase):
         self.assertIn(9825.58, amounts)
         self.assertIn(-4000.00, amounts)
         self.assertAlmostEqual(sum(amounts), 7378.08, places=2)
+
+    def _parse_sample(self, filename, map_xmlid):
+        with file_open(
+            f"l10n_ve_bank_statement_import/tests/data/{filename}", "rb"
+        ) as sample:
+            data = sample.read()
+        mapping = self.env.ref(f"l10n_ve_bank_statement_import.{map_xmlid}")
+        parser = self.parser.with_context(journal_id=self.journal.id)
+        _currency, _account, statements = parser.parse(data, mapping, filename)
+        return [float(tx["amount"]) for tx in statements[0]["transactions"]]
+
+    def test_parse_bfc_sample(self):
+        amounts = self._parse_sample("bfc_sample.xlsx", "banco_bfc_statement_map")
+        self.assertEqual(len(amounts), 8)
+        self.assertIn(8000.00, amounts)
+        self.assertIn(-1200.00, amounts)
+        self.assertAlmostEqual(sum(amounts), 7995.81, places=2)
+
+    def test_parse_bancaribe_sample(self):
+        amounts = self._parse_sample(
+            "bancaribe_sample.csv", "banco_bancaribe_statement_map"
+        )
+        self.assertEqual(len(amounts), 8)
+        self.assertIn(300000.00, amounts)
+        self.assertIn(-180000.00, amounts)
+        self.assertAlmostEqual(sum(amounts), 144281.67, places=2)
