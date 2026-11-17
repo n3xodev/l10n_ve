@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": "Venezuelan Reports - SENIAT Fiscal Books",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "icon": "/poweredbyandy_saas/static/description/icon.png",
     "website": "https://github.com/nexo-ve/l10n_ve",
     "summary": "SENIAT fiscal-book reports bridge for the Venezuelan localization",

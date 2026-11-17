@@ -1,7 +1,7 @@
 {
     "name": "Venezuela Fiscal Serial POS",
     "summary": "Impresión fiscal TFHKA (Web Serial) desde el Punto de Venta",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Point of Sale/Localizations",
     "author": "andyengit",
     "maintainer": "andyengit",

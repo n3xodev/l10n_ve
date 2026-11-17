@@ -42,7 +42,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_serial_audit" type="object" class="oe_stat_button" icon="fa-history">
+                        <button name="action_view_serial_audit" type="object" class="oe_stat_button" icon="history">
                             <field name="audit_count" widget="statinfo" string="Auditoría"/>
                         </button>
                     </div>

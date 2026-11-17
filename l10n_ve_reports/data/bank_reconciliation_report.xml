@@ -113,7 +113,6 @@
                                 >Including Unreconciled Receipts</field>
                                 <field name="code">last_statement_receipts</field>
                                 <field name="groupby">id</field>
-                                <field name="foldable" eval="True" />
                                 <field name="expression_ids">
                                     <record
                                         id="unreconciled_last_statement_receipts_date"
@@ -214,7 +213,6 @@
                                 >Including Unreconciled Payments</field>
                                 <field name="code">last_statement_payments</field>
                                 <field name="groupby">id</field>
-                                <field name="foldable" eval="True" />
                                 <field name="expression_ids">
                                     <record
                                         id="unreconciled_last_statement_payments_date"
@@ -349,7 +347,6 @@
                                 >Including Unreconciled Receipts</field>
                                 <field name="code">unreconciled_receipt</field>
                                 <field name="groupby">id</field>
-                                <field name="foldable" eval="True" />
                                 <field name="expression_ids">
                                     <record
                                         id="no_statement_unreconciled_receipt_date"
@@ -450,7 +447,6 @@
                                 >Including Unreconciled Payments</field>
                                 <field name="code">unreconciled_payments</field>
                                 <field name="groupby">id</field>
-                                <field name="foldable" eval="True" />
                                 <field name="expression_ids">
                                     <record
                                         id="no_statement_unreconciled_payments_date"
@@ -604,7 +600,6 @@
                         <field name="name">(+) Outstanding Receipts</field>
                         <field name="code">outstanding_receipts</field>
                         <field name="groupby">id</field>
-                        <field name="foldable" eval="True" />
                         <field name="expression_ids">
                             <record
                                 id="outstanding_receipts_date"
@@ -696,7 +691,6 @@
                         <field name="name">(-) Outstanding Payments</field>
                         <field name="code">outstanding_payments</field>
                         <field name="groupby">id</field>
-                        <field name="foldable" eval="True" />
                         <field name="expression_ids">
                             <record
                                 id="outstanding_payments_date"

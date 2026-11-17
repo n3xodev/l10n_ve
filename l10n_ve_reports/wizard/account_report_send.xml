@@ -29,7 +29,7 @@
                     <div name="standard_options" class="col-3">
                         <div name="option_send_mail" invisible="not enable_send_mail">
                             <i
-                                class="fa fa-question-circle ml4"
+                                class="oi oi-filled ml4" data-icon="help"
                                 role="img"
                                 aria-label="Warning"
                                 title="The email address is unknown on the partner"

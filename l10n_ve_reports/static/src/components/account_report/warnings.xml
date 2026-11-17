@@ -8,7 +8,7 @@
         There are
         <a
         type="button"
-        t-on-click="(ev) => controller.reportAction(ev, 'open_unposted_moves', {})"
+        t-on-click="(ev) => this.controller.reportAction(ev, 'open_unposted_moves', {})"
     >unposted Journal Entries</a>
         prior or included in this period.
     </t>

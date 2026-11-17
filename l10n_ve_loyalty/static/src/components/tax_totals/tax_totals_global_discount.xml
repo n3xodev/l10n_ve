@@ -5,28 +5,28 @@
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="fw-bold">Descuentos aplicados</div>
                 <button
-                    t-if="showRemoveAll"
+                    t-if="this.showRemoveAll"
                     type="button"
                     class="btn btn-link btn-sm text-danger p-0"
-                    t-on-click="onRemoveAllClick"
+                    t-on-click="this.onRemoveAllClick"
                 >
                     Eliminar todos
                 </button>
             </div>
-            <t t-if="!props.lines.length">
+            <t t-if="!this.props.lines.length">
                 <div class="text-muted">Sin descuentos</div>
             </t>
             <t t-else="">
                 <ul class="list-unstyled mb-0">
                     <li
-                        t-foreach="props.lines"
+                        t-foreach="this.props.lines"
                         t-as="line"
                         t-key="line.id"
                         class="d-flex align-items-center justify-content-between gap-2 py-1 border-bottom"
                     >
                         <div class="flex-grow-1">
                             <div t-out="line.name" />
-                            <div class="text-muted small" t-out="formatLineDetail(line)" />
+                            <div class="text-muted small" t-out="this.formatLineDetail(line)" />
                         </div>
                         <button
                             type="button"
@@ -34,7 +34,7 @@
                             title="Quitar descuento"
                             t-on-click="() => this.onRemoveClick(line.id)"
                         >
-                            <i class="fa fa-trash" />
+                            <i class="oi oi-filled" data-icon="delete" />
                         </button>
                     </li>
                 </ul>
@@ -76,7 +76,7 @@
                             title="Ver detalle de descuentos"
                             t-on-click="onGlobalDiscountInfoClick"
                         >
-                            <i class="fa fa-info-circle" />
+                            <i class="oi oi-filled" data-icon="info" />
                         </button>
                     </label>
                 </td>
@@ -135,7 +135,7 @@
                             title="Ver detalle de descuentos"
                             t-on-click="onGlobalDiscountInfoClick"
                         >
-                            <i class="fa fa-info-circle" />
+                            <i class="oi oi-filled" data-icon="info" />
                         </button>
                     </label>
                 </td>

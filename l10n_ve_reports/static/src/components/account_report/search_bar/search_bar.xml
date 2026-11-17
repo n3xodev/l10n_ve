@@ -7,7 +7,7 @@
             aria-autocomplete="list"
         >
             <i
-                class="o_searchview_icon d-print-none oi oi-search me-2"
+                class="oi o_searchview_icon d-print-none me-2" data-icon="search"
                 role="img"
                 aria-label="Search..."
                 title="Search..."
@@ -21,7 +21,7 @@
                     accesskey="Q"
                     placeholder="Search..."
                     role="searchbox"
-                    t-ref="search_bar_input"
+                    t-custom-ref="search_bar_input"
                     t-on-input="() => this.search()"
                 />
             </div>

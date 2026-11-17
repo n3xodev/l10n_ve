@@ -18,11 +18,11 @@
                     t-on-change="l10nVeOnFiscalMachineChange"
                     title="Máquinas autorizadas en este navegador para reportes X/Z"
                 >
-                    <option value="" disabled="disabled" t-esc="'Máquina autorizada'"/>
+                    <option value="" disabled="disabled" t-out="'Máquina autorizada'"/>
                     <t t-foreach="l10nVeFiscalClose.machines" t-as="machine" t-key="machine.id">
                         <option
                             t-att-value="machine.id"
-                            t-esc="(machine.name or '') + (machine.registered_serial ? ' (' + machine.registered_serial + ')' : '')"
+                            t-out="(machine.name or '') + (machine.registered_serial ? ' (' + machine.registered_serial + ')' : '')"
                         />
                     </t>
                 </select>

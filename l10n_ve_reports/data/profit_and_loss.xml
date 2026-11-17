@@ -20,7 +20,6 @@
                 <field name="code">REV</field>
                 <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
-                <field name="foldable" eval="True" />
                 <field name="expression_ids">
                     <record
                         id="account_financial_report_revenue0_balance"
@@ -45,7 +44,6 @@
                 <field name="parent_id" eval="False" />
                 <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
-                <field name="foldable" eval="True" />
                 <field name="expression_ids">
                     <record
                         id="account_financial_report_cost_sales0_balance"
@@ -87,7 +85,6 @@
                 <field name="parent_id" eval="False" />
                 <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
-                <field name="foldable" eval="True" />
                 <field name="expression_ids">
                     <record
                         id="account_financial_report_expense0_balance"
@@ -133,7 +130,6 @@
                 <field name="parent_id" eval="False" />
                 <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
-                <field name="foldable" eval="True" />
                 <field name="expression_ids">
                     <record
                         id="account_financial_report_other_income0_balance"
@@ -158,7 +154,6 @@
                 <field name="parent_id" eval="False" />
                 <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
-                <field name="foldable" eval="True" />
                 <field name="expression_ids">
                     <record
                         id="account_financial_report_depreciation0_balance"

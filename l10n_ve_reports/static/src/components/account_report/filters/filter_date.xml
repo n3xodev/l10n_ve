@@ -2,13 +2,13 @@
 <templates>
     <t t-name="l10n_ve_reports.AccountReportFilterDateSelection">
         <t
-            t-foreach="this.dateFilters(controller.options.date.mode)"
+            t-foreach="this.dateFilters(this.controller.options.date.mode)"
             t-as="dateFilter"
             t-key="dateFilter_index"
         >
             <DropdownItem
                 class="{ 'd-flex justify-content-between date_filter': true, 'selected': (this.isPeriodSelected(dateFilter.period)) }"
-                onSelected="() => this.selectDateFilter(dateFilter.period, dateFilter.period != controller.options.date.period_type)"
+                onSelected="() => this.selectDateFilter(dateFilter.period, dateFilter.period != this.controller.options.date.period_type)"
                 closingMode="'none'"
             >
                 <div class="filter_name pe-3">
@@ -17,14 +17,14 @@
 
                 <div class="d-flex justify-content-between">
                     <button
-                        class="btn_previous_date fa fa-caret-left"
+                        class="oi btn_previous_date" data-icon="arrow_left"
                         t-on-click="(ev) => { ev.stopPropagation(); this.selectPreviousPeriod(dateFilter.period); }"
                     />
                     <time class="d-flex justify-content-center time_text">
                         <t t-out="this.displayPeriod(dateFilter.period)" />
                     </time>
                     <button
-                        class="btn_next_date fa fa-caret-right"
+                        class="oi btn_next_date" data-icon="arrow_right"
                         t-on-click="(ev) => { ev.stopPropagation(); this.selectNextPeriod(dateFilter.period); }"
                     />
                 </div>
@@ -35,19 +35,19 @@
     <t t-name="l10n_ve_reports.AccountReportFilterDate">
         <Dropdown menuClass="'account_report_filter date'">
             <button class="btn btn-secondary">
-                <i class="fa fa-calendar me-1" />
-                <t t-out="controller.options.date.string" />
+                <i class="oi oi-filled me-1" data-icon="calendar_today" />
+                <t t-out="this.controller.options.date.string" />
             </button>
 
             <t t-set-slot="content">
-                <t t-if="controller.options.date.mode === 'single'">
+                <t t-if="this.controller.options.date.mode === 'single'">
                     <t t-call="l10n_ve_reports.AccountReportFilterDateSelection" />
 
                     <div id="filter_date_divider_single" class="dropdown-divider" />
 
                     <div
                         class="dropdown-item date d-flex justify-content-between"
-                        t-att-class="{ 'selected': controller.options.date.filter === 'custom' }"
+                        t-att-class="{ 'selected': this.controller.options.date.filter === 'custom' }"
                         t-on-click="() => this.filterClicked({ optionKey: 'date.filter', optionValue: 'custom'})"
                     >
                         <label class="d-flex align-items-center filter_name">
@@ -56,25 +56,25 @@
 
                         <div
                             class="d-flex justify-content-center flex-grow-1"
-                            t-att-class="{ 'invisible': controller.options.date.filter !== 'custom' }"
+                            t-att-class="{ 'invisible': this.controller.options.date.filter !== 'custom' }"
                         >
                             <DateTimeInput
                                 type="'date'"
-                                value="dateTo('date')"
+                                value="this.dateTo('date')"
                                 onChange="(dateTo) => this.setDateTo('date', dateTo)"
                             />
                         </div>
                     </div>
                 </t>
 
-                <t t-if="controller.options.date.mode === 'range'">
+                <t t-if="this.controller.options.date.mode === 'range'">
                     <t t-call="l10n_ve_reports.AccountReportFilterDateSelection" />
 
                     <div id="filter_date_divider_range" class="dropdown-divider" />
 
                     <div
                         class="dropdown-item date d-flex flex-row justify-space-between"
-                        t-att-class="{ 'selected': controller.options.date.filter === 'custom' }"
+                        t-att-class="{ 'selected': this.controller.options.date.filter === 'custom' }"
                         t-on-click="() => this.filterClicked({ optionKey: 'date.filter', optionValue: 'custom'})"
                     >
                         <label class="d-flex align-items-center">
@@ -82,11 +82,11 @@
                         </label>
                         <div
                             class="d-flex flex-row"
-                            t-att-class="{ 'invisible': controller.options.date.filter !== 'custom' }"
+                            t-att-class="{ 'invisible': this.controller.options.date.filter !== 'custom' }"
                         >
                             <DateTimeInput
                                 type="'date'"
-                                value="dateFrom('date')"
+                                value="this.dateFrom('date')"
                                 onChange="(dateFrom) => this.setDateFrom('date', dateFrom)"
                             />
                             <label class="d-flex align-items-center">
@@ -94,7 +94,7 @@
                             </label>
                             <DateTimeInput
                                 type="'date'"
-                                value="dateTo('date')"
+                                value="this.dateTo('date')"
                                 onChange="(dateTo) => this.setDateTo('date', dateTo)"
                             />
                         </div>

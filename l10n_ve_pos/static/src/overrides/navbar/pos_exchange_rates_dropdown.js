@@ -1,4 +1,4 @@
-import { Component, onMounted, onWillUnmount, useState } from "@odoo/owl";
+import { Component, onMounted, onWillUnmount, proxy } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { _t } from "@web/core/l10n/translation";
@@ -37,7 +37,7 @@ export class PosExchangeRatesDropdown extends Component {
         this.orm = useService("orm");
         const d = new Date();
         this.currentDate = d.toLocaleString();
-        this.state = useState({
+        this.state = proxy({
             rates: [],
             company_currency: null,
             featured: null,

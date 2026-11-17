@@ -6,7 +6,7 @@
     >
         <xpath expr="//Dropdown/t[@t-set-slot='content']" position="inside">
             <DropdownItem
-                class="{ 'selected': controller.options.show_payment_lines }"
+                class="{ 'selected': this.controller.options.show_payment_lines }"
                 onSelected="() => this.filterClicked({ optionKey: 'show_payment_lines', reload: true})"
                 closingMode="'none'"
             >

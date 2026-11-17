@@ -1,7 +1,9 @@
-import {Component, useState, useRef, useEffect} from "@odoo/owl";
-import {useAutofocus, useService} from "@web/core/utils/hooks";
+import { Component, proxy, usePlugin } from "@odoo/owl";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
+import { useAutofocus } from "@web/core/utils/hooks";
 import {_t} from "@web/core/l10n/translation";
 import {DateTimeInput} from "@web/core/datetime/datetime_input";
+import { useLayoutEffect, useRef } from "@web/owl2/utils";
 
 const {DateTime} = luxon;
 
@@ -26,8 +28,8 @@ export class AnnotationPopoverLine extends Component {
 
     setup() {
         this.applyAutoresizeToAll(".annotation_popover_autoresize_textarea");
-        this.annotation = useState(this.props.annotation);
-        this.notificationService = useService("notification");
+        this.annotation = proxy(this.props.annotation);
+        this.notificationService = usePlugin(NotificationPlugin);
         if (this.annotation.text.length) {
             this.textArea = useRef("annotationText");
         } else {
@@ -36,7 +38,7 @@ export class AnnotationPopoverLine extends Component {
     }
 
     applyAutoresizeToAll(selector) {
-        useEffect(() => {
+        useLayoutEffect(() => {
             const resizeTextArea = (textarea) => {
                 textarea.style.height = `${textarea.scrollHeight}px`;
                 textarea.parentElement.style.height = `${textarea.scrollHeight}px`;

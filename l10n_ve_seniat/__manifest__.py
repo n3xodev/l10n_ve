@@ -4,7 +4,7 @@
     "website": "https://github.com/OCA/l10n-venezuela",
     "icon": "/poweredbyandy_saas/static/description/icon.png",
     "countries": ["ve"],
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "author": "Anderson Armeya, Odoo Community Association (OCA)",
     "category": "Accounting/Localizations/Account Charts",
     "depends": ["base", "web", "mail", "account", "account_debit_note"],
@@ -13,8 +13,6 @@
     ],
     "data": [
         "security/res_groups.xml",
-        "security/ir.model.access.csv",
-        "security/account_book_security.xml",
         "data/res_users_seniat.xml",
         "data/l10n_ve_invoice_cancel_reason_data.xml",
         "data/l10n_ve_emission_medium_data.xml",
@@ -47,6 +45,7 @@
         "views/res_company_kanban_views.xml",
         "views/menuitems.xml",
         "views/login_version.xml",
+        'security/ir.access.csv',
     ],
     "assets": {
         "web.report_assets_common": [

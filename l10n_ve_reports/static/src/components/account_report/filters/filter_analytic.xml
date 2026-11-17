@@ -3,14 +3,14 @@
     <t t-name="l10n_ve_reports.AccountReportFilterAnalytic">
         <Dropdown menuClass="'account_report_filter analytic'">
             <button class="btn btn-secondary">
-                <i class="fa fa-filter me-1" />Analytic
+                <i class="oi oi-filled me-1" data-icon="filter_alt" />Analytic
             </button>
 
             <t t-set-slot="content">
                 <div class="dropdown-item gap-2 align-items-center">
                     <label>Accounts</label>
                     <MultiRecordSelector
-                        t-props="getMultiRecordSelectorProps('account.analytic.account', 'analytic_accounts')"
+                        t-props="this.getMultiRecordSelectorProps('account.analytic.account', 'analytic_accounts')"
                     />
                 </div>
             </t>

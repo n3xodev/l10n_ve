@@ -17,7 +17,7 @@
                         name="action_l10n_ve_vat_seniat_query"
                         type="object"
                         class="btn btn-link p-1 lh-1"
-                        icon="fa-refresh"
+                        icon="refresh"
                         title="Consultar RIF en el SENIAT"
                         groups="base.group_user"
                     />
@@ -25,7 +25,7 @@
                         name="action_l10n_ve_vat_seniat_open_portal"
                         type="object"
                         class="btn btn-link p-1 lh-1"
-                        icon="fa-share"
+                        icon="share"
                         title="Abrir consulta RIF en el SENIAT (nueva pestaña)"
                         groups="base.group_user"
                     />

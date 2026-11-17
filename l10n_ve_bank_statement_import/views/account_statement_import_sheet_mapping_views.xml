@@ -18,7 +18,7 @@
                 <field name="final_balance_row" />
                 <field name="final_balance_column" />
                 <div class="alert alert-info" role="alert" colspan="2">
-                    <span class="fa fa-info-circle">
+                    <span class="oi oi-filled" data-icon="info">
                         Indica la fila y columna donde se encuentran los saldos inicial y final.
                         Las filas son 1-based (la primera fila es 1).
                         Las columnas pueden ser números (1-based) o letras (como 'E').

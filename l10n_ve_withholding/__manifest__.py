@@ -9,7 +9,7 @@
     "author": "BinauralDev, Anderson Armeya, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/l10n-venezuela",
     "category": "Accountant/Accountant",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "depends": [
         "base",
         "account",
@@ -19,7 +19,6 @@
     "external_dependencies": {"python": ["pandas"]},
     "data": [
         "security/ir.model.access.csv",
-        "security/ir_rule.xml",
         "data/tax.unit.csv",
         "data/sequence_data.xml",
         "data/account.withholding.type.csv",
@@ -61,6 +60,7 @@
         "wizard/wizard_retention_islr.xml",
         "wizard/wizard_retention_iva.xml",
         "views/menu.xml",
+        'security/ir.access.csv',
     ],
     "application": False,
 }

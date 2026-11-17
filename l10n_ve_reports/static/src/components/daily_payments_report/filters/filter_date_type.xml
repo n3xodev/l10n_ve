@@ -3,22 +3,22 @@
     <t t-name="l10n_ve_reports.DailyPaymentsReportFilterDateType">
         <Dropdown menuClass="'account_report_filter daily_payments_date_type'">
             <button class="btn btn-secondary">
-                <i class="fa fa-filter me-1" />
-                <t t-out="dailyPaymentsDateTypeLabel" />
+                <i class="oi oi-filled me-1" data-icon="filter_alt" />
+                <t t-out="this.dailyPaymentsDateTypeLabel" />
             </button>
 
             <t t-set-slot="content">
                 <DropdownItem
-                    class="{ 'selected': controller.options.daily_payments_date_type === 'validation' }"
+                    class="{ 'selected': this.controller.options.daily_payments_date_type === 'validation' }"
                     onSelected="() => this.filterDailyPaymentsDateType('validation')"
                 >
-                    <t t-out="dailyPaymentsDateTypeOptionLabel('validation')" />
+                    <t t-out="this.dailyPaymentsDateTypeOptionLabel('validation')" />
                 </DropdownItem>
                 <DropdownItem
-                    class="{ 'selected': controller.options.daily_payments_date_type === 'payment' }"
+                    class="{ 'selected': this.controller.options.daily_payments_date_type === 'payment' }"
                     onSelected="() => this.filterDailyPaymentsDateType('payment')"
                 >
-                    <t t-out="dailyPaymentsDateTypeOptionLabel('payment')" />
+                    <t t-out="this.dailyPaymentsDateTypeOptionLabel('payment')" />
                 </DropdownItem>
             </t>
         </Dropdown>
@@ -29,7 +29,7 @@
         t-inherit="l10n_ve_reports.AccountReportFiltersCustomizable"
     >
         <xpath expr="//div[@id='filter_date']" position="before">
-            <t t-if="'daily_payments_date_type' in controller.options">
+            <t t-if="'daily_payments_date_type' in this.controller.options">
                 <div id="filter_daily_payments_date_type">
                     <t t-call="l10n_ve_reports.DailyPaymentsReportFilterDateType" />
                 </div>

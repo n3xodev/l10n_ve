@@ -3,13 +3,13 @@
     <t t-name="l10n_ve_reports.AccountReportFilterTaxUnit">
         <Dropdown>
             <button class="btn btn-secondary">
-                <i class="fa fa-home me-1" />Tax Unit: <t t-esc="selectedTaxUnitName" />
+                <i class="oi me-1" data-icon="home" />Tax Unit: <t t-out="this.selectedTaxUnitName" />
             </button>
 
             <t t-set-slot="content">
-                <t t-if="controller.groups.account_readonly">
+                <t t-if="this.controller.groups.account_readonly">
                     <DropdownItem
-                        class="{ 'selected': controller.options.tax_unit === 'company_only' }"
+                        class="{ 'selected': this.controller.options.tax_unit === 'company_only' }"
                         onSelected="() => this.filterClicked({ optionKey: 'tax_unit', optionValue: 'company_only', reload: true})"
                     >
                         Company Only
@@ -17,7 +17,7 @@
                 </t>
 
                 <t
-                    t-foreach="controller.options.available_tax_units"
+                    t-foreach="this.controller.options.available_tax_units"
                     t-as="taxUnit"
                     t-key="taxUnit_index"
                 >
@@ -26,7 +26,7 @@
                     </t>
 
                     <DropdownItem
-                        class="{ 'selected': controller.options.tax_unit === taxUnit.id }"
+                        class="{ 'selected': this.controller.options.tax_unit === taxUnit.id }"
                         onSelected="() => this.filterTaxUnit(taxUnit)"
                         t-out="taxUnit.name"
                     />

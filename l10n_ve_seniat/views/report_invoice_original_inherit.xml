@@ -171,8 +171,8 @@
         id="report_invoice_document_dual_currency_totals"
         inherit_id="account.report_invoice_document"
     >
-        <xpath expr="//t[@t-call='web.external_layout']" position="inside">
-            <t t-set="display_report_header" t-value="False" />
+        <xpath expr="//t[@t-call='web.external_layout']" position="attributes">
+            <attribute name="display_report_header">False</attribute>
         </xpath>
         <xpath expr="//t[@t-set='layout_document_title']" position="after">
             <t
@@ -224,10 +224,10 @@
             <t
                 t-if="l10n_ve_dual_currency_totals"
                 t-call="l10n_ve_seniat.document_tax_totals_dual_currency"
+                tax_totals="o.tax_totals or {}"
+                doc_currency="o.currency_id"
+                comp_currency="o.company_currency_id"
             >
-                <t t-set="tax_totals" t-value="o.tax_totals or {}" />
-                <t t-set="doc_currency" t-value="o.currency_id" />
-                <t t-set="comp_currency" t-value="o.company_currency_id" />
             </t>
         </xpath>
         <xpath

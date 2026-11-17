@@ -19,7 +19,7 @@
                 <div class="d-flex justify-content-between w-100 fs-6 text-muted">
                     <span>Subtotal</span>
                     <span
-                        t-esc="formatCurrency(order.taxTotals.order_sign * order.taxTotals.l10n_ve_subtotal_before_discount)"
+                        t-out="formatCurrency(order.taxTotals.order_sign * order.taxTotals.l10n_ve_subtotal_before_discount)"
                     />
                 </div>
                 <t
@@ -28,9 +28,9 @@
                     t-key="discountLine.id"
                 >
                     <div class="d-flex justify-content-between w-100 fs-6 text-danger">
-                        <span t-esc="discountLine.name"/>
+                        <span t-out="discountLine.name"/>
                         <span
-                            t-esc="formatCurrency(-order.taxTotals.order_sign * discountLine.amount)"
+                            t-out="formatCurrency(-order.taxTotals.order_sign * discountLine.amount)"
                         />
                     </div>
                 </t>

@@ -1,7 +1,7 @@
 {
     "name": "Venezuela EDI Facturacion Digital",
     "summary": "Base para facturacion digital Venezuela (validaciones, payload y flujo)",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "andyengit",
     "maintainer": "andyengit",

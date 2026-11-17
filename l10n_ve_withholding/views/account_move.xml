@@ -30,7 +30,7 @@
                         name="action_open_iva_retention"
                         type="object"
                         class="btn-link px-1 py-0 flex-shrink-0 align-baseline"
-                        icon="fa-external-link"
+                        icon="open_in_new"
                         title="Abrir retención de IVA"
                         invisible="not iva_retention_id"
                     />
@@ -54,7 +54,7 @@
                         name="action_open_islr_retention"
                         type="object"
                         class="btn-link px-1 py-0 flex-shrink-0 align-baseline"
-                        icon="fa-external-link"
+                        icon="open_in_new"
                         title="Abrir retención de ISLR"
                         invisible="not islr_retention_id"
                     />

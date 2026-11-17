@@ -3,49 +3,49 @@
     <t t-name="l10n_ve_exchange_rates.ExchangeRateTooltip" owl="xml">
         <Dropdown>
             <button class="btn btn-light">
-                <i class="fa fa-money" role="img" title="Tasas de Cambio Activas" />
-                <t t-if="state.featured">
+                <i class="oi" data-icon="payments" role="img" title="Tasas de Cambio Activas" />
+                <t t-if="this.state.featured">
                     <span class="ms-1 fw-bold">
-                        <t t-esc="state.featured.rate" />
-                        <t t-esc="state.featured.company_currency_symbol" />
+                        <t t-out="this.state.featured.rate" />
+                        <t t-out="this.state.featured.company_currency_symbol" />
                     </span>
                 </t>
             </button>
 
             <t t-set-slot="content">
                 <div class="o_exchange_rate_content p-2" style="min-width: 250px;">
-                    <t t-if="state.loading">
+                    <t t-if="this.state.loading">
                         <DropdownItem>
                             <span>Cargando tasas...</span>
                         </DropdownItem>
                     </t>
 
-                    <t t-elif="state.rates.length">
+                    <t t-elif="this.state.rates.length">
                         <div class="fw-bold px-3 py-1">
-                            Fecha: <t t-esc="currentDate" />
+                            Fecha: <t t-out="this.currentDate" />
                         </div>
                         <div class="fw-bold px-3 py-1">
-                            Tasas de Cambio (Ref: <t t-esc="state.company_currency" />)
+                            Tasas de Cambio (Ref: <t t-out="this.state.company_currency" />)
                         </div>
                         <div class="px-3">
                             <table class="table table-sm table-borderless m-0">
                                 <tbody>
                                     <t
-                                        t-foreach="state.rates"
+                                        t-foreach="this.state.rates"
                                         t-as="rate"
                                         t-key="rate_index"
                                     >
                                         <tr>
                                             <td class="p-1">
-                                                <t t-esc="rate.name" /> (<t
-                                                t-esc="rate.symbol"
+                                                <t t-out="rate.name" /> (<t
+                                                t-out="rate.symbol"
                                             />)
                                             </td>
                                             <td class="p-1 text-end">
-                                                1 <t t-esc="rate.symbol" />  ≈ <t
-                                                t-esc="rate.rate"
+                                                1 <t t-out="rate.symbol" />  ≈ <t
+                                                t-out="rate.rate"
                                             /> <t
-                                                t-esc="rate.company_currency_symbol"
+                                                t-out="rate.company_currency_symbol"
                                             />
                                             </td>
                                         </tr>

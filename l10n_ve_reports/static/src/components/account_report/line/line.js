@@ -3,7 +3,7 @@
 import {localization} from "@web/core/l10n/localization";
 
 import {useService} from "@web/core/utils/hooks";
-import {Component, useState} from "@odoo/owl";
+import { Component, proxy } from "@odoo/owl";
 
 import {AccountReportDebugPopover} from "@l10n_ve_reports/components/account_report/line/popover/debug_popover";
 import {AccountReportLineCellEditable} from "@l10n_ve_reports/components/account_report/line_cell_editable/line_cell_editable";
@@ -20,7 +20,7 @@ export class AccountReportLine extends Component {
 
     setup() {
         this.popover = useService("popover");
-        this.controller = useState(this.env.controller);
+        this.controller = proxy(this.env.controller);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@
                 >
                     <button name="action_l10n_ve_edi_tfhka_open_sent_document_url" type="object"
                         string="Abrir URL del documento fiscal"
-                        icon="fa-arrow-right"
+                        icon="arrow_forward"
                         class="btn-secondary"
                     />
                     <div colspan="2" class="alert alert-light mb-0 py-2" role="status"

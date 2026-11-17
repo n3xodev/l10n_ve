@@ -1,8 +1,10 @@
 /** @odoo-module **/
 
-import { Component, onWillUnmount, status, useComponent, useState } from "@odoo/owl";
+import { Component, onWillUnmount, proxy, status, usePlugin } from "@odoo/owl";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { useComponent } from "@web/owl2/utils";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { autoDetectFiscalMachine } from "./fiscal_machine_detect";
 import { createFiscalSerialAuditLogger } from "../fiscal_serial/fiscal_serial_audit";
@@ -22,10 +24,10 @@ export class FiscalMachinePortDetectWidget extends Component {
     setup() {
         this.component = useComponent();
         this.fiscalSerial = useService("l10n_ve_fiscal_serial");
-        this.notification = useService("notification");
+        this.notification = usePlugin(NotificationPlugin);
         this.orm = this.env.services.orm;
         this.ui = this.env.services.ui;
-        this.state = useState({ busy: false });
+        this.state = proxy({ busy: false });
         this.alive = true;
         onWillUnmount(() => {
             this.alive = false;

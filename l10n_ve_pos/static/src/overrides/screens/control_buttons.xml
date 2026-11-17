@@ -8,8 +8,8 @@
                 t-att-disabled="!canChangeInvoiceJournal"
                 t-on-click="() => this.clickInvoiceJournal()"
             >
-                <i class="fa fa-book me-1" role="img" aria-label="Invoice journal" title="Invoice journal"/>
-                <t t-if="currentOrder?.invoice_journal_id" t-esc="currentOrder.invoice_journal_id.display_name || currentOrder.invoice_journal_id.name"/>
+                <i class="oi me-1" data-icon="book" role="img" aria-label="Invoice journal" title="Invoice journal"/>
+                <t t-if="currentOrder?.invoice_journal_id" t-out="currentOrder.invoice_journal_id.display_name || currentOrder.invoice_journal_id.name"/>
                 <t t-else="">Diario</t>
             </button>
         </xpath>
@@ -20,8 +20,8 @@
                 t-att-disabled="!canChangeInvoiceJournal"
                 t-on-click="() => this.clickInvoiceJournal()"
             >
-                <i class="fa fa-book me-1" role="img" aria-label="Invoice journal" title="Invoice journal"/>
-                <t t-if="currentOrder?.invoice_journal_id" t-esc="currentOrder.invoice_journal_id.display_name || currentOrder.invoice_journal_id.name"/>
+                <i class="oi me-1" data-icon="book" role="img" aria-label="Invoice journal" title="Invoice journal"/>
+                <t t-if="currentOrder?.invoice_journal_id" t-out="currentOrder.invoice_journal_id.display_name || currentOrder.invoice_journal_id.name"/>
                 <t t-else="">Diario</t>
             </button>
         </xpath>

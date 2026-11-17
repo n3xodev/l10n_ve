@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { Component, xml } from "@odoo/owl";
+import { Component, usePlugin, xml } from "@odoo/owl";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { l10nVeFiscalSerialExecuteConfigure } from "../fiscal_serial/fiscal_serial_configure";
@@ -13,13 +13,13 @@ export class FiscalConfigureButton extends Component {
         button_class: { type: String, optional: true },
     };
     static template = xml`
-        <button t-att-class="buttonClass" type="button" t-on-click="onClick">
-            <span t-esc="label"/>
+        <button t-att-class="this.buttonClass" type="button" t-on-click="this.onClick">
+            <span t-out="this.label"/>
         </button>
     `;
 
     setup() {
-        this.notification = useService("notification");
+        this.notification = usePlugin(NotificationPlugin);
     }
 
     get label() {

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onMounted, onWillStart, useState } from "@odoo/owl";
+import { Component, onMounted, onWillStart, proxy } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
@@ -16,7 +16,7 @@ export class FiscalMachineSystray extends Component {
         this.connection = useService("l10n_ve_fiscal_connection");
         // Subscribe to the service reactive state so heartbeat updates re-render
         // the systray without requiring another user click.
-        this.state = useState(this.connection.state);
+        this.state = proxy(this.connection.state);
         onWillStart(async () => {
             await this.connection.bootstrap();
         });

@@ -21,7 +21,7 @@ class TestL10nVeIrUiMenu(L10nVeSeniatCommon):
         if not self.menu:
             self.skipTest("l10n_ve_fiscal_serial is not installed.")
         self.env.company.write({"l10n_ve_emission_medium_ids": [(5, 0, 0)]})
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache()
         blacklist = self.env["ir.ui.menu"]._l10n_ve_emission_medium_menus_blacklist()
         self.assertIn(self.menu.id, blacklist)
         menus = self.env["ir.ui.menu"].load_menus(False)
@@ -33,7 +33,7 @@ class TestL10nVeIrUiMenu(L10nVeSeniatCommon):
         self.env.company.write(
             {"l10n_ve_emission_medium_ids": [(6, 0, [self.fiscal_medium.id])]}
         )
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache()
         blacklist = self.env["ir.ui.menu"]._l10n_ve_emission_medium_menus_blacklist()
         self.assertNotIn(self.menu.id, blacklist)
         menus = self.env["ir.ui.menu"].load_menus(False)
@@ -51,7 +51,7 @@ class TestL10nVeIrUiMenu(L10nVeSeniatCommon):
         )
         other_company.write({"l10n_ve_emission_medium_ids": [(5, 0, 0)]})
         self.env.user.company_ids |= other_company
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache()
         menus_with = (
             self.env["ir.ui.menu"]
             .with_context(allowed_company_ids=[company.id])

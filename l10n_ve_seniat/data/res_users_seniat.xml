@@ -6,7 +6,7 @@
         <field name="email">seniat</field>
         <field
             name="image_1920"
-            type="base64"
+            type="bytes"
             file="l10n_ve_seniat/static/src/img/LogoSENIAT.png"
         />
         <field name="active" eval="True" />

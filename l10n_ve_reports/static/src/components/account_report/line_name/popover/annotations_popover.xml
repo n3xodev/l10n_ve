@@ -2,14 +2,14 @@
 <templates>
     <t t-name="l10n_ve_reports.AccountReportAnnotationsPopover">
         <div class="d-flex flex-column flex-start gap-2">
-            <table class="annotation_popover" t-ref="popoverTable">
+            <table class="annotation_popover" t-custom-ref="popoverTable">
                 <tr class="annotation_popover_line">
                     <th>Date</th>
                     <th>Annotation</th>
                     <th />
                 </tr>
 
-                <t t-foreach="annotations" t-as="annotation" t-key="annotation.id">
+                <t t-foreach="this.annotations" t-as="annotation" t-key="annotation.id">
                     <AnnotationPopoverLine
                         annotation="this.formatAnnotation(annotation)"
                         onDelete="(annotationId) => this.deleteAnnotation(annotationId)"
@@ -17,8 +17,8 @@
                     />
                 </t>
                 <AnnotationPopoverLine
-                    t-if="isAddingAnnotation"
-                    annotation="newAnnotation.value"
+                    t-if="this.isAddingAnnotation"
+                    annotation="this.newAnnotation.value"
                     onDelete="() => this.cleanNewAnnotation()"
                     onEdit="(annotationToCreate) => this.saveNewAnnotation(annotationToCreate)"
                 />
@@ -27,7 +27,7 @@
                         <a
                             class="oe_link"
                             href="#"
-                            t-on-click.prevent="addAnnotation"
+                            t-on-click.prevent="this.addAnnotation"
                             data-hotkey="c"
                         >
                             Add a line

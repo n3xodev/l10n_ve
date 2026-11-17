@@ -140,7 +140,7 @@
                     name="action_l10n_ve_view_credit_notes"
                     type="object"
                     class="oe_stat_button"
-                    icon="fa-pencil-square-o"
+                    icon="edit_square"
                     groups="account.group_account_invoice,account.group_account_readonly"
                     invisible="country_code != 'VE' or l10n_ve_related_credit_note_count == 0 or move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')"
                 >
@@ -163,7 +163,7 @@
                 <button
                     name="action_debit_note"
                     string="Nota de Debito"
-                    icon="fa-plus"
+                    icon="add"
                     type="object"
                     class="btn-secondary"
                     groups="account.group_account_invoice"

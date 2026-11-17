@@ -5,7 +5,7 @@
         t-inherit="l10n_ve_reports.AccountReportFiltersCustomizable"
     >
         <xpath expr="//div[@id='filter_date']" position="after">
-            <t t-if="'warehouse_ids' in controller.options">
+            <t t-if="'warehouse_ids' in this.controller.options">
                 <div id="filter_warehouse">
                     <t t-call="l10n_ve_reports_stock.InventoryBookReportFilterWarehouse" />
                 </div>
@@ -17,20 +17,20 @@
         <Dropdown menuClass="'account_report_filter warehouse'">
             <button class="btn btn-secondary">
                 <i class="fa fa-warehouse me-1" />
-                <t t-out="selectedWarehouseName" />
+                <t t-out="this.selectedWarehouseName" />
             </button>
 
             <t t-set-slot="content">
                 <div class="dropdown-item gap-2 align-items-center">
                     <label>Almacenes</label>
                     <MultiRecordSelector
-                        t-props="getMultiRecordSelectorProps('stock.warehouse', 'warehouse_ids')"
+                        t-props="this.getMultiRecordSelectorProps('stock.warehouse', 'warehouse_ids')"
                     />
                 </div>
                 <div class="dropdown-divider" />
                 <DropdownItem
-                    t-if="'hide_zero_quantity_products' in controller.options"
-                    class="{ 'selected': controller.options.hide_zero_quantity_products }"
+                    t-if="'hide_zero_quantity_products' in this.controller.options"
+                    class="{ 'selected': this.controller.options.hide_zero_quantity_products }"
                     onSelected="() => this.filterClicked({ optionKey: 'hide_zero_quantity_products', reload: true})"
                     closingMode="'none'"
                 >

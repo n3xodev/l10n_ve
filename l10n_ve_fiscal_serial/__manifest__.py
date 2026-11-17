@@ -1,7 +1,7 @@
 {
     "name": "Venezuela Fiscal Serial (TFHKA Web Serial)",
     "summary": "Cliente Web Serial para impresoras fiscales TFHKA en el navegador",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "andyengit",
     "maintainer": "andyengit",
@@ -9,12 +9,12 @@
     "license": "LGPL-3",
     "depends": ["web", "l10n_ve_seniat", "l10n_ve_igtf"],
     "data": [
-        "security/ir.model.access.csv",
         "views/l10n_ve_fiscal_serial_audit_views.xml",
         "views/l10n_ve_fiscal_machine_views.xml",
         "views/account_journal_views.xml",
         "views/account_move_views.xml",
         "views/fiscal_machines_menu.xml",
+        'security/ir.access.csv',
     ],
     "post_init_hook": "post_init_hook",
     "assets": {

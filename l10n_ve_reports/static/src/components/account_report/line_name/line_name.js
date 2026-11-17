@@ -4,9 +4,11 @@ import {Dropdown} from "@web/core/dropdown/dropdown";
 import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 import {useService} from "@web/core/utils/hooks";
 import {usePopover} from "@web/core/popover/popover_hook";
-import {Component, useState, useRef} from "@odoo/owl";
+import { Component, proxy, usePlugin } from "@odoo/owl";
 
 import {AccountReportAnnotationsPopover} from "@l10n_ve_reports/components/account_report/line_name/popover/annotations_popover";
+import { useRef } from "@web/owl2/utils";
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportLineName extends Component {
     static template = "l10n_ve_reports.AccountReportLineName";
@@ -20,9 +22,9 @@ export class AccountReportLineName extends Component {
     };
 
     setup() {
-        this.action = useService("action");
+        this.action = usePlugin(ActionManagerPlugin);
         this.orm = useService("orm");
-        this.controller = useState(this.env.controller);
+        this.controller = proxy(this.env.controller);
         this.annotationPopOver = usePopover(AccountReportAnnotationsPopover, {
             setActiveElement: false,
             position: "bottom",

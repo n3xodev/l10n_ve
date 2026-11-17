@@ -2,7 +2,7 @@
 {
     "name": "Product Currency",
     "icon": "/poweredbyandy_saas/static/description/icon.png",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Products",
     "sequence": 10,
     "summary": "Select currencies on product templates",

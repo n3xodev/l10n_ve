@@ -1,11 +1,13 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
-import { Component, onMounted, xml } from "@odoo/owl";
+import { Component, onMounted, usePlugin, xml } from "@odoo/owl";
 
 const USB_CHUNK = 16384;
 const EPSON_USB_VENDOR_ID = 0x04b8;
@@ -109,8 +111,8 @@ export class L10nVeInvoiceEscpPrintAction extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.notification = useService("notification");
-        this.action = useService("action");
+        this.notification = usePlugin(NotificationPlugin);
+        this.action = usePlugin(ActionManagerPlugin);
         onMounted(() => this.run());
     }
 

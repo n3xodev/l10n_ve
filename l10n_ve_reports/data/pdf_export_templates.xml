@@ -52,11 +52,8 @@
                                     <t t-if="lines">
                                         <t
                                             t-call="{{custom_templates.get('pdf_export_main_table_body', 'l10n_ve_reports.pdf_export_main_table_body')}}"
+                                            lines="filter(lambda x: not split_side or split_side == x.get('horizontal_split_side', 'left'), lines)"
                                         >
-                                            <t
-                                                t-set="lines"
-                                                t-value="filter(lambda x: not split_side or split_side == x.get('horizontal_split_side', 'left'), lines)"
-                                            />
                                         </t>
                                     </t>
                                 </tbody>

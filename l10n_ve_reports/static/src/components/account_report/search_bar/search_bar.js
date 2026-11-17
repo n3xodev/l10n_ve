@@ -1,6 +1,7 @@
 /** @odoo-module */
 
-import {Component, useRef, useState, onMounted} from "@odoo/owl";
+import { Component, proxy, onMounted } from "@odoo/owl";
+import { useRef } from "@web/owl2/utils";
 
 export class AccountReportSearchBar extends Component {
     static template = "l10n_ve_reports.AccountReportSearchBar";
@@ -10,7 +11,7 @@ export class AccountReportSearchBar extends Component {
 
     setup() {
         this.searchText = useRef("search_bar_input");
-        this.controller = useState(this.env.controller);
+        this.controller = proxy(this.env.controller);
 
         onMounted(() => {
             if (this.props.initialQuery) {

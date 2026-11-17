@@ -1,12 +1,14 @@
 import {AttachmentViewMoveLine} from "./attachment_view_move_line";
 
 import {registry} from "@web/core/registry";
+import { UIPlugin } from "@web/core/ui/ui_plugin";
 import {useService} from "@web/core/utils/hooks";
+import { useChildSubEnv } from "@web/owl2/utils";
 import {listView} from "@web/views/list/list_view";
 import {ListRenderer} from "@web/views/list/list_renderer";
 import {ListController} from "@web/views/list/list_controller";
 import {SIZES} from "@web/core/ui/ui_service";
-import {useChildSubEnv, useState} from "@odoo/owl";
+import { proxy, usePlugin } from "@odoo/owl";
 import {makeActiveField} from "@web/model/relational_model/utils";
 
 export class AccountMoveLineListController extends ListController {
@@ -17,17 +19,17 @@ export class AccountMoveLineListController extends ListController {
     };
     setup() {
         super.setup();
-        this.store = useState(useService("mail.store"));
-        this.ui = useState(useService("ui"));
-        this.mailPopoutService = useState(useService("mail.popout"));
-        this.attachmentPreviewState = useState({
+        this.store = proxy(useService("mail.store"));
+        this.ui = proxy(usePlugin(UIPlugin));
+        this.mailPopoutService = proxy(useService("mail.popout"));
+        this.attachmentPreviewState = proxy({
             displayAttachment:
                 localStorage.getItem("account.move_line_pdf_previewer_hidden") !==
                 "false",
             selectedRecord: false,
             thread: null,
         });
-        this.popout = useState({active: false});
+        this.popout = proxy({active: false});
 
         useChildSubEnv({
             setPopout: this.setPopout.bind(this),

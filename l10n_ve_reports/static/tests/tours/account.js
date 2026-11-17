@@ -6,7 +6,7 @@ patch(accountTourSteps, {
     onboarding() {
         return [
             {
-                trigger: ".o_widget_account_onboarding .fa-circle",
+                trigger: ".o_widget_account_onboarding [data-icon='circle'].oi-filled",
             },
             {
                 trigger: "a[data-method=action_open_step_fiscal_year]",
@@ -23,7 +23,7 @@ patch(accountTourSteps, {
     newInvoice() {
         return [
             {
-                trigger: ".o_widget_account_onboarding .fa-check-circle",
+                trigger: ".o_widget_account_onboarding [data-icon='check_circle'].oi-filled",
             },
             {
                 trigger: "button[name=action_create_new]",
