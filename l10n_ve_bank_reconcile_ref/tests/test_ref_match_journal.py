@@ -37,14 +37,14 @@ class TestRefMatchJournal(RefReconcileCommon):
         self.assertFalse(self._counterpart_amls(st_line))
 
     def test_oca_containment_match_still_works(self):
-        invoice = self._create_invoice(750.0, "FACT-ABC")
+        invoice = self._make_invoice(750.0, "FACT-ABC")
         st_line = self._create_st_line(750.0, "FACT-ABC")
         self.assertTrue(st_line.is_reconciled)
         self.assertEqual(invoice.payment_state, "paid")
 
     def test_oca_containment_match_works_with_feature_disabled(self):
         self.bank_journal.l10n_ve_ref_suffix_enabled = False
-        invoice = self._create_invoice(750.0, "FACT-ABC")
+        invoice = self._make_invoice(750.0, "FACT-ABC")
         st_line = self._create_st_line(750.0, "FACT-ABC")
         self.assertTrue(st_line.is_reconciled)
         self.assertEqual(invoice.payment_state, "paid")

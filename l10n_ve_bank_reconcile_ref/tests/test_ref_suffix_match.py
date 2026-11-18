@@ -28,7 +28,7 @@ class TestRefSuffixMatch(RefReconcileCommon):
         self.assertReconciledWith(st_line, self._payment_aml(payment))
 
     def test_invoice_suffix_six_auto(self):
-        invoice = self._create_invoice(500.0, "513367")
+        invoice = self._make_invoice(500.0, "513367")
         st_line = self._create_st_line(500.0, "000084732513367")
         self.assertReconciledWith(st_line, self._invoice_aml(invoice))
         self.assertEqual(invoice.payment_state, "paid")
@@ -45,20 +45,20 @@ class TestRefSuffixMatch(RefReconcileCommon):
 
     def test_payment_preferred_over_invoice(self):
         payment = self._create_payment(300.0, "345678")
-        invoice = self._create_invoice(300.0, "345678")
+        invoice = self._make_invoice(300.0, "345678")
         st_line = self._create_st_line(300.0, "00012345678")
         self.assertReconciledWith(st_line, self._payment_aml(payment))
         self.assertEqual(invoice.payment_state, "not_paid")
 
     def test_invoice_matched_when_no_payment(self):
-        invoice = self._create_invoice(300.0, "345678")
+        invoice = self._make_invoice(300.0, "345678")
         st_line = self._create_st_line(300.0, "00012345678")
         self.assertReconciledWith(st_line, self._invoice_aml(invoice))
 
     def test_invoice_first_when_payment_priority_disabled(self):
         self.bank_journal.l10n_ve_ref_match_payment_first = False
         self._create_payment(300.0, "345678")
-        invoice = self._create_invoice(300.0, "345678")
+        invoice = self._make_invoice(300.0, "345678")
         st_line = self._create_st_line(300.0, "00012345678")
         self.assertReconciledWith(st_line, self._invoice_aml(invoice))
 
@@ -186,7 +186,7 @@ class TestRefSuffixMatch(RefReconcileCommon):
         self.assertReconciledWith(st_line, self._payment_aml(payment))
 
     def test_slashes_in_invoice_name(self):
-        invoice = self._create_invoice(500.0, "UNRELATED")
+        invoice = self._make_invoice(500.0, "UNRELATED")
         digits = re.sub(r"\D", "", invoice.name)
         st_line = self._create_st_line(500.0, f"FACT {digits}")
         self.assertReconciledWith(st_line, self._invoice_aml(invoice))
@@ -204,7 +204,7 @@ class TestRefSuffixMatch(RefReconcileCommon):
 
     def test_amount_mismatch_falls_through_to_next_step(self):
         self._create_payment(400.0, "345678")
-        invoice = self._create_invoice(300.0, "345678")
+        invoice = self._make_invoice(300.0, "345678")
         st_line = self._create_st_line(300.0, "00012345678")
         self.assertReconciledWith(st_line, self._invoice_aml(invoice))
 
@@ -227,14 +227,14 @@ class TestRefSuffixMatch(RefReconcileCommon):
         self.assertReconciledWith(st_line, self._payment_aml(payment))
 
     def test_vendor_bill_matched_on_outbound_line(self):
-        bill = self._create_invoice(
+        bill = self._make_invoice(
             200.0, "345678", partner=self.partner_b, move_type="in_invoice"
         )
         st_line = self._create_st_line(-200.0, "00012345678", partner=self.partner_b)
         self.assertReconciledWith(st_line, self._invoice_aml(bill))
 
     def test_partially_paid_invoice_uses_residual(self):
-        invoice = self._create_invoice(500.0, "345678")
+        invoice = self._make_invoice(500.0, "345678")
         self.env["account.payment.register"].with_context(
             active_model="account.move", active_ids=invoice.ids
         ).create({"amount": 200.0})._create_payments()
