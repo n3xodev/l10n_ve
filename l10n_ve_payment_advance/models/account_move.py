@@ -12,7 +12,7 @@ _ADVANCE_ACCOUNT_TYPES = CUSTOMER_ADVANCE_ACCOUNT_TYPES + SUPPLIER_ADVANCE_ACCOU
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    invoice_outstanding_advances_widget = fields.Binary(
+    invoice_outstanding_advances_widget = fields.Json(
         groups="account.group_account_invoice,account.group_account_readonly",
         compute="_compute_invoice_outstanding_advances_widget",
         exportable=False,
@@ -115,7 +115,7 @@ class AccountMove(models.Model):
         payments = self.env["account.payment"].search(
             [
                 ("partner_id", "child_of", partner.id),
-                ("state", "in", ("paid", "in_process")),
+                ("state", "in", ("paid", "reconciled")),
                 ("destination_account_id", "=", advance_account.id),
                 ("company_id", "=", self.company_id.id),
             ]
