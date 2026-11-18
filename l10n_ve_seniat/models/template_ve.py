@@ -12,10 +12,6 @@ class AccountChartTemplate(models.AbstractModel):
         return {
             "sequence": 10,
             "code_digits": "7",
-            "property_account_receivable_id": "account_account_1106001",
-            "property_account_payable_id": "account_account_2101002",
-            "property_account_expense_categ_id": "account_account_5101001",
-            "property_account_income_categ_id": "account_account_4101001",
             "name": _("SENIAT"),
         }
 
@@ -23,6 +19,10 @@ class AccountChartTemplate(models.AbstractModel):
     def _get_ve_seniat_res_company(self):
         return {
             self.env.company.id: {
+                "receivable_account_id": "account_account_1106001",
+                "payable_account_id": "account_account_2101002",
+                "expense_account_id": "account_account_5101001",
+                "income_account_id": "account_account_4101001",
                 "account_fiscal_country_id": "base.ve",
                 "cash_account_code_prefix": "1101",
                 "bank_account_code_prefix": "1102",
@@ -40,16 +40,16 @@ class AccountChartTemplate(models.AbstractModel):
             "name": _("SENIAT - Basic"),
             "sequence": 20,
             "code_digits": "7",
-            "property_account_receivable_id": "account_account_1106001",
-            "property_account_payable_id": "account_account_2101002",
-            "property_account_expense_categ_id": "account_account_5101001",
-            "property_account_income_categ_id": "account_account_4101001",
         }
 
     @template("ve_seniat_basic", "res.company")
     def _get_ve_seniat_basic_res_company(self):
         return {
             self.env.company.id: {
+                "receivable_account_id": "account_account_1106001",
+                "payable_account_id": "account_account_2101002",
+                "expense_account_id": "account_account_5101001",
+                "income_account_id": "account_account_4101001",
                 "account_fiscal_country_id": "base.ve",
                 "cash_account_code_prefix": "1101",
                 "bank_account_code_prefix": "1102",

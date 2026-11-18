@@ -6,7 +6,6 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.tools import frozendict
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from odoo.tools.mail import html2plaintext
 from odoo.tools.misc import formatLang
@@ -1769,36 +1768,38 @@ Please create a credit note instead.
         )
 
     def _l10n_ve_fill_needed_term_dates(self):
+        """Fill empty ``date_maturity`` keys of ``needed_terms``.
+
+        In 20.0 ``needed_terms`` is a JSON list of ``[key, values]`` pairs.
+        """
         for move in self:
             terms = move.needed_terms
-            if not terms or not isinstance(terms, dict):
+            if not terms or not isinstance(terms, list):
                 continue
-            fallback = (
+            fallback = fields.Date.to_string(
                 move.invoice_date or move.date or fields.Date.context_today(move)
             )
-            new_terms = {}
+            merged = {}
             changed = False
-            for key, values in terms.items():
-                new_key = key
+            for key, values in terms:
+                key = dict(key or {})
                 if key and not key.get("date_maturity"):
-                    new_key = frozendict(
-                        {**dict(key), "date_maturity": fallback}
-                    )
+                    key["date_maturity"] = fallback
                     changed = True
-                if new_key in new_terms:
-                    merged = dict(new_terms[new_key])
-                    merged["balance"] = merged.get("balance", 0.0) + values.get(
+                marker = tuple(sorted((k, str(v)) for k, v in key.items()))
+                if marker in merged:
+                    previous = merged[marker][1]
+                    previous["balance"] = previous.get("balance", 0.0) + values.get(
                         "balance", 0.0
                     )
-                    merged["amount_currency"] = merged.get(
+                    previous["amount_currency"] = previous.get(
                         "amount_currency", 0.0
                     ) + values.get("amount_currency", 0.0)
-                    new_terms[new_key] = merged
                     changed = True
                 else:
-                    new_terms[new_key] = values
+                    merged[marker] = (key, dict(values))
             if changed:
-                move.needed_terms = new_terms
+                move.needed_terms = list(merged.values())
 
     @api.depends(
         "invoice_payment_term_id",

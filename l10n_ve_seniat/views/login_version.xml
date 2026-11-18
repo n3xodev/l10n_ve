@@ -3,7 +3,7 @@
     <template id="login_version_label" inherit_id="web.login">
         <xpath expr="//div[hasclass('oe_login_buttons')]" position="after">
             <div class="text-center mt-2">
-                <small t-esc="l10n_ve_version" class="text-muted" />
+                <small t-out="l10n_ve_version" class="text-muted" />
             </div>
         </xpath>
     </template>
