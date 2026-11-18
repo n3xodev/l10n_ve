@@ -8,7 +8,7 @@ import { Component, proxy, usePlugin } from "@odoo/owl";
 
 import {AccountReportAnnotationsPopover} from "@l10n_ve_reports/components/account_report/line_name/popover/annotations_popover";
 import { useRef } from "@web/owl2/utils";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportLineName extends Component {
     static template = "l10n_ve_reports.AccountReportLineName";
@@ -22,7 +22,7 @@ export class AccountReportLineName extends Component {
     };
 
     setup() {
-        this.action = usePlugin(ActionManagerPlugin);
+        this.action = usePlugin(ActionPlugin);
         this.orm = useService("orm");
         this.controller = proxy(this.env.controller);
         this.annotationPopOver = usePopover(AccountReportAnnotationsPopover, {

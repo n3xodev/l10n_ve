@@ -7,7 +7,7 @@ import { UIPlugin } from "@web/core/ui/ui_plugin";
 import { useService } from "@web/core/utils/hooks";
 import { createFiscalSerialAuditLogger } from "../fiscal_serial/fiscal_serial_audit";
 import { TfhkaWebSerialTransport } from "../fiscal_serial/tfhka_transport_webserial";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 const ACTION_TO_CHECK_METHOD = {
     print_out_invoice: "check_print_out_invoice",
@@ -47,7 +47,7 @@ export class FiscalMoveButton extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.action = usePlugin(ActionManagerPlugin);
+        this.action = usePlugin(ActionPlugin);
         this.notification = usePlugin(NotificationPlugin);
         this.fiscalSerial = useService("l10n_ve_fiscal_serial");
         this.connection = useService("l10n_ve_fiscal_connection");

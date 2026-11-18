@@ -2,7 +2,7 @@
 
 import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class EdiUnsentDashboard extends Component {
     static template = "l10n_ve_edi.EdiUnsentDashboard";
@@ -10,7 +10,7 @@ export class EdiUnsentDashboard extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.actionService = usePlugin(ActionManagerPlugin);
+        this.actionService = usePlugin(ActionPlugin);
         this.state = proxy({
             visible: false,
             title: "",

@@ -8,7 +8,7 @@ import { formatDate, deserializeDate } from "@web/core/l10n/dates";
 import { formatMonetary } from "@web/views/fields/formatters";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { Component, usePlugin } from "@odoo/owl";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountAdvancePaymentField extends Component {
     static props = { ...standardFieldProps };
@@ -16,7 +16,7 @@ export class AccountAdvancePaymentField extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.action = usePlugin(ActionManagerPlugin);
+        this.action = usePlugin(ActionPlugin);
     }
 
     getInfo() {

@@ -2,7 +2,7 @@
 
 import {useService} from "@web/core/utils/hooks";
 import { Component, usePlugin } from "@odoo/owl";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportCarryoverPopover extends Component {
     static template = "l10n_ve_reports.AccountReportCarryoverPopover";
@@ -14,7 +14,7 @@ export class AccountReportCarryoverPopover extends Component {
     };
 
     setup() {
-        this.actionService = usePlugin(ActionManagerPlugin);
+        this.actionService = usePlugin(ActionPlugin);
         this.orm = useService("orm");
     }
 
