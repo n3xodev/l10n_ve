@@ -70,7 +70,7 @@
                 <span t-field="line.product_id.default_code" />
             </td>
         </xpath>
-        <xpath expr="//td[@name='td_product_name']/span[@t-field='line.name']" position="replace">
+        <xpath expr="//td[@name='td_product_name']//span[@t-field='line.label']" position="replace">
             <span t-if="line.product_id" t-field="line.product_id.name" />
             <span t-else="" t-field="line.name" />
         </xpath>

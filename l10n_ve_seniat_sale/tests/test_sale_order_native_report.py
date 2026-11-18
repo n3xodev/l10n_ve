@@ -54,7 +54,12 @@ class TestSaleOrderNativeReport(L10nVeSeniatCommon):
             ]
         )
         report_names = set(reports.mapped("report_name"))
-        self.assertIn("sale.report_saleorder", report_names)
+        # Odoo 20: sale_pdf_quote_builder (auto-installed with sale_management) unbinds
+        # sale.action_report_saleorder and binds its own action on the "_raw" template,
+        # which renders the same sale.report_saleorder_document that this module extends.
+        self.assertTrue(
+            report_names & {"sale.report_saleorder", "sale.report_saleorder_raw"}
+        )
 
     def test_native_sale_report_shows_no_fiscal_markers(self):
         order = self._create_ve_sale_order()
