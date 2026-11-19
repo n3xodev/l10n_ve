@@ -40,13 +40,13 @@
                 <div class="col-4">
                     <span>Nro Comprobante:</span>
                     <div>
-                        <span t-esc="retention.number" />
+                        <span t-out="retention.number" />
                     </div>
                 </div>
                 <div class="col-4">
                     <span>Fecha de emision:</span>
                     <div>
-                        <span t-esc="retention.date" t-options='{"widget": "date"}' />
+                        <span t-out="retention.date" t-options='{"widget": "date"}' />
                     </div>
                 </div>
             </div>
@@ -55,15 +55,15 @@
                     <div class="col-12">
                         <span>Nombre o Razón Social del Agente de Retención</span>
                         <div style="width:100%">
-                            <span t-esc="res_company.name" />
+                            <span t-out="res_company.name" />
                         </div>
                     </div>
                     <div class="col-12">
                         <span>Direccion Fiscal del Agente de Retención</span>
                         <div class="col-12">
-                            <span t-esc="res_company.street" />
-                            <span t-esc="res_company.street2" />
-                            <span t-esc="res_company.state_id.name" />
+                            <span t-out="res_company.street" />
+                            <span t-out="res_company.street2" />
+                            <span t-out="res_company.state_id.name" />
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         >Registro de Informacion Fiscal del Agente de Retención:</span>
                     </div>
                     <div>
-                        <span t-esc="res_company.vat" />
+                        <span t-out="res_company.vat" />
                     </div>
                 </div>
 
@@ -81,9 +81,9 @@
                     <div class="col-12">
                         <span>Periodo Fiscal:</span>
                         <div style="width:100%">Año : <span
-                            t-esc="retention.date_accounting.strftime('%Y')"
+                            t-out="retention.date_accounting.strftime('%Y')"
                         /> / Mes: <span
-                            t-esc="retention.date_accounting.strftime('%m')"
+                            t-out="retention.date_accounting.strftime('%m')"
                         />
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                 <div class="col-6">
                     <span>Nombre o Razón Social del Sujeto Retenido</span>
                     <div>
-                        <span t-esc="retention.partner_id.name" />
+                        <span t-out="retention.partner_id.name" />
                     </div>
                 </div>
                 <div class="col-6">
@@ -116,7 +116,7 @@
                     <div>
                         <span
                             style="text-transform:uppercase"
-                            t-esc="retention.partner_id.vat"
+                            t-out="retention.partner_id.vat"
                         />
                     </div>
                 </div>
@@ -126,9 +126,9 @@
                 <div class="col-6">
                     <span>Direccion Fiscal del Sujeto Retenido</span>
                     <div>
-                        <span t-esc="retention.partner_id.street" />
+                        <span t-out="retention.partner_id.street" />
                         <t t-if="retention.partner_id.street2"> , <span
-                            t-esc="retention.partner_id.street2"
+                            t-out="retention.partner_id.street2"
                         />
                         </t>
                     </div>
@@ -242,7 +242,7 @@
                         <div class="" style="width:6%;">
                         <t t-if="line.move_id.invoice_date">
                             <span
-                                t-esc="line.move_id.invoice_date.strftime('%d/%m/%Y')"
+                                t-out="line.move_id.invoice_date.strftime('%d/%m/%Y')"
                             />
                         </t>
                         <t t-else="">
@@ -256,7 +256,7 @@
                         <t
                             t-if="line.move_id.move_type in ['out_invoice','out_contingence', 'in_invoice'] and not line.move_id.debit_origin_id"
                         >
-                            <span t-esc="line.move_id.ref or line.move_id.name or '--'" />
+                            <span t-out="line.move_id.ref or line.move_id.name or '--'" />
                         </t>
                         <t t-else="">
                             <span>--</span>
@@ -266,13 +266,13 @@
                         <!--Nro
                         de Control Factura -->
                         <div class="" style="width:6%;">
-                        <span t-esc="line.move_id.l10n_ve_control_number or '--'" />
+                        <span t-out="line.move_id.l10n_ve_control_number or '--'" />
                     </div>
                         <!--Nota
                         de Débito -->
                         <div class="" style="width:6%">
                         <t t-if="line.move_id.debit_origin_id">
-                            <span t-esc="line.move_id.ref or line.move_id.name or '--'" />
+                            <span t-out="line.move_id.ref or line.move_id.name or '--'" />
                         </t>
                         <t t-else="">
                             <span>--</span>
@@ -282,7 +282,7 @@
                         de Crédito -->
                         <div class="" style="width:6%;">
                         <t t-if="line.move_id.move_type in ('out_refund', 'in_refund')">
-                            <span t-esc="line.move_id.ref or line.move_id.name or '--'" />
+                            <span t-out="line.move_id.ref or line.move_id.name or '--'" />
                         </t>
                         <t t-else="">
                             <span>--</span>
@@ -319,12 +319,12 @@
                             t-if="line.move_id.move_type in ('in_refund', 'out_refund') and line.move_id.reversed_entry_id"
                         >
                             <span
-                                t-esc="line.move_id.reversed_entry_id.ref or line.move_id.reversed_entry_id.name or '--'"
+                                t-out="line.move_id.reversed_entry_id.ref or line.move_id.reversed_entry_id.name or '--'"
                             />
                         </t>
                         <t t-elif="line.move_id.debit_origin_id">
                             <span
-                                t-esc="line.move_id.debit_origin_id.ref or line.move_id.debit_origin_id.name or '--'"
+                                t-out="line.move_id.debit_origin_id.ref or line.move_id.debit_origin_id.name or '--'"
                             />
                         </t>
                         <t t-else="">
@@ -335,7 +335,7 @@
                         <div class="" style="width:7%">
                         <span>
                             <t
-                                t-esc="line.invoice_total"
+                                t-out="line.invoice_total"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -352,7 +352,7 @@
                             t-value="sum(line.move_id.invoice_line_ids.filtered(lambda l: l.tax_ids.amount == 0).mapped('price_subtotal'))"
                         />
                         <span
-                            t-esc="amount_except"
+                            t-out="amount_except"
                             t-options='{"widget": "float", "precision": get_digits}'
                         />
                         <t
@@ -366,7 +366,7 @@
                         <div class="" style="width:10%">
                         <t t-if="line.move_id.move_type in ('in_refund', 'out_refund')">
                             <span
-                                t-esc="-line.invoice_amount"
+                                t-out="-line.invoice_amount"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -376,7 +376,7 @@
                         </t>
                         <t t-else="">
                             <span
-                                t-esc="line.invoice_amount"
+                                t-out="line.invoice_amount"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -388,18 +388,18 @@
 
                         <!-- % Alic -->
                         <div class="" style="width:7%">
-                        <span t-esc="line.aliquot" />
+                        <span t-out="line.aliquot" />
                     </div>
                         <!-- % Ret -->
                         <div class="" style="width:7%">
-                        <span t-esc="line.related_percentage_tax_base" />
+                        <span t-out="line.related_percentage_tax_base" />
                     </div>
 
                         <!-- Impuesto IVA -->
                         <div class="" style="width:10%">
                         <t t-if="line.move_id.move_type in ('in_refund', 'out_refund')">
                             <span
-                                t-esc="-line.iva_amount"
+                                t-out="-line.iva_amount"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -409,7 +409,7 @@
                         </t>
                         <t t-else="">
                             <span
-                                t-esc="line.iva_amount"
+                                t-out="line.iva_amount"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -423,7 +423,7 @@
                         <div class="" style="width:10%">
                         <t t-if="line.move_id.move_type in ('in_refund', 'out_refund')">
                             <span
-                                t-esc="-line.retention_amount"
+                                t-out="-line.retention_amount"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -433,7 +433,7 @@
                         </t>
                         <t t-else="">
                             <span
-                                t-esc="line.retention_amount"
+                                t-out="line.retention_amount"
                                 t-options='{"widget": "float", "precision": get_digits}'
                             />
                             <t
@@ -477,7 +477,7 @@
                     </div>
                     <div class="" style="width:10%">
                         <span
-                            t-esc="invoice_amount"
+                            t-out="invoice_amount"
                             t-options='{"widget": "float", "precision": get_digits}'
                         />
                     </div>
@@ -489,13 +489,13 @@
                     </div>
                     <div class="" style="width:10%">
                         <span
-                            t-esc="total_amount_tax"
+                            t-out="total_amount_tax"
                             t-options='{"widget": "float", "precision": get_digits}'
                         />
                     </div>
                     <div class="" style="width:10%">
                         <span
-                            t-esc="float(total_amount_to_pay)"
+                            t-out="float(total_amount_to_pay)"
                             t-options='{"widget": "float", "precision": get_digits}'
                         />
                     </div>
@@ -577,13 +577,13 @@
                         <div class="col-6">
                             <span>Nro Comprobante:</span>
                             <div>
-                                <span t-esc="retention.number" />
+                                <span t-out="retention.number" />
                             </div>
                         </div>
                         <div class="col-6">
                             <span>Fecha:</span>
                             <span
-                                t-esc="retention.date"
+                                t-out="retention.date"
                                 t-options='{"widget": "date"}'
                             />
                         </div>
@@ -609,13 +609,13 @@
                         <span>Agente de Retención:</span>
                     </div>
                     <div class="col-12" style="text-transform:uppercase">
-                        <span t-esc="res_company.name" />
+                        <span t-out="res_company.name" />
                     </div>
                     <div class="col-12">
                         <span>Dirección:</span>
                     </div>
                     <div class="col-12" style="text-transform:uppercase">
-                        <span t-esc="res_company.street" />
+                        <span t-out="res_company.street" />
                     </div>
                 </div>
                 <div class="col-4">
@@ -623,7 +623,7 @@
                         <span>No. R.I.F.:</span>
                     </div>
                     <div class="col-12" style="text-transform:uppercase">
-                        <span t-esc="res_company.vat" />
+                        <span t-out="res_company.vat" />
                     </div>
                 </div>
             </div>
@@ -647,7 +647,7 @@
                     <div class="col-12">
                         <span
                             style="text-transform:uppercase"
-                            t-esc="retention.partner_id.name"
+                            t-out="retention.partner_id.name"
                         />
                     </div>
                 </div>
@@ -659,7 +659,7 @@
                     <div class="col-12">
                         <span
                             style="text-transform:uppercase"
-                            t-esc="retention.partner_id.vat"
+                            t-out="retention.partner_id.vat"
                         />
                     </div>
                 </div>
@@ -671,9 +671,9 @@
                         <span>Dirección:</span>
                     </div>
                     <div class="col-12" style="text-transform:uppercase">
-                        <span t-esc="retention.partner_id.street" />
+                        <span t-out="retention.partner_id.street" />
                         <t t-if="retention.partner_id.street2"> , <span
-                            t-esc="retention.partner_id.street2"
+                            t-out="retention.partner_id.street2"
                         />
                         </t>
                     </div>
@@ -739,7 +739,7 @@
                             <t
                                 t-if="line.move_id.move_type in ('in_invoice','in_refund','out_invoice','out_contingence','out_debit')"
                             >
-                                <span t-esc="line.move_id.ref or line.move_id.name or '--'" />
+                                <span t-out="line.move_id.ref or line.move_id.name or '--'" />
                             </t>
                             <t t-else="">
                                 <span>--</span>
@@ -747,13 +747,13 @@
                         </div>
                         <!-- Nro de Control -->
                         <div style="width:7%">
-                            <span t-esc="line.move_id.l10n_ve_control_number or '--'" />
+                            <span t-out="line.move_id.l10n_ve_control_number or '--'" />
                         </div>
                         <!-- Fecha -->
                         <div style="width:5%">
                             <t t-if="line.move_id.invoice_date">
                                 <span
-                                    t-esc="line.move_id.invoice_date.strftime('%d/%m/%Y')"
+                                    t-out="line.move_id.invoice_date.strftime('%d/%m/%Y')"
                                 />
                             </t>
                             <t t-else="">
@@ -762,12 +762,12 @@
                         </div>
                         <!--Codigo-->
                         <div style="width:5%">
-                            <span t-if="line.code" t-esc="line.code" />
+                            <span t-if="line.code" t-out="line.code" />
                             <span t-else="">--</span>
                         </div>
                         <!-- Concepto-->
                         <div style="width:15%">
-                            <span t-esc="line.payment_concept_id.name">--</span>
+                            <span t-out="line.payment_concept_id.name">--</span>
                         </div>
                         <!-- Total Factura -->
                         <div style="width:15%">
@@ -806,7 +806,7 @@
                                 t-if="line.move_id.move_type in ('in_refund', 'out_refund')"
                             >
                                 <span
-                                    t-esc="-line.retention_amount"
+                                    t-out="-line.retention_amount"
                                     t-options='{"widget": "float", "precision": get_digits}'
                                 />
                                 <t
@@ -816,7 +816,7 @@
                             </t>
                             <t t-else="">
                                 <span
-                                    t-esc="line.retention_amount"
+                                    t-out="line.retention_amount"
                                     t-options='{"widget": "float", "precision": get_digits}'
                                 />
                                 <t
@@ -857,7 +857,7 @@
                     </div>
                     <div class="" style="width:15%">
                         <span
-                            t-esc="imp"
+                            t-out="imp"
                             t-options='{"widget": "float", "precision": get_digits}'
                         />
                     </div>
