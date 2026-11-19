@@ -13,6 +13,7 @@
         "web",
         "sale",
         "sale_management",
+        "sale_pdf_quote_builder",
         "l10n_ve_seniat",
         "account",
     ],
