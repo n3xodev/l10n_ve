@@ -2,7 +2,7 @@ import logging
 
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_compare
+from odoo.tools import float_compare, frozendict
 from odoo.tools.misc import formatLang
 
 _logger = logging.getLogger(__name__)
@@ -364,12 +364,13 @@ class AccountMove(models.Model):
             igtf_amount_currency = sum(move._l10n_ve_igtf_aml().mapped("amount_currency"))
             if move.currency_id.is_zero(igtf_amount_currency):
                 continue
-            key = next(iter(move.needed_terms))
-            values = dict(move.needed_terms[key])
+            # Odoo 20: needed_terms is a list of (key, values) pairs.
+            key, values = move.needed_terms[0]
+            values = dict(values)
             values["amount_currency"] = move.currency_id.round(
                 values["amount_currency"] - igtf_amount_currency
             )
-            move.needed_terms = {key: values}
+            move.needed_terms = [(key, values)]
 
     def _l10n_ve_igtf_get_from_invoice_igtf_lines(self, include_base=False):
         self.ensure_one()
@@ -418,14 +419,16 @@ class AccountMove(models.Model):
                 continue
             if not move._l10n_ve_igtf_move_applies():
                 continue
-            need = move.needed_terms
+            # Odoo 20: needed_terms is a list of (key, values) pairs, and the
+            # term_key of a line is a plain (unhashable) dict.
+            need = {frozendict(k): v for k, v in (move.needed_terms or ())}
             if not need:
                 continue
             payment_term_lines = move.line_ids.filtered(
                 lambda al: al.display_type == "payment_term"
             )
             for line in payment_term_lines:
-                key = line.term_key
+                key = frozendict(line.term_key) if line.term_key else False
                 val = need.get(key) if key in need else None
                 if val is None and key is not False:
                     for fk, v in need.items():
@@ -433,7 +436,7 @@ class AccountMove(models.Model):
                             continue
                         if fields.Date.to_date(
                             line.date_maturity
-                        ) != fk.get("date_maturity"):
+                        ) != fields.Date.to_date(fk.get("date_maturity")):
                             continue
                         mid = fk.get("move_id")
                         if mid not in (None, False) and mid not in (
@@ -1686,6 +1689,10 @@ class AccountMove(models.Model):
                         ),
                     }
                 )
+
+            # Odoo 20: the field is Json and reading it returns a copy, so the
+            # enriched lines must be assigned back.
+            move.invoice_payments_widget = widget
 
     @api.depends(
         "company_id",
