@@ -7,12 +7,13 @@ import { useService } from "@web/core/utils/hooks";
 import { formatDate, deserializeDate } from "@web/core/l10n/dates";
 import { formatMonetary } from "@web/views/fields/formatters";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { Component, usePlugin } from "@odoo/owl";
+import { Component, useProps, usePlugin } from "@odoo/owl";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountAdvancePaymentField extends Component {
-    static props = { ...standardFieldProps };
     static template = "l10n_ve_payment_advance.AccountAdvancePaymentField";
+
+    props = useProps(standardFieldProps);
 
     setup() {
         this.orm = useService("orm");
