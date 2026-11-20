@@ -87,7 +87,7 @@ class TestL10nVeStockProductFiscalLocks(L10nVeSeniatCommon):
             {
                 "product_id": product.id,
                 "product_uom_qty": 1,
-                "product_uom": product.uom_id.id,
+                "uom_id": product.uom_id.id,
                 "picking_id": picking_in.id,
                 "location_id": supplier_loc.id,
                 "location_dest_id": stock_loc.id,

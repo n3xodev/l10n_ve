@@ -52,7 +52,7 @@ class StockMove(models.Model):
             price_unit = sol.price_unit * (1.0 - (sol.discount or 0.0) / 100.0)
             price_currency = sol.currency_id
             taxes = sol.tax_ids
-            move_qty_sol_uom = self.product_uom._compute_quantity(
+            move_qty_sol_uom = self.uom_id._compute_quantity(
                 qty,
                 sol.product_uom_id,
                 rounding_method="HALF-UP",
@@ -75,7 +75,7 @@ class StockMove(models.Model):
             price_unit = pl._get_product_price(
                 product,
                 qty,
-                uom=self.product_uom,
+                uom=self.uom_id,
                 date=picking.scheduled_date or fields.Date.context_today(self),
             )
             price_currency = pl.currency_id or company.currency_id
@@ -115,7 +115,7 @@ class StockMove(models.Model):
         "product_id",
         "product_id.lst_price",
         "product_id.taxes_id",
-        "product_uom",
+        "uom_id",
         "product_uom_qty",
         "quantity",
         "state",
