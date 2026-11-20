@@ -1,7 +1,7 @@
 /** @odoo-module */
 import {registry} from "@web/core/registry";
 import { Component, usePlugin } from "@odoo/owl";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 import {standardActionServiceProps} from "@web/webclient/actions/action_service";
 import {Dialog} from "@web/core/dialog/dialog";
 
@@ -15,7 +15,7 @@ class RedirectAction extends Component {
     };
 
     setup() {
-        this.actionService = usePlugin(ActionManagerPlugin);
+        this.actionService = usePlugin(ActionPlugin);
     }
 
     openClientAction() {

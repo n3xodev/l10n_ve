@@ -4,7 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 import { Component, onMounted, usePlugin, xml } from "@odoo/owl";
@@ -112,7 +112,7 @@ export class L10nVeInvoiceEscpPrintAction extends Component {
     setup() {
         this.orm = useService("orm");
         this.notification = usePlugin(NotificationPlugin);
-        this.action = usePlugin(ActionManagerPlugin);
+        this.action = usePlugin(ActionPlugin);
         onMounted(() => this.run());
     }
 

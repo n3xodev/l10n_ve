@@ -8,12 +8,12 @@ import {useService} from "@web/core/utils/hooks";
 import {removeTaxGroupingFromLineId} from "@l10n_ve_reports/js/util";
 
 import {logAccountReportDate} from "./account_report_date_debug";
-import { ActionManagerPlugin } from "@web/webclient/actions/action_plugin";
+import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportController {
     constructor(action) {
         this.action = action;
-        this.actionService = usePlugin(ActionManagerPlugin);
+        this.actionService = usePlugin(ActionPlugin);
         this.dialog = useService("dialog");
         this.orm = useService("orm");
     }
