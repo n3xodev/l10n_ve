@@ -210,7 +210,7 @@ class ResConfigSettings(models.TransientModel):
     @api.depends("tfhka_api_environment", "tfhka_production_url")
     def _compute_tfhka_base_url(self):
         icp = self.env["ir.config_parameter"].sudo()
-        configured_url = icp.get_param(ICP_BASE_URL, default=TFHKA_API_URL_TEST)
+        configured_url = icp.get_str(ICP_BASE_URL) or TFHKA_API_URL_TEST
         for settings in self:
             if settings.tfhka_api_environment == "production":
                 production_url = (settings.tfhka_production_url or "").strip().rstrip("/")
@@ -238,9 +238,9 @@ class ResConfigSettings(models.TransientModel):
                         "el ambiente Pruebas."
                     )
                 )
-            icp.set_param(ICP_BASE_URL, production_url)
+            icp.set_str(ICP_BASE_URL, production_url)
         else:
-            icp.set_param(ICP_BASE_URL, TFHKA_API_URL_TEST)
+            icp.set_str(ICP_BASE_URL, TFHKA_API_URL_TEST)
 
     def action_test_tfhka_connection(self):
         self.ensure_one()

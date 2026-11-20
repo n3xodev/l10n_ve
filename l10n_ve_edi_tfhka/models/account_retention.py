@@ -176,8 +176,8 @@ class AccountRetention(models.Model):
     def _tfhka_get_retention_pdf_bytes_via_descarga_archivo(self):
         self.ensure_one()
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             return None, _("Configure usuario y clave TFHKA en Ajustes.")
         client = self.env["l10n_ve_edi_tfhka.api.service"].sudo()
@@ -203,13 +203,12 @@ class AccountRetention(models.Model):
 
     def _tfhka_return_pdf_attachment_download_action(self, pdf_bytes):
         self.ensure_one()
-        datas = base64.b64encode(pdf_bytes)
         safe_name = (self.number or f"retention_{self.id}").replace("/", "_")
         filename = f"TFHKA_{safe_name}.pdf"
         vals = {
             "name": filename,
             "type": "binary",
-            "datas": datas,
+            "raw": pdf_bytes,
             "mimetype": "application/pdf",
             "res_model": self._name,
             "res_id": self.id,
@@ -229,7 +228,7 @@ class AccountRetention(models.Model):
     def _l10n_ve_edi_tfhka_try_attach_official_pdf(self):
         self.ensure_one()
         attachment = self.l10n_ve_edi_tfhka_pdf_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             return True
         pdf_bytes, err = self._tfhka_get_retention_pdf_bytes_via_descarga_archivo()
         if not pdf_bytes:
@@ -245,7 +244,7 @@ class AccountRetention(models.Model):
     def _l10n_ve_edi_tfhka_ensure_retention_pdf_report(self):
         self.ensure_one()
         attachment = self.l10n_ve_edi_tfhka_pdf_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             return True
         return self._l10n_ve_edi_tfhka_try_attach_official_pdf()
 
@@ -262,7 +261,7 @@ class AccountRetention(models.Model):
         if pdf_bytes:
             return self._tfhka_return_pdf_attachment_download_action(pdf_bytes)
         attachment = self.l10n_ve_edi_tfhka_pdf_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             return {
                 "type": "ir.actions.act_url",
                 "url": "/web/content/%s?download=true" % attachment.id,
@@ -313,8 +312,8 @@ class AccountRetention(models.Model):
         if self._l10n_ve_edi_get_retention_edi_provider() != "tfhka":
             return super()._l10n_ve_edi_dispatch_payload(payload)
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             return {"success": False, "error": _("Credenciales TFHKA no configuradas.")}
         client = self.env["l10n_ve_edi_tfhka.api.service"].sudo()

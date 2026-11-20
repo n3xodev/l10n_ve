@@ -216,8 +216,8 @@ class AccountMove(models.Model):
         if not self._tfhka_should_cancel_digital_document():
             return
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             raise UserError(_("Configure usuario y clave TFHKA en Ajustes."))
         client = self.env["l10n_ve_edi_tfhka.api.service"].sudo()
@@ -300,8 +300,8 @@ class AccountMove(models.Model):
     def _tfhka_get_invoice_pdf_bytes_via_descarga_archivo(self):
         self.ensure_one()
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             return None, _("Configure usuario y clave TFHKA en Ajustes.")
         client = self.env["l10n_ve_edi_tfhka.api.service"].sudo()
@@ -329,13 +329,12 @@ class AccountMove(models.Model):
 
     def _tfhka_return_pdf_attachment_download_action(self, pdf_bytes):
         self.ensure_one()
-        b64 = base64.b64encode(pdf_bytes)
         safe_name = (self.name or "factura").replace("/", "_")
         fname = f"TFHKA_{safe_name}.pdf"
         vals = {
             "name": fname,
             "type": "binary",
-            "datas": b64,
+            "raw": pdf_bytes,
             "mimetype": "application/pdf",
             "res_model": self._name,
             "res_id": self.id,
@@ -422,13 +421,12 @@ class AccountMove(models.Model):
     def _tfhka_get_line_items(self):
         self.ensure_one()
         line_items = self.invoice_line_ids.filtered(
-            lambda line: line.display_type in (False, "product")
+            lambda line: line.display_type == "product"
         )
         if line_items:
             return line_items
         return self.line_ids.filtered(
-            lambda line: line.display_type in (False, "product")
-            and not line.exclude_from_invoice_tab
+            lambda line: line.display_type == "product"
         )
 
     def _tfhka_get_issue_date(self):
@@ -1650,7 +1648,7 @@ class AccountMove(models.Model):
     def _tfhka_build_formas_pago_line(self, payment, amount):
         self.ensure_one()
         fecha = payment.date.strftime("%d/%m/%Y") if payment.date else self._tfhka_get_issue_date()
-        desc = (payment.memo or payment.ref or payment.name or "Pago")[:120]
+        desc = (payment.memo or payment.payment_reference or payment.name or "Pago")[:120]
         cur = payment.currency_id
         cur_name = (cur.name or "VES")[:3]
         line = {
@@ -2045,8 +2043,8 @@ class AccountMove(models.Model):
         if self.journal_id.l10n_ve_edi_provider != "tfhka":
             return super()._l10n_ve_edi_dispatch_payload(payload)
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             _logger.error(
                 "TFHKA envio omitido move_id=%s name=%s: credenciales no configuradas",
@@ -2258,10 +2256,10 @@ class AccountMove(models.Model):
         if self.move_type != "out_invoice":
             return
         attachment = self.l10n_ve_edi_payload_attachment_id
-        if not attachment or not attachment.datas:
+        if not attachment or not attachment.raw:
             return
         try:
-            payload = json.loads(base64.b64decode(attachment.datas).decode("utf-8"))
+            payload = json.loads(attachment.raw.decode("utf-8"))
         except (json.JSONDecodeError, TypeError, ValueError, binascii.Error):
             return
         factura_guia = self._tfhka_build_factura_guia()

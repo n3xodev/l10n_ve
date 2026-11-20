@@ -1,5 +1,3 @@
-import base64
-
 from werkzeug.exceptions import NotFound
 from werkzeug.utils import redirect
 
@@ -26,8 +24,8 @@ class L10nVeEdiTfhkaPortal(L10nVeStockPortal):
             pdf_bytes, _err = picking_sudo._tfhka_get_dispatch_pdf_bytes_via_descarga_archivo()
             if not pdf_bytes:
                 attachment = picking_sudo.l10n_ve_edi_tfhka_pdf_attachment_id
-                if attachment and attachment.datas:
-                    pdf_bytes = base64.b64decode(attachment.datas)
+                if attachment and attachment.raw:
+                    pdf_bytes = bytes(attachment.raw)
             if pdf_bytes:
                 headers = [
                     ("Content-Type", "application/pdf"),
