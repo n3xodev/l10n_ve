@@ -1,12 +1,12 @@
 /** @odoo-module */
 
-import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl";
+import { Component, onWillStart, proxy, useProps, usePlugin } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class SeniatInvoiceDashboard extends Component {
     static template = "l10n_ve_seniat.SeniatInvoiceDashboard";
-    static props = {};
+    props = useProps({});
 
     setup() {
         this.orm = useService("orm");

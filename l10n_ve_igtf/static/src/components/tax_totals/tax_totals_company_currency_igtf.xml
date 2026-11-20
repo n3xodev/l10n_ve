@@ -9,7 +9,7 @@
             position="replace"
         >
             <t
-                t-if="'l10n_ve_igtf_total_without_igtf_currency' in taxTotals"
+                t-if="'l10n_ve_igtf_total_without_igtf_currency' in this.taxTotals"
             >
                 <tr>
                     <td class="o_td_label">
@@ -19,15 +19,15 @@
                     <td class="o_list_monetary">
                         <span
                             name="l10n_ve_igtf_total_without_igtf"
-                            t-out="formatAmount(taxTotals.l10n_ve_igtf_total_without_igtf_currency, false)"
+                            t-out="this.formatAmount(this.taxTotals.l10n_ve_igtf_total_without_igtf_currency, false)"
                             style="font-weight: 600; white-space: nowrap;"
                         />
                     </td>
-                    <t t-if="taxTotals.display_in_company_currency">
+                    <t t-if="this.taxTotals.display_in_company_currency">
                         <td class="o_list_monetary ps-5">
                             <span
                                 name="l10n_ve_igtf_total_without_igtf_company"
-                                t-out="formatAmount(taxTotals.l10n_ve_igtf_total_without_igtf, true)"
+                                t-out="this.formatAmount(this.taxTotals.l10n_ve_igtf_total_without_igtf, true)"
                                 style="font-weight: 600; white-space: nowrap;"
                             />
                         </td>
@@ -42,17 +42,17 @@
                     <td class="o_list_monetary">
                         <span
                             name="amount_total"
-                            t-att-class="{'oe_subtotal_footer_separator': taxTotals.has_tax_groups}"
-                            t-out="formatAmount(taxTotals.total_amount_currency || 0, false)"
+                            t-att-class="{'oe_subtotal_footer_separator': this.taxTotals.has_tax_groups}"
+                            t-out="this.formatAmount(this.taxTotals.total_amount_currency || 0, false)"
                             style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
                         />
                     </td>
-                    <t t-if="taxTotals.display_in_company_currency">
+                    <t t-if="this.taxTotals.display_in_company_currency">
                         <td class="o_list_monetary ps-5">
                             <span
                                 name="amount_total_company"
-                                t-att-class="{'oe_subtotal_footer_separator': taxTotals.has_tax_groups}"
-                                t-out="formatAmount(taxTotals.total_amount || 0, true)"
+                                t-att-class="{'oe_subtotal_footer_separator': this.taxTotals.has_tax_groups}"
+                                t-out="this.formatAmount(this.taxTotals.total_amount || 0, true)"
                                 style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
                             />
                         </td>
@@ -68,17 +68,17 @@
                     <td class="o_list_monetary">
                         <span
                             name="amount_total"
-                            t-att-class="{'oe_subtotal_footer_separator': taxTotals.has_tax_groups}"
-                            t-out="formatAmount(taxTotals.total_amount_currency || 0, false)"
+                            t-att-class="{'oe_subtotal_footer_separator': this.taxTotals.has_tax_groups}"
+                            t-out="this.formatAmount(this.taxTotals.total_amount_currency || 0, false)"
                             style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
                         />
                     </td>
-                    <t t-if="taxTotals.display_in_company_currency">
+                    <t t-if="this.taxTotals.display_in_company_currency">
                         <td class="o_list_monetary ps-5">
                             <span
                                 name="amount_total_company"
-                                t-att-class="{'oe_subtotal_footer_separator': taxTotals.has_tax_groups}"
-                                t-out="formatAmount(taxTotals.total_amount || 0, true)"
+                                t-att-class="{'oe_subtotal_footer_separator': this.taxTotals.has_tax_groups}"
+                                t-out="this.formatAmount(this.taxTotals.total_amount || 0, true)"
                                 style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
                             />
                         </td>

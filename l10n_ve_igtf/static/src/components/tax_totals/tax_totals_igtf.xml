@@ -13,7 +13,7 @@
                     <td class="o_list_monetary">
                         <span
                             name="l10n_ve_igtf_total_without_igtf"
-                            t-out="formatMonetary(totals.l10n_ve_igtf_total_without_igtf_currency)"
+                            t-out="this.formatMonetary(totals.l10n_ve_igtf_total_without_igtf_currency)"
                             style="font-weight: 600; white-space: nowrap;"
                         />
                     </td>
@@ -28,7 +28,7 @@
                         <span
                             name="amount_total"
                             t-att-class="{'oe_subtotal_footer_separator': totals.has_tax_groups}"
-                            t-out="formatMonetary(totals.total_amount_currency)"
+                            t-out="this.formatMonetary(totals.total_amount_currency)"
                             style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
                         />
                     </td>
@@ -43,7 +43,7 @@
                         <span
                             name="amount_total"
                             t-att-class="{'oe_subtotal_footer_separator': totals.has_tax_groups}"
-                            t-out="formatMonetary(totals.total_amount_currency)"
+                            t-out="this.formatMonetary(totals.total_amount_currency)"
                             style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
                         />
                     </td>
