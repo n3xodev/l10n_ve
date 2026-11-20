@@ -44,7 +44,7 @@ class AccountJournal(models.Model):
 
     @api.model
     def _l10n_ve_edi_unsent_dispatch_guides(self, companies):
-        if "stock.picking" not in self.env:
+        if "stock.picking" not in self.env or not self.env["stock.picking"].has_access("read"):
             return self.env["stock.picking"].browse()
         pickings = self.env["stock.picking"].search(
             [
@@ -58,6 +58,8 @@ class AccountJournal(models.Model):
 
     @api.model
     def _l10n_ve_edi_unsent_retentions(self, companies):
+        if "account.retention" not in self.env or not self.env["account.retention"].has_access("read"):
+            return self.env["account.retention"].browse()
         retentions = self.env["account.retention"].search(
             [
                 ("company_id", "in", companies.ids),
@@ -76,28 +78,35 @@ class AccountJournal(models.Model):
             return {"visible": False, "title": "", "items": []}
 
         invoices = self._l10n_ve_edi_unsent_invoices(ve_companies)
-        pickings = self._l10n_ve_edi_unsent_dispatch_guides(ve_companies)
-        retentions = self._l10n_ve_edi_unsent_retentions(ve_companies)
-        return {
-            "visible": True,
-            "title": _("Documentos sin enviar"),
-            "items": [
-                {
-                    "key": "unsent_invoices",
-                    "label": _("Facturas"),
-                    "count": len(invoices),
-                },
+        items = [
+            {
+                "key": "unsent_invoices",
+                "label": _("Facturas"),
+                "count": len(invoices),
+            },
+        ]
+        if "stock.picking" in self.env and self.env["stock.picking"].has_access("read"):
+            pickings = self._l10n_ve_edi_unsent_dispatch_guides(ve_companies)
+            items.append(
                 {
                     "key": "unsent_dispatch_guides",
                     "label": _("Guías de despacho"),
                     "count": len(pickings),
-                },
+                }
+            )
+        if "account.retention" in self.env and self.env["account.retention"].has_access("read"):
+            retentions = self._l10n_ve_edi_unsent_retentions(ve_companies)
+            items.append(
                 {
                     "key": "unsent_retentions",
                     "label": _("Retenciones"),
                     "count": len(retentions),
-                },
-            ],
+                }
+            )
+        return {
+            "visible": True,
+            "title": _("Documentos sin enviar"),
+            "items": items,
         }
 
     @api.model
@@ -124,6 +133,9 @@ class AccountJournal(models.Model):
             return clean_action(action, self.env)
 
         if key == "unsent_dispatch_guides":
+            if "stock.picking" not in self.env:
+                raise UserError(_("El módulo de inventario no está disponible."))
+            self.env["stock.picking"].check_access("read")
             records = self._l10n_ve_edi_unsent_dispatch_guides(ve_companies)
             action = self.env["ir.actions.actions"]._for_xml_id(
                 "stock.action_picking_tree_all"
@@ -141,6 +153,9 @@ class AccountJournal(models.Model):
             return clean_action(action, self.env)
 
         if key == "unsent_retentions":
+            if "account.retention" not in self.env:
+                raise UserError(_("El módulo de retenciones no está disponible."))
+            self.env["account.retention"].check_access("read")
             records = self._l10n_ve_edi_unsent_retentions(ve_companies)
             return clean_action(
                 {

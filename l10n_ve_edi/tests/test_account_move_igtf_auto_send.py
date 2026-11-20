@@ -122,12 +122,13 @@ class TestL10nVeEdiIgtfAutoSend(TestL10nVeIgtfCommon):
             mock_enqueue.assert_not_called()
 
     def test_no_auto_send_when_already_sent(self):
-        invoice = self._create_usd_invoice_with_igtf_accrual()
-        invoice.l10n_ve_edi_send_state = "sent"
         with patch.object(
             type(self.env["account.move"]),
             "_l10n_ve_edi_enqueue_send",
             autospec=True,
         ) as mock_enqueue:
+            invoice = self._create_usd_invoice_with_igtf_accrual()
+            mock_enqueue.reset_mock()
+            invoice.l10n_ve_edi_send_state = "sent"
             invoice._l10n_ve_edi_try_auto_send_on_igtf_accrual()
             mock_enqueue.assert_not_called()

@@ -1,4 +1,3 @@
-import base64
 import json
 
 from odoo import _, api, fields, models
@@ -222,12 +221,11 @@ class StockPicking(models.Model):
         self.ensure_one()
         filename = (self.name or f"picking_{self.id}").replace("/", "_")
         content = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-        datas = base64.b64encode(content.encode("utf-8"))
         return self.env["ir.attachment"].sudo().create(
             {
                 "name": f"l10n_ve_edi_payload_{filename}.json",
                 "type": "binary",
-                "datas": datas,
+                "raw": content.encode("utf-8"),
                 "mimetype": "application/json",
                 "res_model": self._name,
                 "res_id": self.id,
@@ -345,10 +343,10 @@ class StockPicking(models.Model):
         self.ensure_one()
         attachment = self.l10n_ve_edi_payload_attachment_id
         error_message = False
-        if not attachment or not attachment.datas:
+        if not attachment or not attachment.raw:
             error_message = _("Falta el adjunto con el payload EDI.")
         else:
-            payload = json.loads(base64.b64decode(attachment.datas).decode("utf-8"))
+            payload = json.loads(attachment.raw.decode("utf-8"))
             dispatch = self._l10n_ve_edi_dispatch_payload(payload)
             if dispatch.get("success"):
                 response = dispatch.get("response")

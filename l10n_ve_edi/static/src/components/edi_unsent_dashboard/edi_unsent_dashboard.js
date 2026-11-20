@@ -6,7 +6,6 @@ import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class EdiUnsentDashboard extends Component {
     static template = "l10n_ve_edi.EdiUnsentDashboard";
-    static props = {};
 
     setup() {
         this.orm = useService("orm");

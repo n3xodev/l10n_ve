@@ -1,4 +1,3 @@
-import base64
 import json
 import re
 
@@ -83,11 +82,10 @@ class L10nVeEdiMixin(models.AbstractModel):
         for record in self:
             record.l10n_ve_edi_payload_debug_json = False
             attachment = record.l10n_ve_edi_payload_attachment_id
-            if not attachment or not attachment.datas:
+            if not attachment or not attachment.raw:
                 continue
             try:
-                raw = base64.b64decode(attachment.datas)
-                payload = json.loads(raw.decode("utf-8"))
+                payload = json.loads(attachment.raw.decode("utf-8"))
                 record.l10n_ve_edi_payload_debug_json = json.dumps(
                     payload, ensure_ascii=False, indent=2
                 )
