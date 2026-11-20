@@ -14,7 +14,7 @@
         "views/account_journal_views.xml",
         "views/account_move_views.xml",
         "views/fiscal_machines_menu.xml",
-        'security/ir.access.csv',
+        "security/ir.access.csv",
     ],
     "post_init_hook": "post_init_hook",
     "assets": {

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onMounted, onWillStart, proxy } from "@odoo/owl";
+import { Component, onMounted, onWillStart, proxy, useProps } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
@@ -10,7 +10,7 @@ import { CONNECTION_STATUS } from "../fiscal_connection/fiscal_connection_servic
 export class FiscalMachineSystray extends Component {
     static template = "l10n_ve_fiscal_serial.FiscalMachineSystray";
     static components = { Dropdown, DropdownItem };
-    static props = {};
+    props = useProps({});
 
     setup() {
         this.connection = useService("l10n_ve_fiscal_connection");

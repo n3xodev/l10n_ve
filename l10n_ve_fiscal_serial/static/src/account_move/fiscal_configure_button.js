@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, usePlugin, xml } from "@odoo/owl";
+import { Component, t, usePlugin, useProps, xml } from "@odoo/owl";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
@@ -8,10 +8,10 @@ import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { l10nVeFiscalSerialExecuteConfigure } from "../fiscal_serial/fiscal_serial_configure";
 
 export class FiscalConfigureButton extends Component {
-    static props = {
+    props = useProps({
         ...standardWidgetProps,
-        button_class: { type: String, optional: true },
-    };
+        button_class: t.string().optional(),
+    });
     static template = xml`
         <button t-att-class="this.buttonClass" type="button" t-on-click="this.onClick">
             <span t-out="this.label"/>
