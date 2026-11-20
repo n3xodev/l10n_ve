@@ -5,7 +5,6 @@
             <field name="model">arcv.report</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">l10n_ve_withholding.report_template_arcv</field>
-            <field name="report_file">l10n_ve_withholding.report_template_arcv</field>
             <field name="print_report_name">'Comprobante_ARCV'</field>
             <field name="paperformat_id" ref="paperformat_arcv" />
         </record>
@@ -120,7 +119,7 @@
                                             class="fw tal"
                                             t-out="res_company.partner_id.street"
                                         />
-                                        <span t-esc="res_company.partner_id.street2" />
+                                        <span t-out="res_company.partner_id.street2" />
                                         <br />
                                         <span class="tal">Teléfono: </span>
                                         <span
@@ -148,7 +147,7 @@
                                             class="fw tal"
                                             t-out="data['partner']['street']"
                                         />
-                                        <span t-esc="data['partner']['street2']" />
+                                        <span t-out="data['partner']['street2']" />
                                         <br />
                                         <span class="tal">Teléfono: </span>
                                         <span
