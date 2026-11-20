@@ -20,25 +20,29 @@
         </xpath>
     </t>
 
-    <t t-inherit="account.AccountPaymentPopOver" t-inherit-mode="extension">
+    <t
+        t-name="l10n_ve_igtf.AccountPaymentPopOver"
+        t-inherit="account.AccountPaymentPopOver"
+        t-inherit-mode="primary"
+    >
         <xpath expr="//div[contains(@class, 'px-2')]//table/tr[1]" position="after">
-            <tr t-if="props.l10n_ve_igtf_amount_formatted">
+            <tr t-if="this.props.l10n_ve_igtf_amount_formatted">
                 <td class="fw-bolder">IGTF:</td>
                 <td class="ps-1">
-                    <t t-out="props.l10n_ve_igtf_amount_formatted" />
-                    <t t-if="props.l10n_ve_igtf_amount_company_currency_formatted">
+                    <t t-out="this.props.l10n_ve_igtf_amount_formatted" />
+                    <t t-if="this.props.l10n_ve_igtf_amount_company_currency_formatted">
                         <span> (</span>
                         <t
-                            t-out="props.l10n_ve_igtf_amount_company_currency_formatted"
+                            t-out="this.props.l10n_ve_igtf_amount_company_currency_formatted"
                         />
                         <span>)</span>
                     </t>
                 </td>
             </tr>
-            <tr t-if="props.l10n_ve_net_amount_formatted">
+            <tr t-if="this.props.l10n_ve_net_amount_formatted">
                 <td class="fw-bolder">Net reconciled:</td>
                 <td class="ps-1">
-                    <t t-out="props.l10n_ve_net_amount_formatted" />
+                    <t t-out="this.props.l10n_ve_net_amount_formatted" />
                 </td>
             </tr>
         </xpath>
