@@ -20,3 +20,4 @@ from . import test_account_journal_dashboard
 from . import test_account_tax_group
 from . import test_account_fiscal_position
 from . import test_ir_access
+from . import test_owl3_static_props
