@@ -5,18 +5,18 @@ import { formatMonetary } from "@web/views/fields/formatters";
 import { patch } from "@web/core/utils/patch";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
+import { Component, t, useProps } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 
 class L10nVeGlobalDiscountDetailsPopover extends Component {
     static template = "l10n_ve_loyalty.GlobalDiscountDetailsPopover";
-    static props = {
-        lines: { type: Array },
-        currencyId: { type: Number, optional: true },
-        onRemove: { type: Function },
-        onRemoveAll: { type: Function },
-        close: { type: Function, optional: true },
-    };
+    props = useProps({
+        lines: t.array(t.object()),
+        currencyId: t.or([t.number(), t.literal(false)]).optional(),
+        onRemove: t.function(),
+        onRemoveAll: t.function(),
+        close: t.function().optional(),
+    });
 
     get showRemoveAll() {
         return this.props.lines.length > 1;
@@ -54,7 +54,11 @@ const l10nVeGlobalDiscountTaxTotalsPatch = {
     },
 
     get l10nVeDiscountTotals() {
-        return this.totals || this.taxTotals || {};
+        // Core TaxTotalsComponent exposes `totals` as an Owl computed signal.
+        if (typeof this.totals === "function") {
+            return this.totals() || {};
+        }
+        return this.taxTotals || {};
     },
 
     get showGlobalDiscount() {
