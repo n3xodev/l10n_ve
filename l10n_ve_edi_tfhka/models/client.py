@@ -85,20 +85,20 @@ class L10nVeEdiTfhkaApiService(models.AbstractModel):
 
     @api.model
     def _base_url(self):
-        value = self.env["ir.config_parameter"].sudo().get_param(
-            ICP_BASE_URL, default=DEFAULT_BASE_URL
+        value = (
+            self.env["ir.config_parameter"].sudo().get_str(ICP_BASE_URL)
+            or DEFAULT_BASE_URL
         )
         return value.rstrip("/")
 
     @api.model
     def _timeout(self):
-        value = self.env["ir.config_parameter"].sudo().get_param(
-            ICP_TIMEOUT, default=str(DEFAULT_TIMEOUT)
+        value = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_int(ICP_TIMEOUT, default=DEFAULT_TIMEOUT)
         )
-        try:
-            return int(value)
-        except (TypeError, ValueError):
-            return DEFAULT_TIMEOUT
+        return value or DEFAULT_TIMEOUT
 
     @api.model
     def _build_headers(self, token=None):

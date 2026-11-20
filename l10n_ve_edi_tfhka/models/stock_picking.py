@@ -351,9 +351,9 @@ class StockPicking(models.Model):
     def _tfhka_get_document_number_for_reference(self):
         self.ensure_one()
         attachment = self.l10n_ve_edi_payload_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             try:
-                payload = json.loads(base64.b64decode(attachment.datas).decode("utf-8"))
+                payload = json.loads(attachment.raw.decode("utf-8"))
                 ident = (
                     payload.get("documentoElectronico", {})
                     .get("encabezado", {})
@@ -707,10 +707,10 @@ class StockPicking(models.Model):
     def _tfhka_stored_payload_has_invoice_link(self, invoice):
         self.ensure_one()
         attachment = self.l10n_ve_edi_payload_attachment_id
-        if not attachment or not attachment.datas:
+        if not attachment or not attachment.raw:
             return False
         try:
-            payload = json.loads(base64.b64decode(attachment.datas).decode("utf-8"))
+            payload = json.loads(attachment.raw.decode("utf-8"))
         except (json.JSONDecodeError, TypeError, ValueError, binascii.Error):
             return False
         return self._tfhka_payload_factura_guia_has_invoice(payload, invoice)
@@ -868,9 +868,11 @@ class StockPicking(models.Model):
             "codigoCIIU": "",
             "codigoPLU": plu,
             "indicadorBienoServicio": "2" if product and product.type == "service" else "1",
-            "descripcion": (product.display_name or move.name or "")[:500],
+            "descripcion": (
+                product.display_name or move.description_picking or move.reference or ""
+            )[:500],
             "cantidad": self._l10n_ve_edi_format_decimal(qty),
-            "unidadMedida": (move.product_uom.name or "UND")[:3],
+            "unidadMedida": (move.uom_id.name or "UND")[:3],
             "precioUnitario": self._l10n_ve_edi_format_decimal(pu),
             "precioUnitarioDescuento": None,
             "montoBonificacion": None,
@@ -1047,8 +1049,8 @@ class StockPicking(models.Model):
     def _tfhka_get_dispatch_pdf_bytes_via_descarga_archivo(self):
         self.ensure_one()
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             return None, _("Configure usuario y clave TFHKA en Ajustes.")
         client = self.env["l10n_ve_edi_tfhka.api.service"].sudo()
@@ -1074,13 +1076,12 @@ class StockPicking(models.Model):
 
     def _tfhka_return_pdf_attachment_download_action(self, pdf_bytes):
         self.ensure_one()
-        datas = base64.b64encode(pdf_bytes)
         safe_name = (self.name or f"picking_{self.id}").replace("/", "_")
         filename = f"TFHKA_{safe_name}.pdf"
         vals = {
             "name": filename,
             "type": "binary",
-            "datas": datas,
+            "raw": pdf_bytes,
             "mimetype": "application/pdf",
             "res_model": self._name,
             "res_id": self.id,
@@ -1100,7 +1101,7 @@ class StockPicking(models.Model):
     def _l10n_ve_edi_tfhka_try_attach_official_pdf(self):
         self.ensure_one()
         attachment = self.l10n_ve_edi_tfhka_pdf_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             return True
         pdf_bytes, err = self._tfhka_get_dispatch_pdf_bytes_via_descarga_archivo()
         if not pdf_bytes:
@@ -1153,7 +1154,7 @@ class StockPicking(models.Model):
     def _l10n_ve_edi_tfhka_ensure_dispatch_pdf_report(self):
         self.ensure_one()
         attachment = self.l10n_ve_edi_tfhka_pdf_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             return True
         return self._l10n_ve_edi_tfhka_try_attach_official_pdf()
 
@@ -1169,7 +1170,7 @@ class StockPicking(models.Model):
         if pdf_bytes:
             return self._tfhka_return_pdf_attachment_download_action(pdf_bytes)
         attachment = self.l10n_ve_edi_tfhka_pdf_attachment_id
-        if attachment and attachment.datas:
+        if attachment and attachment.raw:
             return {
                 "type": "ir.actions.act_url",
                 "url": "/web/content/%s?download=true" % attachment.id,
@@ -1225,8 +1226,8 @@ class StockPicking(models.Model):
         if self._l10n_ve_edi_get_dispatch_edi_provider() != "tfhka":
             return super()._l10n_ve_edi_dispatch_payload(payload)
         params = self.env["ir.config_parameter"].sudo()
-        username = params.get_param("l10n_ve_edi_tfhka.username")
-        password = params.get_param("l10n_ve_edi_tfhka.password")
+        username = params.get_str("l10n_ve_edi_tfhka.username")
+        password = params.get_str("l10n_ve_edi_tfhka.password")
         if not username or not password:
             return {"success": False, "error": _("Credenciales TFHKA no configuradas.")}
         client = self.env["l10n_ve_edi_tfhka.api.service"].sudo()

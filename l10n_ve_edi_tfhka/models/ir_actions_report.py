@@ -1,5 +1,3 @@
-import base64
-
 from odoo import _, models
 from odoo.exceptions import UserError
 
@@ -104,8 +102,8 @@ class IrActionsReport(models.Model):
                         )
                     )
                 att = move.invoice_pdf_report_id
-                if att and att.datas:
-                    return base64.b64decode(att.datas), "pdf"
+                if att and att.raw:
+                    return bytes(att.raw), "pdf"
                 raise UserError(
                     _("El adjunto PDF de facturacion digital no esta disponible.")
                 )
@@ -120,8 +118,8 @@ class IrActionsReport(models.Model):
                         )
                     )
                 attachment = retention.l10n_ve_edi_tfhka_pdf_attachment_id
-                if attachment and attachment.datas:
-                    return base64.b64decode(attachment.datas), "pdf"
+                if attachment and attachment.raw:
+                    return bytes(attachment.raw), "pdf"
                 raise UserError(
                     _("El adjunto PDF de facturacion digital no esta disponible.")
                 )
@@ -136,8 +134,8 @@ class IrActionsReport(models.Model):
                         )
                     )
                 attachment = picking.l10n_ve_edi_tfhka_pdf_attachment_id
-                if attachment and attachment.datas:
-                    return base64.b64decode(attachment.datas), "pdf"
+                if attachment and attachment.raw:
+                    return bytes(attachment.raw), "pdf"
                 raise UserError(
                     _("El adjunto PDF de facturacion digital no esta disponible.")
                 )
