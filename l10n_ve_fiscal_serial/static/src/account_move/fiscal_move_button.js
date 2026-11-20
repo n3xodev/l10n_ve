@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, usePlugin, xml } from "@odoo/owl";
+import { Component, usePlugin, useProps, xml } from "@odoo/owl";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
 import { UIPlugin } from "@web/core/ui/ui_plugin";
@@ -38,7 +38,7 @@ const ACTION_AUDIT_SOURCE = {
 };
 
 export class FiscalMoveButton extends Component {
-    static props = ["*"];
+    props = useProps();
     static template = xml`
         <button t-att-class="this.buttonClass" type="button" t-on-click="this.onClick">
             <span t-out="this.label"/>

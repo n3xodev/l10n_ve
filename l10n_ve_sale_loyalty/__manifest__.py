@@ -15,7 +15,7 @@
     ],
     "data": [
         "wizard/sale_order_discount_views.xml",
-        'security/ir.access.csv',
+        "security/ir.access.csv",
     ],
     "license": "AGPL-3",
     "installable": True,

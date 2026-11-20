@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, usePlugin, xml } from "@odoo/owl";
+import { Component, usePlugin, useProps, xml } from "@odoo/owl";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
@@ -12,7 +12,7 @@ const ACTION_LABELS = {
 };
 
 export class FiscalReportButton extends Component {
-    static props = ["*"];
+    props = useProps();
     static template = xml`
         <button t-att-class="this.buttonClass" type="button" t-on-click="this.onClick">
             <span t-out="this.label"/>

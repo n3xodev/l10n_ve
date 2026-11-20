@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onWillUnmount, proxy, usePlugin } from "@odoo/owl";
+import { Component, onWillUnmount, proxy, t, usePlugin, useProps } from "@odoo/owl";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { UIPlugin } from "@web/core/ui/ui_plugin";
 import { useService } from "@web/core/utils/hooks";
@@ -17,10 +17,10 @@ const PHASE = {
 
 export class FiscalMachineDebugConsole extends Component {
     static template = "l10n_ve_fiscal_serial.FiscalMachineDebugConsole";
-    static props = {
-        record: { type: Object, optional: true },
-        embedded: { type: Boolean, optional: true },
-    };
+    props = useProps({
+        record: t.object().optional(),
+        embedded: t.boolean().optional(),
+    });
 
     setup() {
         this.fiscalSerial = useService("l10n_ve_fiscal_serial");
