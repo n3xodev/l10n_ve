@@ -23,7 +23,7 @@
         "wizard/l10n_ve_account_move_post_discount_wizard_views.xml",
         "views/account_move_views.xml",
         "views/l10n_ve_discount_reason_views.xml",
-        'security/ir.access.csv',
+        "security/ir.access.csv",
     ],
     "assets": {
         "web.assets_backend": [

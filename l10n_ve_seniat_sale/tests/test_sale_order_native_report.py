@@ -53,8 +53,16 @@ class TestSaleOrderNativeReport(L10nVeSeniatCommon):
                 ("binding_model_id.model", "=", "sale.order"),
             ]
         )
-        report_names = set(reports.mapped("report_name"))
-        self.assertIn("sale.report_saleorder", report_names)
+        # Odoo 20: sale_pdf_quote_builder unbinds sale.action_report_saleorder and binds
+        # its own action on the "_raw" template.
+        raw = self.env.ref("sale_pdf_quote_builder.action_report_saleorder_raw")
+        self.assertIn(raw, reports)
+        self.assertEqual(raw.name, "Presupuesto / Pedido de venta")
+        self.assertIn("Pedido de venta - ", raw.print_report_name)
+        native = self.env.ref("sale.action_report_saleorder")
+        self.assertNotIn(native, reports)
+        self.assertEqual(native.name, "Presupuesto / Pedido de venta")
+        self.assertIn("Pedido de venta - ", native.print_report_name)
 
     def test_native_sale_report_shows_no_fiscal_markers(self):
         order = self._create_ve_sale_order()

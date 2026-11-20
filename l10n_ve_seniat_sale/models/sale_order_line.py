@@ -46,10 +46,8 @@ class SaleOrderLine(models.Model):
         for line in self:
             if not line._l10n_ve_is_split_discount_line():
                 continue
-            rounding = line.product_uom_id.rounding
-            if float_is_zero(line.qty_to_invoice, precision_rounding=rounding):
-                continue
-            if float_is_zero(line.product_uom_qty, precision_rounding=rounding):
+            uom = line.product_uom_id
+            if uom.is_zero(line.qty_to_invoice) or uom.is_zero(line.product_uom_qty):
                 continue
             expected_subtotal = abs(line.price_subtotal)
             if float_is_zero(expected_subtotal, precision_rounding=line.currency_id.rounding):

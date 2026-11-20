@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from odoo import Command, _, api, fields, models
 from odoo.exceptions import AccessError, UserError
-from odoo.tools import float_compare, float_is_zero, float_round
+from odoo.tools import float_is_zero, float_round
 
 
 class SaleOrder(models.Model):
@@ -177,8 +177,11 @@ class SaleOrder(models.Model):
             if line.display_type or line.is_downpayment:
                 continue
             qty = getattr(line, qty_field, 0.0)
-            rounding = line.product_uom_id.rounding if line.product_uom_id else 1e-9
-            if float_is_zero(qty, precision_rounding=rounding):
+            if line.product_uom_id:
+                is_zero_qty = line.product_uom_id.is_zero(qty)
+            else:
+                is_zero_qty = float_is_zero(qty, precision_rounding=1e-9)
+            if is_zero_qty:
                 continue
             price_reduce = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
             subtotal += price_reduce * qty
@@ -289,7 +292,7 @@ class SaleOrder(models.Model):
             if line_taxes != disc_taxes:
                 continue
             qty = line.qty_to_invoice
-            if float_is_zero(qty, precision_rounding=line.product_uom_id.rounding):
+            if line.product_uom_id.is_zero(qty):
                 continue
             price_reduce = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
             subtotal += price_reduce * qty
@@ -368,7 +371,7 @@ class SaleOrder(models.Model):
         chunk_weights_by_discount = {}
         for dline in disc_lines:
             qty = dline.qty_to_invoice
-            if float_is_zero(qty, precision_rounding=dline.product_uom_id.rounding):
+            if dline.product_uom_id.is_zero(qty):
                 continue
             weights = [
                 self._l10n_ve_chunk_subtotal_for_discount(chunk, dline)
@@ -466,7 +469,7 @@ class SaleOrder(models.Model):
             },
         }
 
-    def _create_invoices(self, grouped=False, final=False, date=None):
+    def _create_invoices(self, grouped=False, final=False):
         if not self.env["account.move"].has_access("create"):
             try:
                 self.check_access("write")
@@ -476,7 +479,7 @@ class SaleOrder(models.Model):
         non_ve = self - ve
         moves = (
             super(SaleOrder, non_ve)._create_invoices(
-                grouped=grouped, final=final, date=date
+                grouped=grouped, final=final
             )
             if non_ve
             else self.env["account.move"]
@@ -493,7 +496,7 @@ class SaleOrder(models.Model):
                     ctx["l10n_ve_discount_amount_allocation"] = discount_alloc
                 chunk_moves = super(
                     SaleOrder, order.with_context(**ctx)
-                )._create_invoices(grouped=False, final=final, date=date)
+                )._create_invoices(grouped=False, final=final)
                 order._l10n_ve_after_invoice_chunk(chunk_moves, discount_alloc)
                 moves |= chunk_moves
             else:
@@ -504,7 +507,7 @@ class SaleOrder(models.Model):
                     chunk_moves = super(
                         SaleOrder,
                         order.with_context(**ctx),
-                    )._create_invoices(grouped=False, final=final, date=date)
+                    )._create_invoices(grouped=False, final=final)
                     order._l10n_ve_after_invoice_chunk(chunk_moves, discount_alloc)
                     moves |= chunk_moves
         return moves
@@ -575,12 +578,7 @@ class SaleOrder(models.Model):
                 lambda line: (
                     not line.display_type
                     and not line.is_downpayment
-                    and float_compare(
-                        line.product_uom_qty,
-                        0.0,
-                        precision_rounding=line.product_uom_id.rounding,
-                    )
-                    <= 0
+                    and line.product_uom_id.compare(line.product_uom_qty, 0.0) <= 0
                 )
             )
             if invalid_qty_lines:
