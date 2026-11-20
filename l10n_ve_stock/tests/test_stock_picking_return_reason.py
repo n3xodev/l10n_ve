@@ -5,6 +5,11 @@ from odoo.addons.stock.tests.common import TestStockCommon
 
 @tagged("post_install", "-at_install")
 class TestL10nVeStockReturnTransferReason(TestStockCommon):
+    _test_user_groups = (
+        "product.group_product_manager",
+        "stock.group_stock_user",
+    )
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -24,7 +29,7 @@ class TestL10nVeStockReturnTransferReason(TestStockCommon):
             {
                 "product_id": self.productA.id,
                 "product_uom_qty": 5,
-                "product_uom": self.uom_unit.id,
+                "uom_id": self.uom_unit.id,
                 "picking_id": picking_in.id,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.stock_location.id,
@@ -36,18 +41,9 @@ class TestL10nVeStockReturnTransferReason(TestStockCommon):
         picking_in.move_ids.picked = True
         picking_in.button_validate()
 
-        return_wizard = (
-            self.env["stock.return.picking"]
-            .with_context(
-                active_id=picking_in.id,
-                active_ids=picking_in.ids,
-                active_model="stock.picking",
-            )
-            .create({})
-        )
-        return_wizard.product_return_moves.quantity = 5
-        action = return_wizard.action_create_returns()
+        action = picking_in.action_return()
         return_picking = self.env["stock.picking"].browse(action["res_id"])
+        return_picking.action_return_all()
 
         self.assertTrue(return_picking.return_id)
         self.assertFalse(return_picking._l10n_ve_requires_internal_transfer_reason())

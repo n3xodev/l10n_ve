@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import float_is_zero
 
 
 class StockPicking(models.Model):
@@ -368,7 +368,7 @@ class StockPicking(models.Model):
     def _l10n_ve_dispatch_address_inline(self, partner):
         if not partner:
             return ""
-        text = partner.sudo()._display_address(without_company=True)
+        text = partner.sudo()._display_address(without_name=True)
         return re.sub(r"\n(\s|\n)*", ", ", text).strip().strip(",")
 
     def _l10n_ve_dispatch_partner_contact_phone(self):
@@ -424,7 +424,7 @@ class StockPicking(models.Model):
                     "weight_line": weight_line,
                     "volume_line": volume_line,
                     "quantity": qty,
-                    "uom_name": move.product_uom.name,
+                    "uom_name": move.uom_id.name,
                     "price_unit": price_unit,
                     "currency": price_currency,
                     "subtotal": subtotal,
@@ -529,16 +529,16 @@ class StockPicking(models.Model):
         saw_product = False
         per_soline_qty = defaultdict(float)
         for move in self.move_ids:
-            if move.scrap_id or not move.product_id or move.product_id.type == "service":
+            if move.is_scrap or not move.product_id or move.product_id.type == "service":
                 continue
             qty_uom = move.quantity if move.state == "done" else move.product_uom_qty
-            if float_is_zero(qty_uom, precision_rounding=move.product_uom.rounding):
+            if move.uom_id.is_zero(qty_uom):
                 continue
             saw_product = True
             if not move.sale_line_id:
                 return False
             sol = move.sale_line_id
-            per_soline_qty[sol] += move.product_uom._compute_quantity(
+            per_soline_qty[sol] += move.uom_id._compute_quantity(
                 qty_uom,
                 sol.product_uom_id,
                 round=False,
@@ -552,11 +552,7 @@ class StockPicking(models.Model):
                 threshold = sol.qty_delivered
             else:
                 threshold = sol.qty_delivered + qty_pick
-            if float_compare(
-                sol.qty_invoiced_posted,
-                threshold,
-                precision_rounding=sol.product_uom_id.rounding,
-            ) < 0:
+            if sol.product_uom_id.compare(sol.qty_invoiced_posted, threshold) < 0:
                 return False
         return True
 

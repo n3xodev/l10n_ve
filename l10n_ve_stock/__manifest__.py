@@ -35,7 +35,7 @@
         "report/report_dispatch_guide.xml",
         "report/stock_report_dispatch_actions.xml",
         "views/stock_report_actions.xml",
-        'security/ir.access.csv',
+        "security/ir.access.csv",
     ],
     "license": "AGPL-3",
     "auto_install": ["stock", "l10n_ve_seniat"],

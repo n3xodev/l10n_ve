@@ -40,7 +40,6 @@
         <field name="model">stock.picking</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">l10n_ve_stock.report_dispatch_guide</field>
-        <field name="report_file">l10n_ve_stock.report_dispatch_guide</field>
         <field name="binding_model_id" ref="stock.model_stock_picking" />
         <field name="binding_type">report</field>
         <field

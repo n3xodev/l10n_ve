@@ -3,7 +3,7 @@ from werkzeug.exceptions import NotFound
 from odoo import exceptions
 from odoo.http import request, route
 
-from odoo.addons.sale_stock.controllers.portal import SaleStockPortal
+from odoo.addons.sale_stock.controllers.portal import CustomerPortal as SaleStockPortal
 
 
 class L10nVeStockPortal(SaleStockPortal):

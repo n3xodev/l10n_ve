@@ -156,10 +156,16 @@ class TestL10nVeStockPickingReports(TestL10nVeStockDispatchGuide):
         self.assertNotIn("l10n_ve_portal_dispatch_guides", arch_text)
         from odoo.tools import is_html_empty
 
+        delivery_orders = order.picking_ids.filtered(
+            lambda p: p.picking_type_id.code == "outgoing"
+        )
         html = self.env["ir.qweb"]._render(
             "sale.sale_order_portal_content",
             {
                 "sale_order": order,
+                "delivery_orders": delivery_orders,
+                "has_info_cards": bool(delivery_orders),
+                "keep_query": lambda **kw: "",
                 "report_type": "html",
                 "product_documents": order._get_product_documents(),
                 "is_html_empty": is_html_empty,
@@ -168,7 +174,7 @@ class TestL10nVeStockPickingReports(TestL10nVeStockDispatchGuide):
         html_text = html.decode() if isinstance(html, bytes) else str(html)
         self.assertIn(picking.l10n_ve_control_number, html_text)
         self.assertIn("N° de control:", html_text)
-        self.assertIn("Last Delivery Orders", html_text)
+        self.assertIn("Delivery", html_text)
 
     def test_portal_invoice_control_number_on_invoices_only(self):
         product = self._create_product(
@@ -180,6 +186,7 @@ class TestL10nVeStockPickingReports(TestL10nVeStockDispatchGuide):
         picking = self._prepare_outgoing_sale_picking(product, 1)
         invoice = picking.sale_id._create_invoices()
         invoice.action_post()
+        invoice.l10n_ve_control_number = "00-00001234"
         for move in picking.move_ids:
             move.quantity = move.product_uom_qty
             move.picked = True
@@ -188,32 +195,72 @@ class TestL10nVeStockPickingReports(TestL10nVeStockDispatchGuide):
         self.assertFalse(picking.l10n_ve_portal_control_number_display())
         self.assertEqual(
             invoice.l10n_ve_portal_control_number_display(),
-            (invoice.l10n_ve_control_number or "").strip(),
+            "00-00001234",
         )
         from odoo.tools import is_html_empty
 
+        order = picking.sale_id
+        delivery_orders = order.picking_ids.filtered(
+            lambda p: p.picking_type_id.code == "outgoing"
+        )
         html = self.env["ir.qweb"]._render(
             "sale.sale_order_portal_content",
             {
-                "sale_order": picking.sale_id,
+                "sale_order": order,
+                "delivery_orders": delivery_orders,
+                "has_info_cards": bool(delivery_orders),
+                "keep_query": lambda **kw: "",
                 "report_type": "html",
-                "product_documents": picking.sale_id._get_product_documents(),
+                "product_documents": order._get_product_documents(),
                 "is_html_empty": is_html_empty,
             },
         )
         html_text = html.decode() if isinstance(html, bytes) else str(html)
+        self.assertIn("Delivery", html_text)
+        self.assertNotIn("N° de control", html_text)
+
+        template_arch = self.env.ref(
+            "sale.sale_order_portal_template"
+        )._get_combined_arch()
+        sidebar_invoices = order.invoice_ids.filtered(
+            lambda i: i.state not in ["draft", "cancel"]
+        )
         invoice_display = invoice.l10n_ve_portal_control_number_display()
-        invoice_idx = html_text.find("Last Invoices")
-        delivery_idx = html_text.find("Last Delivery Orders")
-        self.assertGreater(invoice_idx, -1)
-        self.assertGreater(delivery_idx, -1)
-        self.assertLess(invoice_idx, delivery_idx)
-        invoice_block = html_text[invoice_idx:delivery_idx]
-        delivery_block = html_text[delivery_idx:delivery_idx + 1000]
-        if invoice_display:
-            self.assertIn(invoice_display, html_text)
-            self.assertIn(invoice_display, invoice_block)
-        self.assertNotIn("N° de control", delivery_block)
+        self.assertEqual(invoice_display, "00-00001234")
+
+        sidebar_nodes = template_arch.xpath("//div[@id='sidebar_invoices']")
+        self.assertEqual(len(sidebar_nodes), 1)
+        sidebar_text = etree.tostring(sidebar_nodes[0], encoding="unicode")
+        self.assertIn("inv.l10n_ve_portal_control_number_display()", sidebar_text)
+        sidebar_html = self.env["ir.qweb"]._render(
+            sidebar_nodes[0],
+            {"sale_order": order, "sidebar_invoices": sidebar_invoices},
+        )
+        sidebar_rendered = (
+            sidebar_html.decode()
+            if isinstance(sidebar_html, bytes)
+            else str(sidebar_html)
+        )
+        self.assertIn(invoice_display, sidebar_rendered)
+        self.assertIn("N° de control:", sidebar_rendered)
+
+        mobile_nodes = template_arch.xpath(
+            "//div[contains(@class, 'd-lg-none')][.//a[@t-att-href='inv.get_portal_url()']]"
+        )
+        self.assertEqual(len(mobile_nodes), 1)
+        mobile_text = etree.tostring(mobile_nodes[0], encoding="unicode")
+        self.assertIn("inv.l10n_ve_portal_control_number_display()", mobile_text)
+        mobile_html = self.env["ir.qweb"]._render(
+            mobile_nodes[0],
+            {"sale_order": order, "sidebar_invoices": sidebar_invoices},
+        )
+        mobile_rendered = (
+            mobile_html.decode()
+            if isinstance(mobile_html, bytes)
+            else str(mobile_html)
+        )
+        self.assertIn(invoice_display, mobile_rendered)
+        self.assertIn("N° de control:", mobile_rendered)
 
     def test_dispatch_guide_print_blocked_before_delivery_done(self):
         product = self._create_product(
