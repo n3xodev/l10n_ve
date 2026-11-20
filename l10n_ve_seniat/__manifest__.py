@@ -7,7 +7,17 @@
     "version": "20.0.1.0.0",
     "author": "Anderson Armeya, Odoo Community Association (OCA)",
     "category": "Accounting/Localizations/Account Charts",
-    "depends": ["base", "web", "mail", "account", "account_debit_note"],
+    "depends": [
+        "base",
+        "web",
+        "mail",
+        "account",
+        "account_debit_note",
+        # Restores the Odoo 19 same-day rate semantics ("name <= date") that
+        # this module assumes (see models/account_move.py and
+        # models/res_currency_rate.py).
+        "currency_rate_update",
+    ],
     "demo": [
         "demo/demo_company.xml",
     ],

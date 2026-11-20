@@ -288,9 +288,10 @@ class TestAccountPaymentRegisterSameDay(L10nVeSeniatCommon):
     def test_later_day_ves_payment_uses_current_rate(self):
         invoice = self._create_usd_invoice([10.17, 25.33, 8.91])
         later = self.invoice_date + relativedelta(days=2)
-        # 20.0 res.currency._get_rates only uses rates dated strictly before the
-        # conversion date, so the new rate must predate the payment day.
-        self._set_usd_inverse_rate(later - relativedelta(days=1), 450.5)
+        # The rate of the payment day applies on that same day (Odoo 19
+        # semantics restored by currency_rate_update on top of Odoo 20's
+        # strict "name < date" lookup).
+        self._set_usd_inverse_rate(later, 450.5)
         wizard = self._create_payment_register(invoice, later, self.ves)
         expected = self.usd._convert(
             invoice.amount_residual,
@@ -308,6 +309,18 @@ class TestAccountPaymentRegisterSameDay(L10nVeSeniatCommon):
             ),
             0,
         )
+
+    def test_payment_day_rate_applies_on_payment_day(self):
+        """Guard: a rate dated D is the rate used on day D, not on D+1."""
+        later = self.invoice_date + relativedelta(days=2)
+        self._set_usd_inverse_rate(later - relativedelta(days=1), 400.0)
+        self._set_usd_inverse_rate(later, 450.5)
+        rates = self.env["res.currency"]._get_rates(self.env.company, later)
+        self.assertEqual(rates[self.usd.id][1], later)
+        previous = self.env["res.currency"]._get_rates(
+            self.env.company, later - relativedelta(days=1)
+        )
+        self.assertEqual(previous[self.usd.id][1], later - relativedelta(days=1))
 
     def test_mixed_same_day_ves_payment_uses_current_rate(self):
         invoice = self._create_usd_invoice([100.0])
