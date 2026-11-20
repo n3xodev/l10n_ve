@@ -485,7 +485,7 @@ def build_move_escp_bytes(move):
 
     left_stack.append(f"RAZON SOCIAL: {partner.name or ''}")
     left_stack.append(f"RIF: {partner.vat or ''}")
-    addr = (partner._display_address(without_company=True) or "").replace("\n", ", ")
+    addr = (partner._display_address(without_name=True) or "").replace("\n", ", ")
     left_stack.extend(_wrap(f"DIRECCION: {addr}", addr_wrap))
     if move.ref:
         left_stack.append(f"REFERENCIA: {move.ref}")

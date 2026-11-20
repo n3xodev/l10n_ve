@@ -13,7 +13,7 @@
         "views/account_payment_register_views.xml",
         "views/res_config_settings.xml",
         "wizard/unreconcile_igtf_payment_views.xml",
-        'security/ir.access.csv',
+        "security/ir.access.csv",
     ],
     "assets": {
         "web.assets_backend": [

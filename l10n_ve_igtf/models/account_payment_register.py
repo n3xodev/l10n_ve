@@ -139,9 +139,9 @@ class AccountPaymentRegister(models.TransientModel):
         return self.currency_id and self.currency_id in self._l10n_ve_get_allowed_currencies()
 
     def _get_lines(self):
-        if not self.batches:
+        if not self._get_batches():
             return self.env["account.move.line"]
-        return self.batches[0]["lines"]
+        return self._get_batches()[0]["lines"]
 
     def _l10n_ve_get_residual_in_payment_currency(self):
         self.ensure_one()
@@ -209,9 +209,9 @@ class AccountPaymentRegister(models.TransientModel):
 
     def _l10n_ve_wizard_pays_full_residual(self):
         self.ensure_one()
-        if not self.batches or not self.currency_id:
+        if not self._get_batches() or not self.currency_id:
             return False
-        totals = self._get_total_amounts_to_pay(self.batches)
+        totals = self._get_total_amounts_to_pay(self._get_batches())
         return self.currency_id.compare_amounts(self.amount, totals["full_amount"]) == 0
 
     @api.depends(
@@ -342,13 +342,13 @@ class AccountPaymentRegister(models.TransientModel):
             return False, ""
 
         percent = self._l10n_ve_get_igtf_percent()
-        if percent <= 0.0 or not self.batches:
+        if percent <= 0.0 or not self._get_batches():
             return False, ""
 
         currency_symbol = self.company_currency_id.symbol or self.company_currency_id.name
 
         if self.can_edit_wizard:
-            first_batch = self.batches[0]
+            first_batch = self._get_batches()[0]
             is_single = len(first_batch["lines"]) == 1 or self.group_payment
             if is_single:
                 max_igtf, igtf_already, igtf_this_currency = (
@@ -383,7 +383,7 @@ class AccountPaymentRegister(models.TransientModel):
                     }
                 return False, ""
 
-        for batch in self.batches:
+        for batch in self._get_batches():
             lines = batch.get("lines", self.env["account.move.line"])
             moves = self._l10n_ve_get_customer_moves_from_lines(lines)
             if not moves:
@@ -497,7 +497,7 @@ class AccountPaymentRegister(models.TransientModel):
             return None
         if not self.currency_id or self.currency_id != self.company_currency_id:
             return None
-        if not self.batches or not self.payment_date:
+        if not self._get_batches() or not self.payment_date:
             return None
         lines = self._get_lines()
         moves = self._l10n_ve_get_customer_moves_from_lines(lines)
@@ -532,7 +532,7 @@ class AccountPaymentRegister(models.TransientModel):
             return None
         if not self.currency_id or self.currency_id != self.company_currency_id:
             return None
-        if not self.batches or not self.payment_date:
+        if not self._get_batches() or not self.payment_date:
             return None
         lines = self._get_lines()
         moves = self._l10n_ve_get_customer_moves_from_lines(lines)
@@ -561,9 +561,9 @@ class AccountPaymentRegister(models.TransientModel):
 
     def _l10n_ve_batches_contain_only_customer_invoices(self):
         self.ensure_one()
-        if not self.batches:
+        if not self._get_batches():
             return True
-        for batch in self.batches:
+        for batch in self._get_batches():
             lines = batch.get("lines", self.env["account.move.line"])
             if lines:
                 moves = lines.move_id
@@ -605,7 +605,7 @@ class AccountPaymentRegister(models.TransientModel):
             record.l10n_ve_apply_igtf = True
 
     def _l10n_ve_invoices_in_wizard_have_igtf_on_move(self):
-        for batch in self.batches or []:
+        for batch in self._get_batches() or []:
             for line in batch.get("lines", self.env["account.move.line"]):
                 if line.move_id.l10n_ve_igtf_invoice_has_igtf_accrual():
                     return True
@@ -878,10 +878,10 @@ class AccountPaymentRegister(models.TransientModel):
             return
         if not self.currency_id or self.currency_id == self.company_currency_id:
             return
-        if not self.batches:
+        if not self._get_batches():
             return
         try:
-            total_amount_values = self._get_total_amounts_to_pay(self.batches)
+            total_amount_values = self._get_total_amounts_to_pay(self._get_batches())
             amount_for_diff = total_amount_values.get("amount_for_difference", 0)
             payment_diff = amount_for_diff - self.amount if self.amount else 0
         except Exception:
@@ -921,7 +921,8 @@ class AccountPaymentRegister(models.TransientModel):
                 continue
 
             rate = wiz._l10n_ve_get_igtf_rate()
-            total_amounts = wiz._get_total_amounts_to_pay(wiz.batches) if wiz.batches else {}
+            batches = wiz._get_batches()
+            total_amounts = wiz._get_total_amounts_to_pay(batches) if batches else {}
             base_amount = total_amounts.get("amount_by_default", wiz.amount)
             suggested = wiz.currency_id.round(base_amount * (1.0 + rate))
             wiz.custom_user_currency_id = wiz.currency_id
@@ -986,7 +987,7 @@ class AccountPaymentRegister(models.TransientModel):
 
     def _l10n_ve_check_register_payment_allowed_for_moves(self):
         self.ensure_one()
-        if not self._l10n_ve_is_venezuela_company() or not self.batches:
+        if not self._l10n_ve_is_venezuela_company() or not self._get_batches():
             return
         if not self.currency_id or self.currency_id != self.company_currency_id:
             return
@@ -1045,7 +1046,7 @@ class AccountPaymentRegister(models.TransientModel):
 
         batches = [
             batch
-            for batch in self.batches
+            for batch in self._get_batches()
             if not (
                 self.require_partner_bank_account
                 and (
