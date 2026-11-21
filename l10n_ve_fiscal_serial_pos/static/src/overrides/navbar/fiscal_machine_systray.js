@@ -6,6 +6,8 @@ import {
     onWillStart,
     onWillUnmount,
     proxy,
+    t,
+    useProps,
 } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { useService } from "@web/core/utils/hooks";
@@ -23,10 +25,10 @@ import { useLayoutEffect } from "@web/owl2/utils";
 export class PosFiscalMachineSystray extends Component {
     static template = "l10n_ve_fiscal_serial_pos.PosFiscalMachineSystray";
     static components = { Dropdown };
-    static props = {
-        fiscalMachineId: { optional: true },
-        invoiceJournalId: { optional: true },
-    };
+    props = useProps({
+        fiscalMachineId: t.or([t.number(), t.boolean()]).optional(),
+        invoiceJournalId: t.or([t.number(), t.boolean()]).optional(),
+    });
 
     setup() {
         this.pos = usePos();
@@ -179,7 +181,7 @@ Navbar.components = {
 function _posFiscalSystrayJournal(pos) {
     void pos.selectedOrderUuid;
     const order = typeof pos.getOrder === "function" ? pos.getOrder() : null;
-    const journal = order?.invoice_journal_id || pos.config?.invoice_journal_id || false;
+    const journal = order?.invoice_journal_id || pos.config?.journal_id || false;
     void journal?.id;
     void journal?.l10n_ve_emission_medium;
     void journal?.l10n_ve_fiscal_machine_id;

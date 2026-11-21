@@ -6,20 +6,20 @@
         t-inherit-mode="extension"
     >
         <xpath
-            expr="//button[contains(@class, 'button')][@t-on-click='downloadSalesReport']"
+            expr="//button[contains(@class, 'button')][@t-on-click='this.downloadSalesReport']"
             position="after"
         >
-            <t t-if="l10nVeShowFiscalReports">
+            <t t-if="this.l10nVeShowFiscalReports">
                 <select
                     class="form-select"
                     t-att-class="this.ui.isSmall ? 'w-100' : ''"
                     style="max-width: 16rem;"
-                    t-att-value="l10nVeFiscalClose.machineId || ''"
-                    t-on-change="l10nVeOnFiscalMachineChange"
+                    t-att-value="this.l10nVeFiscalClose.machineId || ''"
+                    t-on-change="this.l10nVeOnFiscalMachineChange"
                     title="Máquinas autorizadas en este navegador para reportes X/Z"
                 >
                     <option value="" disabled="disabled" t-out="'Máquina autorizada'"/>
-                    <t t-foreach="l10nVeFiscalClose.machines" t-as="machine" t-key="machine.id">
+                    <t t-foreach="this.l10nVeFiscalClose.machines" t-as="machine" t-key="machine.id">
                         <option
                             t-att-value="machine.id"
                             t-out="(machine.name or '') + (machine.registered_serial ? ' (' + machine.registered_serial + ')' : '')"
@@ -29,14 +29,14 @@
                 <button
                     class="button btn btn-secondary"
                     t-att-class="this.ui.isSmall ? 'w-100' : 'btn-lg'"
-                    t-on-click="l10nVePrintXReport"
+                    t-on-click="this.l10nVePrintXReport"
                 >
                     Reporte X
                 </button>
                 <button
                     class="button btn btn-secondary"
                     t-att-class="this.ui.isSmall ? 'w-100' : 'btn-lg'"
-                    t-on-click="l10nVePrintZReport"
+                    t-on-click="this.l10nVePrintZReport"
                 >
                     Reporte Z
                 </button>

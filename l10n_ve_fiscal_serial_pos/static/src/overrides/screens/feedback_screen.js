@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ReceiptScreen } from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
+import { FeedbackScreen } from "@point_of_sale/app/screens/feedback_screen/feedback_screen";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
 import { useTrackedAsync } from "@point_of_sale/app/hooks/hooks";
@@ -10,7 +10,7 @@ import {
     l10nVeFiscalSerialPosOrderFiscalNumber,
 } from "../../fiscal_serial_pos_print";
 
-patch(ReceiptScreen.prototype, {
+patch(FeedbackScreen.prototype, {
     setup() {
         super.setup(...arguments);
         this.l10nVeFiscalReprint = useTrackedAsync(() =>
@@ -18,7 +18,7 @@ patch(ReceiptScreen.prototype, {
         );
     },
     get l10nVeShowFiscalReprint() {
-        if (!l10nVeFiscalSerialPosIsFiscalMachine(this.pos)) {
+        if (this.loading() || !l10nVeFiscalSerialPosIsFiscalMachine(this.pos)) {
             return false;
         }
         return Boolean(l10nVeFiscalSerialPosOrderFiscalNumber(this.currentOrder));

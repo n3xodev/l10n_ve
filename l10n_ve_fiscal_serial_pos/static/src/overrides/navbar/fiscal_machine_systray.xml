@@ -124,14 +124,14 @@
     </t>
 
     <t t-name="l10n_ve_fiscal_serial_pos.Navbar" t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
-        <xpath expr="//button[.//i[contains(@class,'fa-barcode')]]" position="after">
+        <xpath expr="//button[.//i[@data-icon='barcode']]" position="after">
             <PosFiscalMachineSystray
-                t-if="showFiscalMachineSystray"
+                t-if="this.showFiscalMachineSystray"
                 t-props="{
-                    fiscalMachineId: fiscalSystrayMachineId,
-                    invoiceJournalId: fiscalSystrayJournalId,
+                    fiscalMachineId: this.fiscalSystrayMachineId,
+                    invoiceJournalId: this.fiscalSystrayJournalId,
                 }"
-                t-key="fiscalSystrayMachineId or 'l10n_ve_fiscal_serial_pos_systray'"
+                t-key="this.fiscalSystrayMachineId or 'l10n_ve_fiscal_serial_pos_systray'"
             />
         </xpath>
     </t>

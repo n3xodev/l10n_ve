@@ -20,10 +20,10 @@ class PosConfig(models.Model):
         journal = (
             self.env["account.journal"].browse(journal_id)
             if journal_id
-            else self.invoice_journal_id
+            else self.journal_id
         )
         if not journal:
-            journal = self.invoice_journal_id
+            journal = self.journal_id
         if not journal or journal.l10n_ve_emission_medium != "fiscal_machine":
             return data
         machine = journal.l10n_ve_fiscal_machine_id

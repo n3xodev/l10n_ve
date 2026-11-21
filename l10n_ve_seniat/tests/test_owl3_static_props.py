@@ -12,7 +12,6 @@ NOT_YET_PORTED = {
     "l10n_ve_reports",
     "l10n_ve_reports_stock",
     "l10n_ve_reports_seniat",
-    "l10n_ve_fiscal_serial_pos",
     "l10n_ve_loyalty_pos",
     "l10n_ve_pos_igtf",
     "l10n_ve_pos_credit_currency",
