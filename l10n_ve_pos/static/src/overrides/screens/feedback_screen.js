@@ -1,4 +1,4 @@
-import { ReceiptScreen } from "@point_of_sale/app/screens/receipt_screen/receipt_screen";
+import { FeedbackScreen } from "@point_of_sale/app/screens/feedback_screen/feedback_screen";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
@@ -10,7 +10,11 @@ function isVenezuelaCompany(pos) {
     );
 }
 
-patch(ReceiptScreen.prototype, {
+// Odoo 20 replaced the ReceiptScreen (receipt preview + print/email options) with
+// the FeedbackScreen. Venezuelan documents are printed from the invoice (or the
+// fiscal machine), so for VE companies the screen shows the invoice/fiscal
+// numbers instead of the POS receipt actions.
+patch(FeedbackScreen.prototype, {
     setup() {
         super.setup(...arguments);
         this.invoiceService = useService("account_move");
@@ -18,20 +22,28 @@ patch(ReceiptScreen.prototype, {
     get isVenezuelaPos() {
         return isVenezuelaCompany(this.pos);
     },
-    get receiptFullPrintLabel() {
-        return this.isVenezuelaPos ? _t("Print complete") : _t("Print Full Receipt");
+    get canPrintReceipt() {
+        return this.isVenezuelaPos ? false : super.canPrintReceipt;
     },
-    get receiptBasicPrintLabel() {
-        return this.isVenezuelaPos ? _t("Print simplified") : _t("Print Basic Receipt");
+    get canSendReceipt() {
+        return this.isVenezuelaPos ? false : this.pos.canSendReceipt;
+    },
+    // The invoice numbers must stay on screen until the cashier continues.
+    get isAutoSkip() {
+        return this.isVenezuelaPos ? false : super.isAutoSkip;
     },
     get l10nVeShowReceiptInvoiceDetails() {
-        return this.isVenezuelaPos && Boolean(this.currentOrder.raw?.account_move);
+        return (
+            this.isVenezuelaPos &&
+            !this.loading() &&
+            Boolean(this.currentOrder.raw?.account_move)
+        );
     },
     get l10nVeJournalEmissionMedium() {
         const orderJournal = this.currentOrder?.invoice_journal_id;
         return (
             orderJournal?.l10n_ve_emission_medium ||
-            this.pos.config?.invoice_journal_id?.l10n_ve_emission_medium ||
+            this.pos.config?.journal_id?.l10n_ve_emission_medium ||
             ""
         );
     },

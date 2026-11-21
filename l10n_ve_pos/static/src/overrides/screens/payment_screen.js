@@ -15,7 +15,7 @@ patch(PaymentScreen.prototype, {
     setup() {
         super.setup(...arguments);
         const orderJournal = this.currentOrder?.invoice_journal_id;
-        const configJournal = this.pos.config?.invoice_journal_id;
+        const configJournal = this.pos.config?.journal_id;
         this.l10nVeEmission = proxy({
             emission_medium:
                 orderJournal?.l10n_ve_emission_medium ||
@@ -72,7 +72,7 @@ patch(PaymentScreen.prototype, {
 
     _l10nVeLocalEmissionPreviewFallback() {
         const journal =
-            this.currentOrder?.invoice_journal_id || this.pos.config?.invoice_journal_id;
+            this.currentOrder?.invoice_journal_id || this.pos.config?.journal_id;
         return {
             emission_medium: journal?.l10n_ve_emission_medium || "",
             journal_display_name: journal?.display_name || journal?.name || "",
@@ -175,33 +175,18 @@ patch(PaymentScreen.prototype, {
     },
     get l10nVeAmountWithoutTaxesDisplay() {
         if (!this.currentOrder) {
-            return this.env.utils.formatCurrency(0);
+            return this.pos.formatCurrency(0);
         }
-        // Odoo 19 replaced `get_total_without_tax()` with the `priceExcl` getter.
-        return this.env.utils.formatCurrency(this.currentOrder.priceExcl);
+        return this.pos.formatCurrency(this.currentOrder.priceExcl);
     },
 });
 
-// Odoo 19 extracted order-validation behavior (previously implemented
-// directly on PaymentScreen: `afterOrderValidation`, `shouldDownloadInvoice`,
-// screen navigation) into a standalone `OrderPaymentValidation` helper class,
-// since quick order validation can now happen outside the payment screen too.
-// `afterOrderValidation` itself already runs
-// `checkPreparationStateAndSentOrderInPreparation` unconditionally (matching
-// what this module used to do for Venezuela), so only the screen-navigation
-// and auto-print decisions need overriding here.
+// Order validation lives in the standalone `OrderPaymentValidation` helper
+// (quick validation can happen outside the payment screen). Venezuelan
+// documents are printed from the invoice or the fiscal machine, so the POS
+// receipt is neither printed automatically nor downloaded; the FeedbackScreen
+// shows the invoice/fiscal numbers instead (see feedback_screen.js).
 patch(OrderPaymentValidation.prototype, {
-    get nextPage() {
-        if (isVenezuelaCompany(this.pos) && !this.error) {
-            // Venezuelan fiscal requirements need the full ReceiptScreen
-            // (invoice/control numbers, etc.), never the quick FeedbackScreen.
-            return {
-                page: "ReceiptScreen",
-                params: { orderUuid: this.order.uuid },
-            };
-        }
-        return super.nextPage;
-    },
     get canPrintReceipt() {
         if (isVenezuelaCompany(this.pos)) {
             return false;

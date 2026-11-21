@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="l10n_ve_pos.TicketScreen" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension">
-        <!-- Odoo 19 dropped the orders-table header row entirely, so there is
-             no "Receipt Number" column title to relabel anymore. -->
-        <xpath expr="//div[@class='control-buttons d-flex gap-2 pb-2']/button[last()]" position="replace">
-            <button t-if="!isVenezuelaPos" class="control-button btn btn-light btn-lg lh-lg flex-grow-1 flex-shrink-1" t-on-click="() => doPrint.call(_selectedSyncedOrder)">
-                <i t-attf-class="oi {{doPrint.status === 'loading' ? 'oi-fw oi-spin fa-circle-o-notch' : 'fa-print'}} me-1" />
-                <t t-out="ticketScreenSyncedPrintLabel"/>
-            </button>
+        <!-- Venezuelan documents are printed from the invoice (or the fiscal
+             machine), never as a POS receipt. -->
+        <xpath expr="//button[@t-on-click='() =&gt; this.doPrint.call(_selectedSyncedOrder)']" position="attributes">
+            <attribute name="t-if">!this.isVenezuelaPos</attribute>
         </xpath>
     </t>
 </templates>

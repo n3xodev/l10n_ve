@@ -30,7 +30,7 @@ msgstr "A descuento de 100% es not allowed."
 
 #. module: l10n_ve_pos
 #. odoo-javascript
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Accounting invoice number"
 msgstr "Accounting factura número"
 
@@ -49,13 +49,13 @@ msgstr "Changing el precio desde el Punto de venta es not allowed."
 #. module: l10n_ve_pos
 #. odoo-javascript
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/payment_screen.js:0
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Control number"
 msgstr "Control número"
 
 #. module: l10n_ve_pos
 #. odoo-javascript
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Could not download the invoice."
 msgstr "Could not descargar el factura."
 
@@ -67,7 +67,7 @@ msgstr "Creating products desde el Punto de venta es not allowed."
 
 #. module: l10n_ve_pos
 #. odoo-javascript
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Download free-form PDF"
 msgstr "Descargar free-formulario PDF"
 
@@ -92,14 +92,14 @@ msgstr "Finalizar"
 #. module: l10n_ve_pos
 #. odoo-javascript
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/payment_screen.js:0
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Fiscal invoice number"
 msgstr "Número de factura fiscal"
 
 #. module: l10n_ve_pos
 #. odoo-javascript
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/payment_screen.js:0
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Fiscal machine serial"
 msgstr "Serie de maquina fiscal"
 
@@ -275,7 +275,7 @@ msgstr "VE Talonario (forma libre)"
 #. module: l10n_ve_pos
 #. odoo-javascript
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/payment_screen.js:0
-#: code:addons/l10n_ve_pos/static/src/overrides/screens/receipt_screen.js:0
+#: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Z report number"
 msgstr "Z reporte número"
 

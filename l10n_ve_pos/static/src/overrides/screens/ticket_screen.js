@@ -13,13 +13,8 @@ patch(TicketScreen.prototype, {
     get isVenezuelaPos() {
         return isVenezuelaCompany(this.pos);
     },
-    // Odoo 19 removed the orders-table header row entirely (it is now a plain
-    // <table> with no <thead>), so there is no more "Receipt Number" column
-    // title to relabel. The search-by field label is still adapted below via
-    // `_getSearchFields`.
-    get ticketScreenSyncedPrintLabel() {
-        return this.isVenezuelaPos ? _t("Print document") : _t("Print Receipt");
-    },
+    // The orders table has no "Receipt Number" column title to relabel; the
+    // search-by field label is adapted below via `_getSearchFields`.
     async addAdditionalRefundInfo(order, destinationOrder) {
         await super.addAdditionalRefundInfo(...arguments);
         if (!isVenezuelaCompany(this.pos)) {
@@ -29,16 +24,6 @@ patch(TicketScreen.prototype, {
         if (originJournal && typeof destinationOrder.setInvoiceJournal === "function") {
             destinationOrder.setInvoiceJournal(originJournal);
         }
-    },
-    _getOrderStates() {
-        const states = super._getOrderStates(...arguments);
-        if (isVenezuelaCompany(this.pos)) {
-            const receiptState = states.get("RECEIPT");
-            if (receiptState) {
-                states.set("RECEIPT", { ...receiptState, text: _t("Finalize") });
-            }
-        }
-        return states;
     },
     _getSearchFields() {
         const fields = super._getSearchFields(...arguments);

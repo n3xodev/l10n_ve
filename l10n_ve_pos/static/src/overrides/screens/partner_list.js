@@ -20,6 +20,12 @@ patch(PartnerList.prototype, {
         ]);
     },
     async onEnter() {
+        // The search input is debounced, so state.query may lag behind what the
+        // user typed: read the live DOM value first (same as core's onEnter).
+        const inputElement = this.searchInputRef?.();
+        if (inputElement) {
+            this.state.query = inputElement.value;
+        }
         const query = (this.state.query || "").trim();
         if (!query) {
             return;

@@ -3,25 +3,25 @@
     <t t-name="l10n_ve_pos.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
         <xpath expr="//SelectPartnerButton" position="after">
             <button
-                t-if="!props.showRemainingButtons and availableInvoiceJournals.length"
-                t-att-class="buttonClass"
-                t-att-disabled="!canChangeInvoiceJournal"
+                t-if="!this.props.showRemainingButtons and this.availableInvoiceJournals.length"
+                t-att-class="this.buttonClass"
+                t-att-disabled="!this.canChangeInvoiceJournal"
                 t-on-click="() => this.clickInvoiceJournal()"
             >
                 <i class="oi me-1" data-icon="book" role="img" aria-label="Invoice journal" title="Invoice journal"/>
-                <t t-if="currentOrder?.invoice_journal_id" t-out="currentOrder.invoice_journal_id.display_name || currentOrder.invoice_journal_id.name"/>
+                <t t-if="this.currentOrder?.invoice_journal_id" t-out="this.currentOrder.invoice_journal_id.display_name || this.currentOrder.invoice_journal_id.name"/>
                 <t t-else="">Diario</t>
             </button>
         </xpath>
-        <xpath expr="//t[@t-if='props.showRemainingButtons']//div[hasclass('control-buttons')]" position="inside">
+        <xpath expr="//t[@t-if='this.props.showRemainingButtons']//div[hasclass('control-buttons')]" position="inside">
             <button
-                t-if="availableInvoiceJournals.length"
-                t-att-class="buttonClass"
-                t-att-disabled="!canChangeInvoiceJournal"
+                t-if="this.availableInvoiceJournals.length"
+                t-att-class="this.buttonClass"
+                t-att-disabled="!this.canChangeInvoiceJournal"
                 t-on-click="() => this.clickInvoiceJournal()"
             >
                 <i class="oi me-1" data-icon="book" role="img" aria-label="Invoice journal" title="Invoice journal"/>
-                <t t-if="currentOrder?.invoice_journal_id" t-out="currentOrder.invoice_journal_id.display_name || currentOrder.invoice_journal_id.name"/>
+                <t t-if="this.currentOrder?.invoice_journal_id" t-out="this.currentOrder.invoice_journal_id.display_name || this.currentOrder.invoice_journal_id.name"/>
                 <t t-else="">Diario</t>
             </button>
         </xpath>

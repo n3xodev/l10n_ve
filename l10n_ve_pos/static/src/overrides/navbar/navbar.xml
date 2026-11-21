@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="l10n_ve_pos.Navbar" t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
-        <xpath expr="//button[.//i[hasclass('fa-barcode')]]" position="after">
-            <PosExchangeRatesDropdown t-if="isVenezuelaPos and pos.router.state.current == 'ProductScreen'" t-key="'l10n_ve_pos_exchange_rates'"/>
+        <xpath expr="//button[.//i[@data-icon='barcode']]" position="after">
+            <PosExchangeRatesDropdown t-if="this.isVenezuelaPos and this.pos.router.currentScreen() === 'ProductScreen'" t-key="'l10n_ve_pos_exchange_rates'"/>
         </xpath>
     </t>
 </templates>
