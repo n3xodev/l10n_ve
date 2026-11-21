@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <record id="view_tax_group_tree_closing_accounts" model="ir.ui.view">
+        <field name="name">account.tax.group.list.closing.accounts</field>
+        <field name="model">account.tax.group</field>
+        <field name="inherit_id" ref="account.view_tax_group_tree" />
+        <field name="arch" type="xml">
+            <field name="country_code" position="after">
+                <field name="tax_payable_account_id" />
+                <field name="tax_receivable_account_id" />
+                <field name="advance_tax_payment_account_id" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_tax_group_form_closing_accounts" model="ir.ui.view">
+        <field name="name">account.tax.group.form.closing.accounts</field>
+        <field name="model">account.tax.group</field>
+        <field name="inherit_id" ref="account.view_tax_group_form" />
+        <field name="arch" type="xml">
+            <field name="preceding_subtotal" position="before">
+                <field
+                    name="tax_payable_account_id"
+                    domain="[('company_ids', '=', company_id)]"
+                />
+                <field
+                    name="tax_receivable_account_id"
+                    domain="[('company_ids', '=', company_id)]"
+                />
+                <field
+                    name="advance_tax_payment_account_id"
+                    domain="[('company_ids', '=', company_id)]"
+                />
+            </field>
+        </field>
+    </record>
+
     <record id="view_tax_unit_tree" model="ir.ui.view">
         <field name="name">account.tax.unit.list</field>
         <field name="model">account.tax.unit</field>

@@ -342,7 +342,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                             "sequence": 1,
                             "hierarchy_level": 0,
                             "groupby": "account_id",
-                            "foldable": True,
+                            "foldability": "foldable",
                             "expression_ids": [
                                 Command.clear(),
                                 Command.create(
@@ -365,7 +365,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                             "sequence": 2,
                             "hierarchy_level": 0,
                             "groupby": "account_id",
-                            "foldable": True,
+                            "foldability": "foldable",
                             "expression_ids": [
                                 Command.clear(),
                                 Command.create(

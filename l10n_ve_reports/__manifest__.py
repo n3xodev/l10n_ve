@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": "Venezuelan Reports",
-    "version": "20.0.1.0.0",
+    "version": "20.0.1.0.1",
     "icon": "/poweredbyandy_saas/static/description/icon.png",
     "summary": "Generic accounting reports engine, no localization dependency",
     "category": "Accounting/Accounting",

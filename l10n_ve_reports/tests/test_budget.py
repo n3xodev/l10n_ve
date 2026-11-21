@@ -36,7 +36,7 @@ class TestBudgetReport(TestAccountReportsCommon):
                         {
                             "name": "line_domain",
                             "groupby": "account_id",
-                            "foldable": False,
+                            "foldability": "always_unfolded",
                             "expression_ids": [
                                 Command.create(
                                     {
@@ -53,7 +53,7 @@ class TestBudgetReport(TestAccountReportsCommon):
                         {
                             "name": "line_account_codes",
                             "groupby": "account_id",
-                            "foldable": False,
+                            "foldability": "always_unfolded",
                             "expression_ids": [
                                 Command.create(
                                     {

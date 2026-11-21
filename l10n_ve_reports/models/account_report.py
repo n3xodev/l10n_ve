@@ -20,10 +20,10 @@ from PIL import ImageFont
 
 from odoo import _, api, fields, models
 from odoo.exceptions import RedirectWarning, UserError, ValidationError
+from odoo.models import Query
 from odoo.service.model import get_public_method
 from odoo.tools import (
     SQL,
-    Query,
     date_utils,
     float_is_zero,
     float_repr,
@@ -2891,8 +2891,11 @@ class AccountReport(models.Model):
 
         if options.get("compute_budget"):
             self._create_report_budget_temp_table(options)
-            query._tables["account_move_line"] = SQL.identifier(
-                "account_report_budget_temp_aml"
+            join_kind, _table, join_condition = query._joins["account_move_line"]
+            query._joins["account_move_line"] = (
+                join_kind,
+                SQL.identifier("account_report_budget_temp_aml"),
+                join_condition,
             )
             query.add_where(
                 SQL(
@@ -3985,9 +3988,9 @@ class AccountReport(models.Model):
             "id": line_id,
             "name": line.name,
             "groupby": groupby,
-            "unfoldable": line.foldable and has_children,
+            "unfoldable": line.foldability == "foldable" and has_children,
             "unfolded": bool(
-                (not line.foldable and (line.children_ids or groupby))
+                (line.foldability == "always_unfolded" and (line.children_ids or groupby))
                 or line_id in options["unfolded_lines"]
             )
             or (has_children and options["unfold_all"]),
@@ -9378,7 +9381,7 @@ class AccountReport(models.Model):
                     self.env["account.move.line"]._field_to_sql(
                         "account_move_line",
                         field_name,
-                        Query(self.env, "account_move_line"),
+                        Query(self.env["account.move.line"]),
                     )
                 except ValueError:
                     raise UserError(
@@ -10328,8 +10331,10 @@ class AccountReportLine(models.Model):
         elif current_groupby == "id":
             groupby_model = "account.move.line"
         elif current_groupby:
-            groupby_model = (
-                self.env["account.move.line"]._fields[current_groupby].comodel_name
+            groupby_model = getattr(
+                self.env["account.move.line"]._fields[current_groupby],
+                "comodel_name",
+                None,
             )
         else:
             groupby_model = None

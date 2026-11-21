@@ -11,7 +11,7 @@
             >
                 <attribute
                     name="invisible"
-                >has_error or activity_category == 'tax_report' or chaining_type == 'trigger'</attribute>
+                >has_error or activity_category == 'tax_report'</attribute>
             </xpath>
         </field>
     </record>

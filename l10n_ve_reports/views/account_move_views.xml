@@ -40,10 +40,11 @@
             <groupby name="partner_id" position="after">
                 <groupby name="move_id">
                     <button
-                        name="button_set_checked"
+                        name="set_moves_checked"
                         type="object"
                         string="Set as Checked"
-                        invisible="checked or state == 'draft'"
+                        groups="account.group_account_user"
+                        invisible="state != 'posted' or review_state not in ('todo', 'anomaly')"
                     />
                 </groupby>
             </groupby>
