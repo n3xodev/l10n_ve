@@ -6,7 +6,7 @@ import {_t} from "@web/core/l10n/translation";
 import {useService} from "@web/core/utils/hooks";
 import {useNestedSortable} from "@web/core/utils/nested_sortable";
 import {registry} from "@web/core/registry";
-import { onWillRender, useRef } from "@web/owl2/utils";
+import { onWillRender } from "@web/owl2/utils";
 import {ListRenderer} from "@web/views/list/list_renderer";
 import {X2ManyField, x2ManyField} from "@web/views/fields/x2many/x2many_field";
 import {useOpenX2ManyRecord, useX2ManyCrud} from "@web/views/fields/relational_utils";
@@ -40,7 +40,7 @@ export class AccountReportListRenderer extends ListRenderer {
         ];
 
         useNestedSortable({
-            ref: useRef("root"),
+            ref: this.rootRef,
             elements: "li.draggable",
             nest: true,
             nestInterval: 10,

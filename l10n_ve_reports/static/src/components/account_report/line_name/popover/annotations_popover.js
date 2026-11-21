@@ -1,21 +1,20 @@
-import { Component, onWillDestroy, proxy, usePlugin } from "@odoo/owl";
+import { Component, onWillDestroy, proxy, signal, t, usePlugin, useProps } from "@odoo/owl";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import {DateTimeInput} from "@web/core/datetime/datetime_input";
 import {AnnotationPopoverLine} from "@l10n_ve_reports/components/account_report/line_name/popover_line/annotation_popover_line";
 import {removeTaxGroupingFromLineId} from "@l10n_ve_reports/js/util";
-import { useRef } from "@web/owl2/utils";
 
 const {DateTime} = luxon;
 
 export class AccountReportAnnotationsPopover extends Component {
     static template = "l10n_ve_reports.AccountReportAnnotationsPopover";
-    static props = {
-        controller: Object,
-        lineName: Object,
-        lineID: String,
-        close: {type: Function, optional: true},
-        isAddingAnnotation: {type: Boolean, optional: true},
-    };
+    props = useProps({
+        controller: t.object(),
+        lineName: t.object(),
+        lineID: t.string(),
+        close: t.function().optional(),
+        isAddingAnnotation: t.boolean().optional(),
+    });
     static components = {
         DateTimeInput,
         AnnotationPopoverLine,
@@ -34,7 +33,7 @@ export class AccountReportAnnotationsPopover extends Component {
             ]
         );
 
-        this.popoverTable = useRef("popoverTable");
+        this.popoverTable = signal.ref();
         this.currentPromise = null;
 
         onWillDestroy(async () => {
@@ -111,8 +110,8 @@ export class AccountReportAnnotationsPopover extends Component {
             // we'll call the function to finalize the logic.
             this.currentPromise.then(async () => {
                 await this.refreshAnnotations();
-                if (this.popoverTable.el) {
-                    this.popoverTable.el.scrollIntoView({
+                if (this.popoverTable()) {
+                    this.popoverTable().scrollIntoView({
                         behavior: "smooth",
                         block: "end",
                     });

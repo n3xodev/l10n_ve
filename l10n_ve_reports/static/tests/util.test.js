@@ -51,10 +51,18 @@ test("can parse and rebuild a line id to have the same one", () => {
     expect(buildedGenericId).toBe(genericId);
 });
 
-test("can remove tax grouping by account group", () => {
+test("can remove the parent account grouping from a line id", () => {
     const genericId =
-        '{"groupby": "account_group_id"}~account.group~22|~account.account~21|~account.move.line~20';
+        "parent_account~account.account~22|~account.account~21|~account.move.line~20";
     expect(removeTaxGroupingFromLineId(genericId)).toBe(
         "~account.account~21|~account.move.line~20"
+    );
+});
+
+test("keeps the other markups when removing the parent account grouping", () => {
+    const genericId =
+        'parent_account~account.account~22|{"groupby": "account_id"}~account.account~21|~account.move.line~20';
+    expect(removeTaxGroupingFromLineId(genericId)).toBe(
+        '{"groupby": "account_id"}~account.account~21|~account.move.line~20'
     );
 });

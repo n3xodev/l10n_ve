@@ -5,7 +5,7 @@
     </t>
 
     <t t-name="l10n_ve_reports.AccountReportCustomizable">
-        <div class="o_action account_report" t-att-class="this.cssCustomClass" t-custom-ref="root">
+        <div class="o_action account_report" t-att-class="this.cssCustomClass" t-ref="this.rootRef">
             <ControlPanel>
                 <!-- Buttons bar -->
                 <t t-set-slot="control-panel-create-button">
