@@ -606,7 +606,7 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
             [0, 1, 2, 3, 4, 5, 6],
             [
-                ("121000 Account Receivable", 0.0, 0.0, 1000.0, 0.0, 1000.0, 0.0),
+                ("121000 Accounts Receivable", 0.0, 0.0, 1000.0, 0.0, 1000.0, 0.0),
                 ("400000 Product Sales", 0.0, 0.0, 20000.0, 0.0, 20000.0, 0.0),
                 ("600000 Expenses", 0.0, 0.0, 0.0, 21000.0, 0.0, 21000.0),
                 ("Total", 0.0, 0.0, 21000.0, 21000.0, 21000.0, 21000.0),
@@ -836,25 +836,9 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
             }
         )
 
-        self.env["account.group"].create(
-            [
-                {
-                    "name": "Group_10",
-                    "code_prefix_start": "10",
-                    "code_prefix_end": "10",
-                },
-                {
-                    "name": "Group_101",
-                    "code_prefix_start": "101",
-                    "code_prefix_end": "101",
-                },
-                {
-                    "name": "Group_1012",
-                    "code_prefix_start": "1012",
-                    "code_prefix_end": "1012",
-                },
-            ]
-        )
+        group_10 = self._create_parent_account("10", "Group_10")
+        group_101 = self._create_parent_account("101", "Group_101", parent=group_10)
+        group_1012 = self._create_parent_account("1012", "Group_1012", parent=group_101)
 
         # Create the accounts.
         account_a, account_a1 = self.env["account.account"].create(
@@ -871,6 +855,9 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 },
             ]
         )
+
+        account_a.parent_id = group_10
+        account_a1.parent_id = group_1012
 
         move = self.env["account.move"].create(
             {
@@ -944,10 +931,11 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
         This test will check that the action caret_option_open_general_ledger works as expected which means that
         a default_filter_accounts is set and that in case of hierarchy, the group is unfolded
         """
-        self.env["account.group"].create(
-            [
-                {"name": "Group_6", "code_prefix_start": "6", "code_prefix_end": "6"},
-            ]
+        group_6 = self._create_parent_account("6", "Group_6")
+        self.env["account.account"].search(
+            [("code", "=like", "6%"), ("company_ids", "in", self.env.company.ids)]
+        ).write(
+            {"parent_id": group_6.id}
         )
         options = self._generate_options(
             self.report,
@@ -965,7 +953,6 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ("6 Group_6", 0.0, 21000.0, 200.0, 0.0, 200.0, 21000.0),
                 ("600000 Expenses", 0.0, 21000.0, 0.0, 0.0, 0.0, 21000.0),
                 ("600010 Expenses", 0.0, 0.0, 200.0, 0.0, 200.0, 0.0),
-                ("(No Group)", 21133.33, 150.0, 0.0, 200.0, 21133.33, 350.0),
                 ("121000 Account Receivable", 1000.0, 0.0, 0.0, 0.0, 1000.0, 0.0),
                 ("211000 Account Payable", 100.0, 0.0, 0.0, 0.0, 100.0, 0.0),
                 ("211010 Account Payable", 33.33, 0.0, 0.0, 0.0, 33.33, 0.0),
@@ -1015,7 +1002,7 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
             #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
             [0, 1, 2, 3, 4, 5, 6],
             [
-                ("121000 Account Receivable", "", "", 1000.0, "", 1000.0, ""),
+                ("121000 Accounts Receivable", "", "", 1000.0, "", 1000.0, ""),
                 ("400000 Product Sales", "", "", 20000.0, "", 20000.0, ""),
                 ("600000 Expenses", "", "", "", 21000.0, "", 21000.0),
                 ("Total", 0.0, 0.0, 21000.0, 21000.0, 21000.0, 21000.0),

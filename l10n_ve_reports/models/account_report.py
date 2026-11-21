@@ -36,6 +36,9 @@ from odoo.tools.safe_eval import expr_eval, safe_eval
 
 from odoo.addons.web.controllers.utils import clean_action
 
+# Markup of the lines that group accounts under their parent account (hierarchy option).
+PARENT_ACCOUNT_MARKUP = "parent_account"
+
 ACCOUNT_CODES_ENGINE_SPLIT_REGEX = re.compile(r"(?=[+-])")
 
 ACCOUNT_CODES_ENGINE_TERM_REGEX = re.compile(
@@ -101,7 +104,7 @@ class AccountReportAnnotation(models.Model):
     def _remove_tax_grouping_from_line_id(self, line_id):
         """
         Remove the tax grouping from the line_id. This is needed because the tax grouping is not relevant for the annotation.
-        Tax grouping are any group using 'account.group' in the line_id.
+        Tax grouping are the parent account lines of the hierarchy (marked with PARENT_ACCOUNT_MARKUP).
         """
         return self.env["account.report"]._build_line_id(
             [
@@ -109,7 +112,7 @@ class AccountReportAnnotation(models.Model):
                 for markup, model, res_id in self.env["account.report"]._parse_line_id(
                     line_id, markup_as_string=True
                 )
-                if model != "account.group"
+                if markup != PARENT_ACCOUNT_MARKUP
             ]
         )
 
@@ -323,7 +326,7 @@ class AccountReport(models.Model):
                     self.get_report_company_ids(options)
                 ),
             ],
-            order="sequence",
+            order="sequence, id",
         )
 
     def _init_options_journals(
@@ -1370,8 +1373,15 @@ class AccountReport(models.Model):
 
     def _init_options_hierarchy(self, options, previous_options):
         company_ids = self.get_report_company_ids(options)
-        if self.filter_hierarchy != "never" and self.env["account.group"].search_count(
-            self.env["account.group"]._check_company_domain(company_ids), limit=1
+        accounts = self.env["account.account"].with_context(active_test=False)
+        if self.filter_hierarchy != "never" and accounts.search_count(
+            fields.Domain.AND(
+                [
+                    accounts._check_company_domain(company_ids),
+                    fields.Domain("parent_id", "!=", False),
+                ]
+            ),
+            limit=1,
         ):
             options["display_hierarchy_filter"] = True
             if "hierarchy" in previous_options:
@@ -1384,35 +1394,30 @@ class AccountReport(models.Model):
 
     @api.model
     def _create_hierarchy(self, lines, options):
-        """Compute the hierarchy based on account groups when the option is activated.
+        """Compute the hierarchy based on parent accounts when the option is activated.
 
-        The option is available only when there are account.group for the company.
-        It should be called when before returning the lines to the client/templater.
+        Since Odoo 20 the account groups are gone: a group is now a (usually inactive)
+        parent account, linked to its children through ``parent_id``.
+        The option is available only when there are parent accounts for the company.
+        It should be called before returning the lines to the client/templater.
         The lines are the result of _get_lines(). If there is a hierarchy, it is left
         untouched, only the lines related to an account.account are put in a hierarchy
-        according to the account.group's and their prefixes.
+        according to the parents of the account.
         """
         if not lines:
             return lines
 
-        def get_account_group_hierarchy(account):
-            # Create codes path in the hierarchy based on account.
-            groups = self.env["account.group"]
-            if account.group_id:
-                group = account.group_id
-                while group:
-                    groups += group
-                    group = group.parent_id
-            return list(groups.sorted(reverse=True))
+        accounts_model = self.env["account.account"].with_context(active_test=False)
 
-        def create_hierarchy_line(account_group, column_totals, level, parent_id):
+        def create_hierarchy_line(parent_account, column_totals, level, parent_id):
             line_id = self._get_generic_line_id(
-                "account.group",
-                account_group.id if account_group else None,
+                "account.account",
+                parent_account.id,
+                markup=PARENT_ACCOUNT_MARKUP,
                 parent_line_id=parent_id,
             )
             unfolded = line_id in options.get("unfolded_lines") or options["unfold_all"]
-            name = account_group.display_name if account_group else _("(No Group)")
+            name = parent_account.display_name
             columns = []
             for column_total, column in zip(
                 column_totals, options["columns"], strict=False
@@ -1431,10 +1436,10 @@ class AccountReport(models.Model):
                 "columns": columns,
             }
 
-        def compute_group_totals(line, group=None):
+        def compute_parent_totals(line, parent):
             result = []
             for total, column in zip(
-                hierarchy[group]["totals"], line["columns"], strict=False
+                hierarchy[parent]["totals"], line["columns"], strict=False
             ):
                 value = column.get("no_format")
                 if isinstance(total, float) and isinstance(value, (int, float)):
@@ -1443,39 +1448,26 @@ class AccountReport(models.Model):
                     result.append("")
             return result
 
-        def render_lines(
-            account_groups, current_level, parent_line_id, skip_no_group=True
-        ):
+        def render_lines(parent_accounts, current_level, parent_line_id):
             to_treat = [
-                (current_level, parent_line_id, group)
-                for group in account_groups.sorted()
+                (current_level, parent_line_id, parent)
+                for parent in parent_accounts.sorted()
             ]
 
-            if None in hierarchy and not skip_no_group:
-                to_treat.append((current_level, parent_line_id, None))
-
             while to_treat:
-                level_to_apply, parent_id, group = to_treat.pop(0)
-                group_data = hierarchy[group]
-                hierarchy_line = create_hierarchy_line(
-                    group, group_data["totals"], level_to_apply, parent_id
-                )
-                new_lines.append(hierarchy_line)
-                treated_child_groups = self.env["account.group"]
+                level_to_apply, parent_id, parent = to_treat.pop(0)
+                parent_data = hierarchy[parent]
+                render_line_id = parent_id
 
-                for account_line in group_data["lines"]:
-                    for child_group in group_data["child_groups"]:
-                        if (
-                            child_group not in treated_child_groups
-                            and child_group["code_prefix_end"] < account_line["name"]
-                        ):
-                            render_lines(
-                                child_group,
-                                hierarchy_line["level"] + 1,
-                                hierarchy_line["id"],
-                            )
-                            treated_child_groups += child_group
+                if parent_data["child_accounts"]:
+                    hierarchy_line = create_hierarchy_line(
+                        parent, parent_data["totals"], level_to_apply, parent_id
+                    )
+                    new_lines.append(hierarchy_line)
+                    render_line_id = hierarchy_line["id"]
+                    level_to_apply += 1
 
+                for account_line in parent_data["lines"]:
                     markup, model, account_id = self._parse_line_id(account_line["id"])[
                         -1
                     ]
@@ -1483,13 +1475,13 @@ class AccountReport(models.Model):
                         model,
                         account_id,
                         markup=markup,
-                        parent_line_id=hierarchy_line["id"],
+                        parent_line_id=render_line_id,
                     )
                     account_line.update(
                         {
                             "id": account_line_id,
-                            "parent_id": hierarchy_line["id"],
-                            "level": hierarchy_line["level"] + 1,
+                            "parent_id": render_line_id,
+                            "level": level_to_apply,
                         }
                     )
                     new_lines.append(account_line)
@@ -1513,9 +1505,8 @@ class AccountReport(models.Model):
                         new_lines.append(child_line)
 
                 to_treat = [
-                    (level_to_apply + 1, hierarchy_line["id"], child_group)
-                    for child_group in group_data["child_groups"].sorted()
-                    if child_group not in treated_child_groups
+                    (level_to_apply, render_line_id, child)
+                    for child in parent_data["child_accounts"].sorted()
                 ] + to_treat
 
         def create_hierarchy_dict():
@@ -1526,17 +1517,9 @@ class AccountReport(models.Model):
                         ("" if column.get("figure_type") == "string" else 0.0)
                         for column in options["columns"]
                     ],
-                    "child_groups": self.env["account.group"],
+                    "child_accounts": accounts_model,
                 }
             )
-
-        # Precompute the account groups of the accounts in the report
-        account_ids = []
-        for line in lines:
-            markup, res_model, model_id = self._parse_line_id(line["id"])[-1]
-            if res_model == "account.account":
-                account_ids.append(model_id)
-        self.env["account.account"].browse(account_ids).group_id
 
         new_lines, total_lines = [], []
 
@@ -1547,42 +1530,34 @@ class AccountReport(models.Model):
         last_account_line_id = account_id = None
         current_level = 0
         account_line_children_map = defaultdict(list)
-        account_groups = self.env["account.group"]
-        root_account_groups = self.env["account.group"]
+        root_accounts = accounts_model
         hierarchy = create_hierarchy_dict()
 
         for line in lines:
             markup, res_model, model_id = self._parse_line_id(line["id"])[-1]
 
             # Account lines are used as the basis for the computation of the hierarchy.
-            if res_model == "account.account":
+            if res_model == "account.account" and model_id:
                 last_account_line_id = line["id"]
                 current_level = line["level"]
                 account_id = model_id
-                account = self.env[res_model].browse(account_id)
-                account_groups = get_account_group_hierarchy(account)
+                account = accounts_model.browse(account_id)
+                # `parent_ids` goes from the root to the account itself: reverse it so
+                # the account comes first and its root parent last.
+                account_chain = account.parent_ids[::-1] or account
 
-                if not account_groups:
-                    hierarchy[None]["lines"].append(line)
-                    hierarchy[None]["totals"] = compute_group_totals(line)
-                else:
-                    for i, group in enumerate(account_groups):
-                        if i == 0:
-                            hierarchy[group]["lines"].append(line)
-                        if (
-                            i == len(account_groups) - 1
-                            and group not in root_account_groups
-                        ):
-                            root_account_groups += group
-                        if (
-                            group.parent_id
-                            and group not in hierarchy[group.parent_id]["child_groups"]
-                        ):
-                            hierarchy[group.parent_id]["child_groups"] += group
+                for i, parent in enumerate(account_chain):
+                    if i == 0:
+                        hierarchy[parent]["lines"].append(line)
+                    if i == len(account_chain) - 1 and parent not in root_accounts:
+                        root_accounts += parent
+                    if (
+                        parent.parent_id
+                        and parent not in hierarchy[parent.parent_id]["child_accounts"]
+                    ):
+                        hierarchy[parent.parent_id]["child_accounts"] += parent
 
-                        hierarchy[group]["totals"] = compute_group_totals(
-                            line, group=group
-                        )
+                    hierarchy[parent]["totals"] = compute_parent_totals(line, parent)
 
             # This is not an account line, so we check to see if it is a descendant of the last account line.
             # If so, it is added to the mapping of the lines that are related to this account.
@@ -1598,12 +1573,7 @@ class AccountReport(models.Model):
             # This line ends the scope of the current hierarchy and is (possibly) the root of a new hierarchy.
             # We render the current hierarchy and set up to build a new hierarchy
             else:
-                render_lines(
-                    root_account_groups,
-                    current_level,
-                    root_line_id,
-                    skip_no_group=False,
-                )
+                render_lines(root_accounts, current_level, root_line_id)
 
                 new_lines.append(line)
 
@@ -1612,13 +1582,10 @@ class AccountReport(models.Model):
                 last_account_line_id = account_id = None
                 current_level = 0
                 account_line_children_map = defaultdict(list)
-                root_account_groups = self.env["account.group"]
-                account_groups = self.env["account.group"]
+                root_accounts = accounts_model
                 hierarchy = create_hierarchy_dict()
 
-        render_lines(
-            root_account_groups, current_level, root_line_id, skip_no_group=False
-        )
+        render_lines(root_accounts, current_level, root_line_id)
 
         return new_lines + total_lines
 
@@ -3285,11 +3252,16 @@ class AccountReport(models.Model):
         options["unfold_all"] = False
 
         records_to_unfold = []
-        for _dummy, model, record_id in self._parse_line_id(params["line_id"]):
-            if model in ("account.group", "account.account"):
-                records_to_unfold.append((model, record_id))
+        for markup, model, record_id in self._parse_line_id(params["line_id"]):
+            if model == "account.account":
+                records_to_unfold.append(
+                    (
+                        markup if markup == PARENT_ACCOUNT_MARKUP else None,
+                        record_id,
+                    )
+                )
 
-        if not records_to_unfold or records_to_unfold[-1][0] != "account.account":
+        if not records_to_unfold or records_to_unfold[-1][0] == PARENT_ACCOUNT_MARKUP:
             raise UserError(
                 _(
                     "'Open General Ledger' caret option is only available form report lines targetting accounts."
@@ -3298,11 +3270,14 @@ class AccountReport(models.Model):
 
         general_ledger = self.env.ref("l10n_ve_reports.general_ledger_report")
         lines_to_unfold = []
-        for model, record_id in records_to_unfold:
+        for markup, record_id in records_to_unfold:
             parent_line_id = lines_to_unfold[-1] if lines_to_unfold else None
-            # Re-create the hierarchy of account groups that should be unfolded in GL
+            # Re-create the hierarchy of parent accounts that should be unfolded in GL
             generic_line_id = general_ledger._get_generic_line_id(
-                model, record_id, parent_line_id=parent_line_id
+                "account.account",
+                record_id,
+                markup=markup,
+                parent_line_id=parent_line_id,
             )
             lines_to_unfold.append(generic_line_id)
 
@@ -10061,7 +10036,7 @@ class AccountReportLine(models.Model):
             elif isinstance(markup, dict) and "groupby_prefix_group" in markup:
                 prefix_groups_count += 1
 
-            if model == "account.group":
+            if markup == PARENT_ACCOUNT_MARKUP:
                 group_indent += 1
 
         if sub_groupby_domain:

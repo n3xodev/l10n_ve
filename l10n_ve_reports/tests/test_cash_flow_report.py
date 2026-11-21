@@ -2523,27 +2523,13 @@ class TestCashFlowReport(TestAccountReportsCommon):
         """Test the 'hierarchy' option. I.e. we want to ensure that each section of the report (e.g. "Cash and cash equivalents, beginning of period" and "Cash and cash equivalents, closing balance") has its own dedicated hierarchy and they are not mixed up together."""
         options = self._generate_options(self.report, "2016-01-01", "2016-12-31")
         # Create the account groups for the bank and cash accounts
-        self.env["account.group"].create(
-            [
-                {
-                    "name": "Group Bank & Cash",
-                    "code_prefix_start": "10",
-                    "code_prefix_end": "10",
-                },
-                {
-                    "name": "Group Bank",
-                    "code_prefix_start": "1014",
-                    "code_prefix_end": "1014",
-                },
-                {
-                    "name": "Group Cash",
-                    "code_prefix_start": "1015",
-                    "code_prefix_end": "1015",
-                },
-            ]
-        )
+        group_bank_cash = self._create_parent_account("10", "Group Bank & Cash")
+        group_bank = self._create_parent_account("1014", "Group Bank", parent=group_bank_cash)
+        group_cash = self._create_parent_account("1015", "Group Cash", parent=group_bank_cash)
         self.account_bank.code = "10140499"
         self.account_cash.code = "10150199"
+        self.account_bank.parent_id = group_bank
+        self.account_cash.parent_id = group_cash
 
         # Create opening balance
         self.env["account.move"].create(

@@ -29,6 +29,19 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         cls.company_data_2["currency"] = cls.other_currency
 
     @classmethod
+    def _create_parent_account(cls, code, name, parent=None):
+        """Create the (inactive) parent account that replaces the account groups of Odoo 19."""
+        return cls.env["account.account"].create(
+            {
+                "code": code,
+                "name": name,
+                "account_type": "asset_current",
+                "active": False,
+                "parent_id": parent.id if parent else False,
+            }
+        )
+
+    @classmethod
     def _generate_options(cls, report, date_from, date_to, default_options=None):
         """Create new options at a certain date.
         :param report:          The report.
