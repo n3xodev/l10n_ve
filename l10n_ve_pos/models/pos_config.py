@@ -6,11 +6,11 @@ class PosConfig(models.Model):
 
     l10n_ve_invoice_journal_display_name = fields.Char(
         string="Invoice journal display name (VE POS)",
-        related="invoice_journal_id.display_name",
+        related="journal_id.display_name",
         readonly=True,
     )
     l10n_ve_invoice_journal_emission_medium = fields.Selection(
-        related="invoice_journal_id.l10n_ve_emission_medium",
+        related="journal_id.l10n_ve_emission_medium",
         readonly=True,
     )
     l10n_ve_pos_free_book_section_name = fields.Char(
@@ -23,9 +23,9 @@ class PosConfig(models.Model):
     )
 
     @api.depends(
-        "invoice_journal_id",
-        "invoice_journal_id.l10n_ve_emission_medium",
-        "invoice_journal_id.l10n_ve_invoice_section_id",
+        "journal_id",
+        "journal_id.l10n_ve_emission_medium",
+        "journal_id.l10n_ve_invoice_section_id",
         "company_id.account_fiscal_country_id",
     )
     def _compute_l10n_ve_pos_invoice_journal_ve_hints(self):
@@ -34,7 +34,7 @@ class PosConfig(models.Model):
             config.l10n_ve_pos_next_free_control_number = False
             if config.company_id.account_fiscal_country_id.code != "VE":
                 continue
-            journal = config.invoice_journal_id
+            journal = config.journal_id
             if not journal or journal.l10n_ve_emission_medium != "free":
                 continue
             section = journal.l10n_ve_invoice_section_id
@@ -52,7 +52,7 @@ class PosConfig(models.Model):
         self.ensure_one()
         self.invalidate_recordset(
             [
-                "invoice_journal_id",
+                "journal_id",
                 "l10n_ve_invoice_journal_display_name",
                 "l10n_ve_invoice_journal_emission_medium",
                 "l10n_ve_pos_free_book_section_name",
@@ -62,10 +62,10 @@ class PosConfig(models.Model):
         journal = (
             self.env["account.journal"].browse(journal_id)
             if journal_id
-            else self.invoice_journal_id
+            else self.journal_id
         )
         if not journal:
-            journal = self.invoice_journal_id
+            journal = self.journal_id
         medium = journal.l10n_ve_emission_medium if journal else False
         next_control = ""
         section_name = ""
