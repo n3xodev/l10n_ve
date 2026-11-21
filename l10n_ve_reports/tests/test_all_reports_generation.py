@@ -189,7 +189,7 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
                     with self.subTest(button=option_button["name"]):
                         with patch.object(
                             type(self.env["ir.actions.report"]),
-                            "_run_wkhtmltopdf",
+                            "_run_pdf_engine_without_processing",
                             lambda *args, **kwargs: b"This is a pdf",
                         ):
                             if not option_button.get("client_tag"):

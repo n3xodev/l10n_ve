@@ -5,6 +5,8 @@ from freezegun import freeze_time
 from odoo import Command, fields
 from odoo.tests import tagged
 
+from odoo.addons.l10n_ve_reports.models.account_report import PARENT_ACCOUNT_MARKUP
+
 from .common import TestAccountReportsCommon
 
 
@@ -1367,6 +1369,81 @@ class TestFinancialReport(TestAccountReportsCommon):
             + '{"groupby": "account_id"}'
             + f"~account.account~{self.company_data['default_account_revenue'].id}",
         )
+
+    def test_groupby_sublines_are_indented_per_parent_account(self):
+        """A subline expanded under accounts nested in parent accounts is indented one
+        more level per parent account, as it was per account group in Odoo 19."""
+        revenue = self.company_data["default_account_revenue"]
+        parent_40 = self._create_parent_account("40", "Sales")
+        parent_4 = self._create_parent_account("4", "Income")
+        parent_40.parent_id = parent_4
+        revenue.parent_id = parent_40
+        self.env["account.move"].create(
+            {
+                "date": "2020-02-02",
+                "line_ids": [
+                    Command.create(
+                        {
+                            "account_id": revenue.id,
+                            "partner_id": self.partner_a.id,
+                            "credit": 100.0,
+                            "name": "name",
+                        }
+                    ),
+                    Command.create(
+                        {
+                            "account_id": self.company_data[
+                                "default_account_receivable"
+                            ].id,
+                            "partner_id": self.partner_a.id,
+                            "debit": 100.0,
+                            "name": "name",
+                        }
+                    ),
+                ],
+            }
+        ).action_post()
+        report = self.report_no_parent_id
+        report_line = report.line_ids[0]
+        report_line.groupby = "account_id,partner_id"
+        options = self._generate_options(report, "2020-02-01", "2020-02-28")
+        options["hierarchy"] = True
+
+        line_id = self._get_basic_line_dict_id_from_report_line(report_line)
+        account_markup = {"groupby": "account_id"}
+
+        def account_line_id(parent_accounts):
+            parent_line_id = line_id
+            for parent in parent_accounts:
+                parent_line_id = report._get_generic_line_id(
+                    "account.account",
+                    parent.id,
+                    markup=PARENT_ACCOUNT_MARKUP,
+                    parent_line_id=parent_line_id,
+                )
+            return report._get_generic_line_id(
+                "account.account",
+                revenue.id,
+                markup=account_markup,
+                parent_line_id=parent_line_id,
+            )
+
+        def partner_levels(parent_accounts):
+            sublines = report.get_expanded_lines(
+                options,
+                account_line_id(parent_accounts),
+                "partner_id",
+                "_report_expand_unfoldable_line_with_groupby",
+                {},
+                0,
+                None,
+            )
+            self.assertEqual([line["name"] for line in sublines], ["partner_a"])
+            return [line["level"] for line in sublines]
+
+        # level = hierarchy_level + 2 * (groupby levels + 1) + (parent accounts - 1)
+        self.assertEqual(partner_levels([parent_4, parent_40]), [5])
+        self.assertEqual(partner_levels([parent_40]), [4])
 
     def test_parse_line_id(self):
         line_id_1 = self.env["account.report"]._parse_line_id(
