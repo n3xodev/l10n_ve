@@ -16,6 +16,21 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
         cls.env = cls.env(context={"allowed_company_ids": cls.env.company.ids})
         cls.setup_other_currency("EUR")
 
+        # The generic chart of accounts of Odoo 20 does not configure the accounts of the
+        # tax groups anymore (the closing entry needs them), so the test sets them up.
+        cls.env["account.tax.group"].search(
+            [("company_id", "=", cls.env.company.id)]
+        ).write(
+            {
+                "tax_payable_account_id": cls.company_data[
+                    "default_account_tax_sale"
+                ].id,
+                "tax_receivable_account_id": cls.company_data[
+                    "default_account_tax_purchase"
+                ].id,
+            }
+        )
+
         cls.reports = (
             cls.env["account.report"].with_context(active_test=False).search([])
         )
@@ -136,7 +151,6 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
                         "vat": "VAT123456789",
                         "email": "dummy@email.com",
                         "phone": "01234567890",
-                        "company_registry": "42",
                         **company_test_values.get(report.country_id.code, {}),
                     }
                 )

@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.tools import SQL, Query
+from odoo.models import Query
+from odoo.tools import SQL
 
 from odoo.addons.web.controllers.utils import clean_action
 
@@ -9,6 +10,18 @@ from odoo.addons.web.controllers.utils import clean_action
 class AccountReport(models.AbstractModel):
     _inherit = "account.report"
 
+    # Odoo 20 core dropped these two fields; both features are kept here.
+    prefix_groups_threshold = fields.Integer(
+        string="Prefix Groups Threshold", default=4000
+    )
+    filter_analytic = fields.Boolean(
+        string="Analytic Filter",
+        compute=lambda x: x._compute_report_option_filter("filter_analytic"),
+        readonly=False,
+        precompute=True,
+        store=True,
+        depends=["root_report_id", "section_main_report_ids"],
+    )
     filter_analytic_groupby = fields.Boolean(
         string="Analytic Group By",
         compute=lambda x: x._compute_report_option_filter("filter_analytic_groupby"),
@@ -373,7 +386,10 @@ class AccountMoveLine(models.Model):
             "account_report_analytic_groupby"
         ) and not self.env.context.get("account_report_cash_basis"):
             self.env["account.report"]._prepare_lines_for_analytic_groupby()
-            query._tables["account_move_line"] = SQL.identifier(
-                "analytic_temp_account_move_line"
+            join_kind, _table, join_condition = query._joins["account_move_line"]
+            query._joins["account_move_line"] = (
+                join_kind,
+                SQL.identifier("analytic_temp_account_move_line"),
+                join_condition,
             )
         return query

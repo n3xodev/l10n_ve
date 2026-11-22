@@ -7,6 +7,27 @@ from odoo.exceptions import ValidationError
 class AccountTaxGroup(models.Model):
     _inherit = "account.tax.group"
 
+    # These closing accounts were fields of account.tax.group in Odoo 19 core; Odoo 20
+    # moved them to the enterprise tax return types, so they are kept here.
+    tax_payable_account_id = fields.Many2one(
+        comodel_name="account.account",
+        check_company=True,
+        string="Tax Payable Account",
+        help="Tax current account used as a counterpart to the Tax Closing Entry when in favor of the authorities.",
+    )
+    tax_receivable_account_id = fields.Many2one(
+        comodel_name="account.account",
+        check_company=True,
+        string="Tax Receivable Account",
+        help="Tax current account used as a counterpart to the Tax Closing Entry when in favor of the company.",
+    )
+    advance_tax_payment_account_id = fields.Many2one(
+        comodel_name="account.account",
+        check_company=True,
+        string="Tax Advance Account",
+        help="Downpayments posted on this account will be considered by the Tax Closing Entry.",
+    )
+
     @api.model
     def _check_misconfigured_tax_groups(self, company, countries):
         """Whether any tax group of `company` in `countries` (or without

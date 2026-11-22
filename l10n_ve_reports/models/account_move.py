@@ -288,7 +288,6 @@ class AccountMove(models.Model):
                                 "delay_unit": "days",
                                 "delay_from": "current_date",
                                 "res_model": "account.move",
-                                "chaining_type": "suggest",
                             },
                         }
                     ]
