@@ -16,3 +16,7 @@ access_account_report_budget_ac_user,account.report.budget.ac.user,account.repor
 access_account_report_budget_item_readonly,account.report.budget.item.readonly,account.report.budget.item.oca,account.group_account_readonly,r,
 access_account_report_budget_item_ac_user,account.report.budget.item.ac.user,account.report.budget.item.oca,account.group_account_manager,crud,
 access_account_report_send,access.account.report.send,account.report.send,account.group_account_invoice,crud,
+access_account_report_annotation_manager,account.report.annotation.manager,account.report.annotation.oca,account.group_account_manager,crud,
+access_account_reports_export_wizard_manager,access.account_reports.export.wizard.manager,account_reports.export.wizard,account.group_account_manager,cru,
+access_account_reports_export_wizard_format_manager,access.account_reports.export.wizard.format.manager,account_reports.export.wizard.format,account.group_account_manager,cru,
+access_account_report_file_download_error_wizard_manager,account.report.file.download.error.wizard.manager,account.report.file.download.error.wizard,account.group_account_manager,cru,

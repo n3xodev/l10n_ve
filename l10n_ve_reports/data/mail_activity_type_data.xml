@@ -6,7 +6,6 @@
             <field name="summary">Tax Report</field>
             <field name="category">tax_report</field>
             <field name="res_model">account.journal</field>
-            <field name="chaining_type">suggest</field>
         </record>
 
         <record id="mail_activity_type_tax_report_to_pay" model="mail.activity.type">
@@ -17,7 +16,6 @@
             <field name="delay_unit">days</field>
             <field name="delay_from">previous_activity</field>
             <field name="res_model">account.move</field>
-            <field name="chaining_type">suggest</field>
         </record>
 
         <record
@@ -33,7 +31,6 @@
             <field name="delay_unit">days</field>
             <field name="delay_from">current_date</field>
             <field name="res_model">account.move</field>
-            <field name="chaining_type">suggest</field>
         </record>
     </data>
 </odoo>

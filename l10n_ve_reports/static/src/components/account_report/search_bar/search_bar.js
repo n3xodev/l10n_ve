@@ -1,21 +1,20 @@
 /** @odoo-module */
 
-import { Component, proxy, onMounted } from "@odoo/owl";
-import { useRef } from "@web/owl2/utils";
+import { Component, onMounted, proxy, signal, t, useProps } from "@odoo/owl";
 
 export class AccountReportSearchBar extends Component {
     static template = "l10n_ve_reports.AccountReportSearchBar";
-    static props = {
-        initialQuery: {type: String, optional: true},
-    };
+    props = useProps({
+        initialQuery: t.string().optional(),
+    });
 
     setup() {
-        this.searchText = useRef("search_bar_input");
+        this.searchText = signal.ref();
         this.controller = proxy(this.env.controller);
 
         onMounted(() => {
             if (this.props.initialQuery) {
-                this.searchText.el.value = this.props.initialQuery;
+                this.searchText().value = this.props.initialQuery;
                 this.search();
             }
         });
@@ -25,7 +24,7 @@ export class AccountReportSearchBar extends Component {
     // Search
     //------------------------------------------------------------------------------------------------------------------
     search() {
-        const inputText = this.searchText.el.value.trim();
+        const inputText = this.searchText().value.trim();
         const query = inputText.toLowerCase();
         const linesIDsMatched = [];
 

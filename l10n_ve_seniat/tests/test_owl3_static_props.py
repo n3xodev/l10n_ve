@@ -9,9 +9,6 @@ ADDONS_ROOT = Path(__file__).resolve().parents[2]
 # carry Owl 2 code. Remove each entry as soon as the module is ported
 # (Track R / TP.4-TP.5) so that the guard starts covering it.
 NOT_YET_PORTED = {
-    "l10n_ve_reports",
-    "l10n_ve_reports_stock",
-    "l10n_ve_reports_seniat",
     "l10n_ve_fiscal_serial_pos",
     "l10n_ve_loyalty_pos",
     "l10n_ve_pos_igtf",

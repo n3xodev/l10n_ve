@@ -4,18 +4,17 @@ import {Dropdown} from "@web/core/dropdown/dropdown";
 import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 import {useService} from "@web/core/utils/hooks";
 import {usePopover} from "@web/core/popover/popover_hook";
-import { Component, proxy, usePlugin } from "@odoo/owl";
+import { Component, proxy, signal, t, usePlugin, useProps } from "@odoo/owl";
 
 import {AccountReportAnnotationsPopover} from "@l10n_ve_reports/components/account_report/line_name/popover/annotations_popover";
-import { useRef } from "@web/owl2/utils";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportLineName extends Component {
     static template = "l10n_ve_reports.AccountReportLineName";
-    static props = {
-        lineIndex: Number,
-        line: Object,
-    };
+    props = useProps({
+        lineIndex: t.number(),
+        line: t.object(),
+    });
     static components = {
         Dropdown,
         DropdownItem,
@@ -32,7 +31,7 @@ export class AccountReportLineName extends Component {
             closeOnClickAway: (target) => !target.closest(".annotation_popover"),
         });
 
-        this.lineNameCell = useRef("lineNameCell");
+        this.lineNameCell = signal.ref();
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -153,7 +152,7 @@ export class AccountReportLineName extends Component {
         if (this.annotationPopOver.isOpen) {
             this.annotationPopOver.close();
         } else {
-            this.annotationPopOver.open(this.lineNameCell.el, {
+            this.annotationPopOver.open(this.lineNameCell(), {
                 controller: this.controller,
                 lineName: this,
                 lineID: this.props.line.id,
@@ -162,7 +161,7 @@ export class AccountReportLineName extends Component {
     }
 
     async addAnnotation(ev) {
-        this.annotationPopOver.open(this.lineNameCell.el, {
+        this.annotationPopOver.open(this.lineNameCell(), {
             controller: this.controller,
             lineName: this,
             isAddingAnnotation: true,

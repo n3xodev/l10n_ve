@@ -4,11 +4,11 @@ import {Dropdown} from "@web/core/dropdown/dropdown";
 import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 import {useService} from "@web/core/utils/hooks";
 
-import { Component, proxy } from "@odoo/owl";
+import { Component, proxy, useProps } from "@odoo/owl";
 
 export class AccountReportHeader extends Component {
     static template = "l10n_ve_reports.AccountReportHeader";
-    static props = {};
+    props = useProps({});
     static components = {
         Dropdown,
         DropdownItem,

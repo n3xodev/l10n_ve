@@ -15,7 +15,7 @@ class TestAccountMoveTaxClosing(TestAccountReportsCommon):
         is its sender company.
 
         The PDF/export attachment step (``_get_vat_report_attachments``,
-        which shells out to wkhtmltopdf) is patched out: it is an
+        which shells out to the PDF engine) is patched out: it is an
         unrelated infrastructure side effect of the full closing flow, not
         part of the model-name literal resolution under test here.
         """

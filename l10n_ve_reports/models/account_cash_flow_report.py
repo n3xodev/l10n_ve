@@ -1,5 +1,6 @@
 from odoo import _, models
-from odoo.tools import SQL, Query
+from odoo.models import Query
+from odoo.tools import SQL
 
 
 class CashFlowReportCustomHandler(models.AbstractModel):
@@ -410,7 +411,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             move_ids_query = self._get_move_ids_query(
                 report, payment_account_ids, column_group_options
             )
-            query = Query(self.env, "account_move_line")
+            query = Query(self.env["account.move.line"])
             account_alias = query.join(
                 lhs_alias="account_move_line",
                 lhs_column="account_id",
@@ -701,7 +702,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         queries = []
 
-        query = Query(self.env, "account_move_line")
+        query = Query(self.env["account.move.line"])
         account_alias = query.join(
             lhs_alias="account_move_line",
             lhs_column="account_id",

@@ -4,18 +4,18 @@ import {_t} from "@web/core/l10n/translation";
 import {localization} from "@web/core/l10n/localization";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import {useService} from "@web/core/utils/hooks";
-import { Component, proxy, usePlugin } from "@odoo/owl";
+import { Component, proxy, t, usePlugin, useProps } from "@odoo/owl";
 
 import {AccountReportEllipsisPopover} from "@l10n_ve_reports/components/account_report/ellipsis/popover/ellipsis_popover";
 
 export class AccountReportEllipsis extends Component {
     static template = "l10n_ve_reports.AccountReportEllipsis";
-    static props = {
-        name: {type: String, optional: true},
-        no_format: {optional: true},
-        type: {type: String, optional: true},
-        maxCharacters: Number,
-    };
+    props = useProps({
+        name: t.string().optional(),
+        no_format: t.any().optional(),
+        type: t.string().optional(),
+        maxCharacters: t.number(),
+    });
 
     setup() {
         this.popover = useService("popover");

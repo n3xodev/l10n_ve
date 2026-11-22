@@ -15,20 +15,8 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
 
     def test_report_lines_ordering(self):
         """Check that the report lines are correctly ordered with nested account groups"""
-        self.env["account.group"].create(
-            [
-                {
-                    "name": "A",
-                    "code_prefix_start": "101401",
-                    "code_prefix_end": "101601",
-                },
-                {
-                    "name": "A1",
-                    "code_prefix_start": "1014010",
-                    "code_prefix_end": "1015010",
-                },
-            ]
-        )
+        parent_a = self._create_parent_account("1014", "A")
+        parent_a1 = self._create_parent_account("101450", "A1", parent=parent_a)
 
         cid = self.env.company.id
         account_bank = self.env.ref(f"account.{cid}_bank").default_account_id
@@ -39,6 +27,11 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
         account_c = self.env["account.account"].create(
             [{"code": "101600", "name": "C", "account_type": "asset_cash"}]
         )
+
+        account_bank.parent_id = parent_a
+        account_c.parent_id = parent_a
+        account_a.parent_id = parent_a1
+        account_cash.parent_id = parent_a1
 
         # Create a journal lines for each account
         move = self.env["account.move"].create(
@@ -82,9 +75,9 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
             unfolded_lines,
             [
                 {"level": 5, "name": "Bank and Cash Accounts"},
-                {"level": 6, "name": "101401-101601 A"},
+                {"level": 6, "name": "1014 A"},
                 {"level": 7, "name": "101401 Bank"},
-                {"level": 7, "name": "1014010-1015010 A1"},
+                {"level": 7, "name": "101450 A1"},
                 {"level": 8, "name": "1014010 A"},
                 {"level": 8, "name": "101501 Cash"},
                 {"level": 7, "name": "101600 C"},

@@ -36,7 +36,7 @@ class TestBudgetReport(TestAccountReportsCommon):
                         {
                             "name": "line_domain",
                             "groupby": "account_id",
-                            "foldable": False,
+                            "foldability": "always_unfolded",
                             "expression_ids": [
                                 Command.create(
                                     {
@@ -53,7 +53,7 @@ class TestBudgetReport(TestAccountReportsCommon):
                         {
                             "name": "line_account_codes",
                             "groupby": "account_id",
-                            "foldable": False,
+                            "foldability": "always_unfolded",
                             "expression_ids": [
                                 Command.create(
                                     {
@@ -929,13 +929,8 @@ class TestBudgetReport(TestAccountReportsCommon):
 
     def test_hierarchy_with_budget(self):
         """Check that the report lines are correct with a budget and the option "Hierarchy and subtotals" is ticked"""
-        self.env["account.group"].create(
-            {
-                "name": "Sales",
-                "code_prefix_start": "1",
-                "code_prefix_end": "9",
-            }
-        )
+        sales_group = self._create_parent_account("1-9", "Sales")
+        self.company_data["default_account_revenue"].parent_id = sales_group
 
         move = self.env["account.move"].create(
             {
@@ -980,5 +975,7 @@ class TestBudgetReport(TestAccountReportsCommon):
                 {"level": 1, "name": "Revenue"},
                 {"level": 2, "name": "1-9 Sales"},
                 {"level": 3, "name": "400000 Product Sales"},
+                {"level": 2, "name": "Total 1-9 Sales"},
+                {"level": 1, "name": "Total Revenue"},
             ],
         )

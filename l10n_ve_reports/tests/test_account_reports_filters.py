@@ -1553,7 +1553,7 @@ class TestAccountReportsFilters(TestAccountReportsCommon, odoo.tests.HttpCase):
                 "model_id": "account.move.line",
                 "user_id": self.uid,
                 "name": "To Check",
-                "domain": '[("move_id.checked", "=", False)]',
+                "domain": '[("move_id.review_state", "=", "todo")]',
             }
         )
 
@@ -1596,7 +1596,7 @@ class TestAccountReportsFilters(TestAccountReportsCommon, odoo.tests.HttpCase):
             "out_invoice", self.partner_a, "2023-09-01", amounts=[1000]
         )
         moves.action_post()
-        moves[0].checked = False
+        moves[0].review_state = "todo"
 
         options = self._generate_options(report, "2023-01-01", "2023-12-31")
 

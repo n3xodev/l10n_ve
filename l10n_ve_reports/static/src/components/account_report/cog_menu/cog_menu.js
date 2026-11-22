@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
-import { Component, proxy } from "@odoo/owl";
+import { Component, proxy, useProps } from "@odoo/owl";
 import {Dropdown} from "@web/core/dropdown/dropdown";
 import {DropdownItem} from "@web/core/dropdown/dropdown_item";
 
 export class AccountReportCogMenu extends Component {
     static template = "l10n_ve_reports.AccountReportCogMenu";
     static components = {Dropdown, DropdownItem};
-    static props = {};
+    props = useProps({});
 
     setup() {
         this.controller = proxy(this.env.controller);

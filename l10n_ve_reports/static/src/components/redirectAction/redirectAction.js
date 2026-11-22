@@ -1,18 +1,18 @@
 /** @odoo-module */
 import {registry} from "@web/core/registry";
-import { Component, usePlugin } from "@odoo/owl";
+import { Component, t, usePlugin, useProps } from "@odoo/owl";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
-import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {standardActionServiceProps} from "@web/webclient/actions/action_plugin";
 import {Dialog} from "@web/core/dialog/dialog";
 
 class RedirectAction extends Component {
     static template = "l10n_ve_reports.redirectAction";
     static components = {Dialog};
 
-    static props = {
+    props = useProps({
         ...standardActionServiceProps,
-        action: Object,
-    };
+        action: t.object(),
+    });
 
     setup() {
         this.actionService = usePlugin(ActionPlugin);

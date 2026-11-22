@@ -70,13 +70,17 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             ]
         )
 
-    def _quick_create_journal_group(self, name, company, excluded_journals):
+    def _quick_create_journal_group(self, name, journals):
+        """Create a journal group (ledger) including `journals`.
+
+        Since Odoo 20 a journal group lists the journals it includes (it has no company
+        and no excluded journals anymore) and a journal belongs to at most one group.
+        """
         return self.env["account.journal.group"].create(
             [
                 {
                     "name": name,
-                    "excluded_journal_ids": [Command.set(excluded_journals.ids)],
-                    "company_id": company.id if company else False,
+                    "included_journal_ids": [Command.set(journals.ids)],
                 }
             ]
         )
@@ -238,8 +242,8 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         j5 = self._quick_create_journal("j5", self.vanilla_company1)
         j6 = self._quick_create_journal("j6", self.vanilla_company1)
 
-        g1 = self._quick_create_journal_group("g1", self.vanilla_company1, j2 + j4)
-        g2 = self._quick_create_journal_group("g2", self.vanilla_company1, j2 + j5)
+        g1 = self._quick_create_journal_group("g1", j1 + j3)
+        g2 = self._quick_create_journal_group("g2", j4 + j6)
 
         options = self.report.get_options({"is_opening_report": True})
         self._assert_filter_journal(
@@ -254,8 +258,8 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (j2, False),
                 (j3, True),
                 (j4, False),
-                (j5, True),
-                (j6, True),
+                (j5, False),
+                (j6, False),
             ],
         )
 
@@ -270,9 +274,9 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, False),
                 (g2, True),
                 {"id": "divider"},
-                (j1, True),
+                (j1, False),
                 (j2, False),
-                (j3, True),
+                (j3, False),
                 (j4, True),
                 (j5, False),
                 (j6, True),
@@ -307,8 +311,8 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         j5 = self._quick_create_journal("j5", self.vanilla_company2)
         j6 = self._quick_create_journal("j6", self.vanilla_company2)
 
-        g1 = self._quick_create_journal_group("g1", self.vanilla_company1, j2 + j3)
-        g2 = self._quick_create_journal_group("g2", self.vanilla_company2, j6)
+        g1 = self._quick_create_journal_group("g1", j1 + j4)
+        g2 = self._quick_create_journal_group("g2", j5)
 
         options = self.report.get_options({"is_opening_report": True})
         self._assert_filter_journal(
@@ -324,8 +328,8 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (j3, False),
                 (j4, True),
                 {"id": "divider"},
-                (j5, True),
-                (j6, True),
+                (j5, False),
+                (j6, False),
             ],
         )
 
@@ -340,10 +344,10 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, False),
                 (g2, True),
                 {"id": "divider"},
-                (j1, True),
-                (j2, True),
-                (j3, True),
-                (j4, True),
+                (j1, False),
+                (j2, False),
+                (j3, False),
+                (j4, False),
                 {"id": "divider"},
                 (j5, True),
                 (j6, False),
@@ -377,7 +381,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         j3 = self._quick_create_journal("j3", self.vanilla_company2)
         j4 = self._quick_create_journal("j4", self.vanilla_company2)
 
-        g1 = self._quick_create_journal_group("g1", self.vanilla_company1, j2)
+        g1 = self._quick_create_journal_group("g1", j1 + j3)
 
         options = self.report.get_options({"is_opening_report": True})
         self._assert_filter_journal(
@@ -391,7 +395,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (j2, False),
                 {"id": "divider"},
                 (j3, True),
-                (j4, True),
+                (j4, False),
             ],
         )
 
@@ -430,7 +434,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             ],
         )
 
-        # Check g1.
+        # Check g1: selecting a group replaces the selected journals by the ones of the group.
         options["__journal_group_action"] = {"action": "add", "id": g1.id}
         options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(
@@ -444,7 +448,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (j2, False),
                 {"id": "divider"},
                 (j3, True),
-                (j4, True),
+                (j4, False),
             ],
         )
 
@@ -452,7 +456,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(
             options,
-            "j1, j4",
+            "j1",
             [
                 {"id": "divider"},
                 (g1, False),
@@ -461,7 +465,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (j2, False),
                 {"id": "divider"},
                 (j3, False),
-                (j4, True),
+                (j4, False),
             ],
         )
 
@@ -478,7 +482,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (j2, False),
                 {"id": "divider"},
                 (j3, True),
-                (j4, True),
+                (j4, False),
             ],
         )
 
@@ -501,8 +505,8 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             "BILL", self.vanilla_company1, "purchase"
         )  # Not accepted by the report
 
-        g1 = self._quick_create_journal_group("g1", self.vanilla_company1, inv + bill)
-        g2 = self._quick_create_journal_group("g2", self.vanilla_company1, misc + bill)
+        g1 = self._quick_create_journal_group("g1", bnk + csh + inv)
+        g2 = self._quick_create_journal_group("g2", misc + exch + bill)
 
         report = self.env.ref("l10n_ve_reports.cash_flow_report")
         options = report.get_options({"is_opening_report": True})
@@ -518,11 +522,11 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 ),  # g2 should be displayed because it has journals that are allowed in the report
                 {"id": "divider"},
                 (bnk, True),
-                (caba, True),
+                (caba, False),
                 (csh, True),
-                (exch, True),
-                (ifrs, True),
-                (misc, True),
+                (exch, False),
+                (ifrs, False),
+                (misc, False),
             ],
         )
 
@@ -537,12 +541,12 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, False),
                 (g2, True),
                 {"id": "divider"},
-                (bnk, True),
-                (caba, True),
-                (csh, True),
+                (bnk, False),
+                (caba, False),
+                (csh, False),
                 (exch, True),
-                (ifrs, True),
-                (misc, False),
+                (ifrs, False),
+                (misc, True),
             ],
         )
 
@@ -726,19 +730,19 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         )
 
     def test_journal_filter_with_groups_no_company_multi_company(self):
-        """Test the journals filter with a group where no company is set, therefore implying that all companies can
-        visualize the filter in their accounting reports"""
+        """Test the journals filter with groups spanning several companies: a group is displayed as soon as one
+        of its journals belongs to a company visualized in the report"""
         j1 = self._quick_create_journal("j1", self.vanilla_company1)
         j2 = self._quick_create_journal("j2", self.vanilla_company1)
         j3 = self._quick_create_journal("j3", self.vanilla_company1)
         j4 = self._quick_create_journal("j4", self.vanilla_company2)
         j5 = self._quick_create_journal("j5", self.vanilla_company2)
 
-        # g1 has journals of company 1 and 2, even though visible only for company 1
-        g1 = self._quick_create_journal_group("g1", self.vanilla_company1, j1 + j4)
+        # g1 only has a journal of company 1, therefore it is not visible for company 2
+        g1 = self._quick_create_journal_group("g1", j1)
 
-        # g2 has no company set, therefore implying that this multi-ledger is visible for all companies
-        g2 = self._quick_create_journal_group("g2", False, j2 + j5)
+        # g2 has journals of company 1 and 2, therefore it is visible for both companies
+        g2 = self._quick_create_journal_group("g2", j2 + j5)
 
         # only select company 2
         self.env.user.write(
@@ -756,8 +760,8 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 {"id": "divider"},
                 (g2, True),
                 {"id": "divider"},
-                (j4, True),
-                (j5, False),
+                (j4, False),
+                (j5, True),
             ],
         )
 
@@ -781,12 +785,12 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, True),
                 (g2, False),
                 {"id": "divider"},
-                (j1, False),
-                (j2, True),
-                (j3, True),
+                (j1, True),
+                (j2, False),
+                (j3, False),
                 {"id": "divider"},
                 (j4, False),
-                (j5, True),
+                (j5, False),
             ],
         )
 
@@ -801,12 +805,12 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, False),
                 (g2, True),
                 {"id": "divider"},
-                (j1, True),
-                (j2, False),
-                (j3, True),
+                (j1, False),
+                (j2, True),
+                (j3, False),
                 {"id": "divider"},
-                (j4, True),
-                (j5, False),
+                (j4, False),
+                (j5, True),
             ],
         )
 
@@ -828,9 +832,9 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, True),
                 (g2, False),
                 {"id": "divider"},
-                (j1, False),
-                (j2, True),
-                (j3, True),
+                (j1, True),
+                (j2, False),
+                (j3, False),
             ],
         )
 
@@ -845,9 +849,9 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g1, False),
                 (g2, True),
                 {"id": "divider"},
-                (j1, True),
-                (j2, False),
-                (j3, True),
+                (j1, False),
+                (j2, True),
+                (j3, False),
             ],
         )
 
@@ -862,9 +866,9 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 (g2, True),
                 (g1, False),
                 {"id": "divider"},
-                (j1, True),
-                (j2, False),
-                (j3, True),
+                (j1, False),
+                (j2, True),
+                (j3, False),
             ],
         )
 
@@ -872,7 +876,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         """Test the unfolded and visible attributes of the dropdown items of the journals filter"""
         j1 = self._quick_create_journal("j1", self.vanilla_company1)
         j2 = self._quick_create_journal("j5", self.vanilla_company2)
-        g1 = self._quick_create_journal_group("g1", False, j1)
+        g1 = self._quick_create_journal_group("g1", j1)
         options = self.report.get_options({"is_opening_report": True})
 
         self._assert_filter_journal(
@@ -882,9 +886,9 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 {"id": "divider"},
                 (g1, True),
                 {"id": "divider"},
-                (j1, False),
+                (j1, True),
                 {"id": "divider"},
-                (j2, True),
+                (j2, False),
             ],
         )
 

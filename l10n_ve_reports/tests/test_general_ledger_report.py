@@ -6,6 +6,8 @@ import odoo.tests
 from odoo import Command, fields
 from odoo.tests import tagged
 
+from odoo.addons.l10n_ve_reports.models.account_report import PARENT_ACCOUNT_MARKUP
+
 from .common import TestAccountReportsCommon
 
 
@@ -1300,19 +1302,41 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
         This test will check the value of the different (non-numerical) columns of the general ledger in case the
         hierarchy options is enabled
         """
+        parent_account = self._create_parent_account("1", "Parent")
+        receivable = self.company_data["default_account_receivable"]
+        revenue = self.company_data["default_account_revenue"]
+        (receivable + revenue).parent_id = parent_account
+        self.env["account.move"].create(
+            {
+                "move_type": "entry",
+                "date": "2017-06-01",
+                "journal_id": self.company_data["default_journal_misc"].id,
+                "line_ids": [
+                    Command.create(
+                        {"debit": 100.0, "credit": 0.0, "account_id": receivable.id}
+                    ),
+                    Command.create(
+                        {"debit": 0.0, "credit": 100.0, "account_id": revenue.id}
+                    ),
+                ],
+            }
+        ).action_post()
+
         options = self._generate_options(self.report, "2017-01-01", "2017-12-31")
         options["hierarchy"] = True
 
-        # String and Date figure type should be empty when using hierarchy.
-        self.assertLinesValues(
-            self.report._get_lines(options),
-            #   Name                     Date           Communication          Partner
-            [0, 1, 2, 3],
-            [
-                ("(No Group)", "", "", ""),
-                ("Total", "", "", ""),
-            ],
-            options,
+        # String and Date figure type should be empty on the parent account line when using hierarchy.
+        lines = self.report._get_lines(options)
+        parent_lines = [
+            line
+            for line in lines
+            if self.report._parse_line_id(line["id"], markup_as_string=True)[-1][0]
+            == PARENT_ACCOUNT_MARKUP
+        ]
+        self.assertEqual([line["name"] for line in parent_lines], ["1 Parent"])
+        # Columns: Date, Communication, Partner, then the numerical ones
+        self.assertEqual(
+            [column["name"] for column in parent_lines[0]["columns"][:3]], ["", "", ""]
         )
 
     def test_general_ledger_same_date_ordering(self):
