@@ -320,11 +320,15 @@ class AccountReport(models.Model):
         )
 
     def _get_filter_journal_groups(self, options):
+        # Since Odoo 20 a journal group lists the journals it includes (instead of the
+        # excluded ones) and is no longer bound to a company.
         return self.env["account.journal.group"].search(
             [
-                *self.env["account.journal.group"]._check_company_domain(
-                    self.get_report_company_ids(options)
-                ),
+                (
+                    "included_journal_ids.company_id",
+                    "in",
+                    self.get_report_company_ids(options),
+                )
             ],
             order="sequence, id",
         )
@@ -391,7 +395,7 @@ class AccountReport(models.Model):
 
         # 1. Handle journal group selection
         for group in all_journal_groups:
-            group_journals = all_journals - group.excluded_journal_ids
+            group_journals = all_journals & group.included_journal_ids
             selected = False
             first_group_already_selected = bool(
                 options["selected_journal_groups"]
@@ -8230,7 +8234,8 @@ class AccountReport(models.Model):
 
             files_stream.append(
                 io.BytesIO(
-                    action_report._run_wkhtmltopdf(
+                    action_report._run_pdf_engine_without_processing(
+                        action_report._get_pdf_engine(),
                         bodies,
                         footer=footer.decode(),
                         landscape=is_landscape
