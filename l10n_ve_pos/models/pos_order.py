@@ -55,7 +55,7 @@ class PosOrder(models.Model):
             journals |= (
                 order._l10n_ve_pos_refund_origin_journal()
                 or order.invoice_journal_id
-                or order.config_id.invoice_journal_id
+                or order.config_id.journal_id
             )
         if len(journals) > 1:
             raise UserError(

@@ -6,14 +6,18 @@ class AccountJournal(models.Model):
     _inherit = ["account.journal", "pos.load.mixin"]
 
     @api.model
-    def _load_pos_data_domain(self, data, config):
+    def _load_pos_data_domain(self, data):
         return [
-            *self._check_company_domain(config.company_id),
+            *self._check_company_domain(data["pos.config"].company_id),
             ("type", "=", "sale"),
         ]
 
     @api.model
-    def _load_pos_data_fields(self, config_id):
+    def _load_pos_data_dependencies(self):
+        return ["pos.config"]
+
+    @api.model
+    def _load_pos_data_fields(self, config):
         return [
             "id",
             "name",

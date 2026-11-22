@@ -13,7 +13,7 @@ class TestPartnerListEnterTour(TestPointOfSaleHttpCommon):
         Partner = cls.env["res.partner"]
         # The POS preloads the first N partners (by order count, then name): the
         # "far" one is sorted last, behind the fillers, so it needs the server.
-        cls.env["ir.config_parameter"].set_param("point_of_sale.limited_customer_count", 10)
+        cls.env["ir.config_parameter"].sudo().set_int("point_of_sale.limited_customer_count", 10)
         Partner.create([{"name": f"AAB Filler {i:02d}"} for i in range(10)])
         cls.unique = Partner.create({"name": "AAA Zxq Unico Cliente"})
         cls.local = cls.unique | Partner.create(
