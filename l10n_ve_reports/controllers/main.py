@@ -4,7 +4,8 @@ import json
 from werkzeug.exceptions import InternalServerError
 
 from odoo import http
-from odoo.http import content_disposition, request
+from odoo.http import request
+from odoo.http.stream import content_disposition
 from odoo.tools.misc import html_escape
 
 from odoo.addons.account.controllers.download_docs import _get_headers

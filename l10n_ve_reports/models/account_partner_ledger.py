@@ -430,7 +430,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                 .with_context(active_test=False)
                 .search_fetch(
                     [("id", "in", list(groupby_partners.keys()))],
-                    ["id", "name", "trust", "company_registry", "vat"],
+                    ["id", "name", "trust", "vat"],
                 )
             )
         else:

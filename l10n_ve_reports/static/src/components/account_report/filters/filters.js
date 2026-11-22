@@ -1,5 +1,5 @@
 import {_t} from "@web/core/l10n/translation";
-import { Component, proxy, usePlugin } from "@odoo/owl";
+import { Component, proxy, usePlugin, useProps } from "@odoo/owl";
 
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import {useService} from "@web/core/utils/hooks";
@@ -18,7 +18,7 @@ const {DateTime} = luxon;
 
 export class AccountReportFilters extends Component {
     static template = "l10n_ve_reports.AccountReportFilters";
-    static props = {};
+    props = useProps({});
     static components = {
         DateTimeInput,
         Dropdown,

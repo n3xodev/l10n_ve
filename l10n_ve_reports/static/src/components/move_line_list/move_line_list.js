@@ -1,14 +1,12 @@
 import {AttachmentViewMoveLine} from "./attachment_view_move_line";
 
 import {registry} from "@web/core/registry";
-import { UIPlugin } from "@web/core/ui/ui_plugin";
 import {useService} from "@web/core/utils/hooks";
-import { useChildSubEnv } from "@web/owl2/utils";
 import {listView} from "@web/views/list/list_view";
-import {ListRenderer} from "@web/views/list/list_renderer";
+import {ListRenderer, listRendererProps} from "@web/views/list/list_renderer";
 import {ListController} from "@web/views/list/list_controller";
-import {SIZES} from "@web/core/ui/ui_service";
-import { proxy, usePlugin } from "@odoo/owl";
+import {SIZES} from "@web/core/ui/ui_utils";
+import {computed, proxy, t, useProps} from "@odoo/owl";
 import {makeActiveField} from "@web/model/relational_model/utils";
 
 export class AccountMoveLineListController extends ListController {
@@ -19,9 +17,9 @@ export class AccountMoveLineListController extends ListController {
     };
     setup() {
         super.setup();
-        this.store = proxy(useService("mail.store"));
-        this.ui = proxy(usePlugin(UIPlugin));
-        this.mailPopoutService = proxy(useService("mail.popout"));
+        this.store = useService("mail.store");
+        this.ui = useService("ui");
+        this.mailPopoutService = useService("mail.popout");
         this.attachmentPreviewState = proxy({
             displayAttachment:
                 localStorage.getItem("account.move_line_pdf_previewer_hidden") !==
@@ -29,11 +27,8 @@ export class AccountMoveLineListController extends ListController {
             selectedRecord: false,
             thread: null,
         });
+        this.thread = computed(() => this.attachmentPreviewState.thread);
         this.popout = proxy({active: false});
-
-        useChildSubEnv({
-            setPopout: this.setPopout.bind(this),
-        });
 
         this.openRecord = () => {};
     }
@@ -87,25 +82,34 @@ export class AccountMoveLineListController extends ListController {
             this.attachmentPreviewState.thread = null;
             return;
         }
-        const thread = this.store.Thread.insert({
+        const thread = this.store["mail.thread"].insert({
             attachments: accountMoveLineData.data.move_attachment_ids.records.map(
                 (attachment) => ({
                     id: attachment.resId,
                     mimetype: attachment.data.mimetype,
                 })
             ),
-            id: accountMoveLineData.data.move_id[0],
+            id: accountMoveLineData.data.move_id.id,
             model: accountMoveLineData.fields["move_id"].relation,
         });
-        if (!thread.mainAttachment && thread.attachmentsInWebClientView.length > 0) {
-            thread.update({mainAttachment: thread.attachmentsInWebClientView[0]});
+        if (
+            !thread.message_main_attachment_id &&
+            thread.attachmentsInWebClientView.length > 0
+        ) {
+            thread.update({
+                message_main_attachment_id: thread.attachmentsInWebClientView[0],
+            });
         }
         this.attachmentPreviewState.thread = thread;
     }
 }
 
 export class AccountMoveLineListRenderer extends ListRenderer {
-    static props = [...ListRenderer.props, "setSelectedRecord?"];
+    props = useProps({
+        ...listRendererProps,
+        setSelectedRecord: t.function().optional(),
+    });
+
     onCellClicked(record, column, ev) {
         this.props.setSelectedRecord(record);
         super.onCellClicked(record, column, ev);

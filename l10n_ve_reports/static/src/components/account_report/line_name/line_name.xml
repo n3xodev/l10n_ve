@@ -12,7 +12,7 @@
             t-on-click="() => this.toggleFoldable()"
             t-att-colspan="this.props.line.colspan || 1"
             tabindex="-1"
-            t-custom-ref="lineNameCell"
+            t-ref="this.lineNameCell"
         >
             <div class="wrapper">
                 <t t-if="this.props.line.unfoldable">

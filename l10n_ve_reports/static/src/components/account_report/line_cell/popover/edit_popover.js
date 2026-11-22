@@ -2,28 +2,27 @@
 
 import {useAutofocus, useService} from "@web/core/utils/hooks";
 
-import { Component } from "@odoo/owl";
-import { useRef } from "@web/owl2/utils";
+import { Component, signal, t, useProps } from "@odoo/owl";
 
 export class AccountReportEditPopover extends Component {
     static template = "l10n_ve_reports.AccountReportEditPopover";
-    static props = {
-        line_id: String,
-        cell: Object,
-        controller: Object,
-        onClose: Function,
-        close: Function,
-    };
+    props = useProps({
+        line_id: t.string(),
+        cell: t.object(),
+        controller: t.object(),
+        onClose: t.function(),
+        close: t.function(),
+    });
 
     setup() {
         this.orm = useService("orm");
 
         if (this.props.cell.figure_type === "boolean") {
-            this.booleanTrue = useRef("booleanTrue");
-            this.booleanFalse = useRef("booleanFalse");
+            this.booleanTrue = signal.ref();
+            this.booleanFalse = signal.ref();
         } else {
-            this.input = useRef("input");
-            useAutofocus({refName: "input"});
+            this.input = signal.ref();
+            useAutofocus({ref: this.input});
         }
     }
 
@@ -36,9 +35,9 @@ export class AccountReportEditPopover extends Component {
 
         if (this.props.cell.figure_type === "boolean")
             editValue = Number(
-                this.booleanTrue.el.checked && !this.booleanFalse.el.checked
+                this.booleanTrue().checked && !this.booleanFalse().checked
             );
-        else editValue = this.input.el.value;
+        else editValue = this.input().value;
 
         const res = await this.orm.call(
             "account.report",

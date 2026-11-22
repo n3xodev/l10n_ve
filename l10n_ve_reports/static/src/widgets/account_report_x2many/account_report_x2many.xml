@@ -2,7 +2,7 @@
 <templates>
     <t t-name="l10n_ve_reports.AccountReportList">
         <div class="account_report_lines_list_x2many_oca">
-            <ul class="p-0" t-custom-ref="root">
+            <ul class="p-0" t-ref="this.rootRef">
                 <!-- Header -->
                 <li class="d-flex justify-content-between">
                     <!-- Columns -->

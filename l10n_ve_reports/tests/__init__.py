@@ -21,6 +21,7 @@ from . import test_daily_payments_report
 from . import test_financial_report
 from . import test_followup_report
 from . import test_general_ledger_report
+from . import test_ir_access
 from . import test_journal_report
 from . import test_model_name_literals
 from . import test_no_localization_dependency

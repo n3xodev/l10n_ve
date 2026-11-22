@@ -11,7 +11,7 @@
                     <input
                         type="text"
                         class="o_input text-end"
-                        t-custom-ref="input"
+                        t-ref="this.input"
                         t-on-change="this.onChange"
                         t-on-focus="this.onFocus"
                         t-on-blur="this.onBlur"

@@ -273,7 +273,8 @@ class JournalReportCustomHandler(models.AbstractModel):
 
         action_report = self.env["ir.actions.report"]
         pdf_file_stream = io.BytesIO(
-            action_report._run_wkhtmltopdf(
+            action_report._run_pdf_engine_without_processing(
+                action_report._get_pdf_engine(),
                 [body],
                 footer=footer.decode(),
                 landscape=False,

@@ -14,7 +14,7 @@
                     class="annotation_popover_editable_cell annotation_popover_autoresize_textarea w-100"
                     t-att-value="this.annotation.text"
                     t-on-change="this.annotationEditText"
-                    t-custom-ref="annotationText"
+                    t-ref="this.textArea"
                 />
             </td>
             <td>

@@ -1244,7 +1244,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
         res = {}
         for column_group_key, options in options_by_column_group.items():
             query = report._get_report_query(options, "strict_range")
-            tax_details_query = self.env["account.move.line"]._get_query_tax_details(
+            tax_details_query = self.env["account.move.line"]._get_legacy_query_tax_details(
                 query.from_clause, query.where_clause
             )
 

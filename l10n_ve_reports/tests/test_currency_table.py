@@ -1,3 +1,5 @@
+import datetime
+
 from odoo import Command
 from odoo.tests import tagged
 
@@ -724,7 +726,7 @@ class TestCurrencyTable(TestAccountReportsCommon):
             post=True,
         )
 
-        self.report.line_ids.foldable = True
+        self.report.line_ids.foldability = "foldable"
 
         options = self._generate_options(self.report, "2020-01-01", "2020-12-31")
         line_to_expand_id = self.report._get_generic_line_id(
@@ -1014,3 +1016,30 @@ class TestCurrencyTable(TestAccountReportsCommon):
             ],
             options,
         )
+
+    def test_main_company_unit_factor_uses_rate_dated_on_date_to(self):
+        """The rate dated exactly on ``date_to`` applies (``name <= date``, as in Odoo 19)."""
+        company = self.company_mxn_data["company"]
+        currency = company.currency_id
+        rate_model = self.env["res.currency.rate"]
+        rate_model.search([("currency_id", "=", currency.id)]).unlink()
+        for day, rate in (
+            (datetime.date(2021, 1, 1), 2.0),
+            (datetime.date(2021, 6, 30), 4.0),
+            (datetime.date(2021, 12, 31), 8.0),
+        ):
+            rate_model.create(
+                {
+                    "name": day,
+                    "rate": rate,
+                    "currency_id": currency.id,
+                    "company_id": company.root_id.id,
+                }
+            )
+
+        factor = self.env["res.currency"]._get_main_company_unit_factor
+        self.assertEqual(factor(company, datetime.date(2021, 6, 30)), 4.0)
+        self.assertEqual(factor(company, datetime.date(2021, 6, 29)), 2.0)
+        self.assertEqual(factor(company, datetime.date(2021, 12, 31)), 8.0)
+        # No rate up to the date: the oldest one is used
+        self.assertEqual(factor(company, datetime.date(2020, 12, 31)), 2.0)
