@@ -1,4 +1,4 @@
-import { Component, onMounted, onWillUnmount, proxy } from "@odoo/owl";
+import { Component, onMounted, onWillUnmount, proxy, useProps } from "@odoo/owl";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { _t } from "@web/core/l10n/translation";
@@ -30,7 +30,7 @@ async function fetchExchangeRatesOnce(pos, orm) {
 export class PosExchangeRatesDropdown extends Component {
     static components = { Dropdown, DropdownItem };
     static template = "l10n_ve_pos.PosExchangeRatesDropdown";
-    static props = {};
+    props = useProps({});
 
     setup() {
         this.pos = usePos();

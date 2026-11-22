@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="l10n_ve_pos.FeedbackScreen" t-inherit="point_of_sale.FeedbackScreen" t-inherit-mode="extension">
+        <xpath expr="//FeedbackPaymentSummary" position="after">
+            <div t-if="this.l10nVeShowReceiptInvoiceDetails" class="l10n-ve-feedback-details w-75 text-start small mt-2 px-3 py-2 border rounded bg-view" t-on-click.stop="() => this.stopAutomaticSkip()">
+                <div t-if="this.l10nVeJournalEmissionMedium === 'free'">
+                    <div>
+                        <span class="text-muted" t-out="this.l10nVeLabelAccountingInvoiceNumber"/>
+                        <t t-out="' '" />
+                        <t t-out="this.currentOrder.raw.l10n_ve_pos_invoice_name || this.l10nVeDash"/>
+                    </div>
+                    <div>
+                        <span class="text-muted" t-out="this.l10nVeLabelControlNumber"/>
+                        <t t-out="' '" />
+                        <span class="text-danger fw-semibold" t-out="this.currentOrder.raw.l10n_ve_pos_control_number || this.l10nVeDash"/>
+                    </div>
+                </div>
+                <div t-elif="this.l10nVeJournalEmissionMedium === 'fiscal_machine'">
+                    <div>
+                        <span class="text-muted" t-out="this.l10nVeLabelFiscalInvoiceNo"/>
+                        <t t-out="' '" />
+                        <t t-out="this.currentOrder.raw.l10n_ve_pos_fiscal_invoice_number || this.l10nVeDash"/>
+                    </div>
+                    <div>
+                        <span class="text-muted" t-out="this.l10nVeLabelFiscalSerial"/>
+                        <t t-out="' '" />
+                        <t t-out="this.currentOrder.raw.l10n_ve_pos_fiscal_serial || this.l10nVeDash"/>
+                    </div>
+                    <div>
+                        <span class="text-muted" t-out="this.l10nVeLabelFiscalZ"/>
+                        <t t-out="' '" />
+                        <t t-out="this.currentOrder.raw.l10n_ve_pos_fiscal_report_z || this.l10nVeDash"/>
+                    </div>
+                </div>
+                <div t-elif="this.l10nVeJournalEmissionMedium === 'digital'">
+                    <div>
+                        <span class="text-muted" t-out="this.l10nVeLabelControlNumber"/>
+                        <t t-out="' '" />
+                        <span class="text-danger fw-semibold" t-out="this.currentOrder.raw.l10n_ve_pos_control_number || this.l10nVeDash"/>
+                    </div>
+                </div>
+                <div t-else="">
+                    <div t-if="this.currentOrder.raw.l10n_ve_pos_invoice_name">
+                        <span class="text-muted" t-out="this.l10nVeLabelAccountingInvoiceNumber"/>
+                        <t t-out="' '" />
+                        <t t-out="this.currentOrder.raw.l10n_ve_pos_invoice_name"/>
+                    </div>
+                    <div t-if="this.currentOrder.raw.l10n_ve_pos_control_number">
+                        <span class="text-muted" t-out="this.l10nVeLabelControlNumber"/>
+                        <t t-out="' '" />
+                        <span class="text-danger fw-semibold" t-out="this.currentOrder.raw.l10n_ve_pos_control_number"/>
+                    </div>
+                </div>
+                <button t-if="this.l10nVeShowFormaLibreDownload" type="button" class="btn btn-primary w-100 mt-2 py-2" t-on-click.stop="() => this.l10nVeDownloadFormaLibre()">
+                    <t t-out="this.l10nVeDownloadFormaLibreLabel"/>
+                </button>
+            </div>
+        </xpath>
+        <!-- Venezuelan documents are not printed or e-mailed as POS receipts. -->
+        <xpath expr="//div[hasclass('desktop-format')]/button[hasclass('send-receipt')]" position="attributes">
+            <attribute name="t-if">this.canSendReceipt</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('mobile-format')]/div/button[hasclass('send-receipt')]" position="attributes">
+            <attribute name="t-if">this.canSendReceipt</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('mobile-format')]/div/button[hasclass('print-ticket-button')]" position="attributes">
+            <attribute name="t-if">this.canPrintReceipt</attribute>
+        </xpath>
+    </t>
+</templates>

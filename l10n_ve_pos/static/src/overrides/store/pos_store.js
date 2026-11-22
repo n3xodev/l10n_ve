@@ -59,7 +59,7 @@ patch(PosStore.prototype, {
             return order;
         }
         const defaultJournal =
-            this.config.invoice_journal_id ||
+            this.config.journal_id ||
             this.models["account.journal"]?.find((journal) => journal.type === "sale");
         if (defaultJournal && typeof defaultJournal === "object" && !order.invoice_journal_id) {
             order.setInvoiceJournal(defaultJournal);
@@ -115,12 +115,6 @@ patch(PosStore.prototype, {
             } catch (_error) {}
         }
         return selectedJournal;
-    },
-    async allowProductCreation() {
-        if (isVenezuelaCompany(this)) {
-            return false;
-        }
-        return await super.allowProductCreation(...arguments);
     },
     async editProduct(product) {
         if (!product && isVenezuelaCompany(this)) {
