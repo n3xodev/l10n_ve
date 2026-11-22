@@ -8,14 +8,18 @@ class L10nVeFiscalMachine(models.Model):
     _inherit = ["l10n.ve.fiscal.machine", "pos.load.mixin"]
 
     @api.model
-    def _load_pos_data_domain(self, data, config):
+    def _load_pos_data_domain(self, data):
         return [
-            ("company_id", "=", config.company_id.id),
+            ("company_id", "=", data["pos.config"].company_id.id),
             ("active", "=", True),
         ]
 
     @api.model
-    def _load_pos_data_fields(self, config_id):
+    def _load_pos_data_dependencies(self):
+        return ["pos.config"]
+
+    @api.model
+    def _load_pos_data_fields(self, config):
         return [
             "id",
             "name",

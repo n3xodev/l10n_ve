@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!-- Extensions cannot inherit from another extension's t-name, so this one
+         targets the real core template (like l10n_ve_pos.FeedbackScreen does).
+         Extensions of the same template are applied one after another in
+         module-dependency order, so the l10n_ve_pos details block is already in
+         the tree and the reprint button lands right after it (invoice numbers,
+         then reprint, as in Odoo 19). -->
+    <t t-name="l10n_ve_fiscal_serial_pos.FeedbackScreen" t-inherit="point_of_sale.FeedbackScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('l10n-ve-feedback-details')]" position="after">
+            <button
+                t-if="this.l10nVeShowFiscalReprint"
+                type="button"
+                class="btn btn-primary w-75 mt-2 py-2"
+                t-att-disabled="this.l10nVeFiscalReprint.status === 'loading'"
+                t-on-click.stop="() => this.l10nVeFiscalReprint.call()"
+            >
+                <i t-attf-class="oi {{this.l10nVeFiscalReprint.status === 'loading' ? 'oi-fw oi-spin fa-circle-o-notch' : 'fa-print'}} me-1"/>
+                <t t-out="this.l10nVeFiscalReprintLabel"/>
+            </button>
+        </xpath>
+    </t>
+</templates>

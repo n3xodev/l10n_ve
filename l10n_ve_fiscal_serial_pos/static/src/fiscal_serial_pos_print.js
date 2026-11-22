@@ -6,7 +6,7 @@ import { TfhkaWebSerialTransport } from "@l10n_ve_fiscal_serial/fiscal_serial/tf
 
 export function l10nVeFiscalSerialPosGetInvoiceJournal(pos) {
     const order = typeof pos.getOrder === "function" ? pos.getOrder() : null;
-    return order?.invoice_journal_id || pos.config?.invoice_journal_id || false;
+    return order?.invoice_journal_id || pos.config?.journal_id || false;
 }
 
 export function l10nVeFiscalSerialPosGetEmissionMedium(pos) {
@@ -117,7 +117,7 @@ export function l10nVeFiscalSerialPosPaymentCode(paymentMethod) {
     if (code) {
         return code.padStart(2, "0");
     }
-    return paymentMethod?.is_cash_count ? "01" : "02";
+    return paymentMethod?.type === "cash" ? "01" : "02";
 }
 
 export function l10nVeFiscalSerialPosMachineConfig(pos) {
@@ -205,14 +205,11 @@ export function l10nVeFiscalSerialPosBuildLocalPayload(pos, order) {
             Number(order._l10nVeGetFiscalGlobalDiscountAmount()) || 0
         );
     }
-    // NOTE: Odoo 19 removed `get_unit_price`/`get_all_prices`/`get_taxes` from
-    // PosOrderline without a single drop-in replacement (pricing now goes
-    // through the `prices`/`unitPrices` getters, which return a different
-    // shape). The `?.()` fallbacks below already degrade gracefully to the
-    // raw stored fields (`price_unit`, `discount`, `tax_ids`) and to a
-    // percentage-based discount estimate, which is only used here in the
-    // local/offline fiscal-printing fallback (the primary path calls the
-    // server, which computes exact amounts).
+    // Odoo 20 pricing goes through the `priceExcl`/`priceExclNoDiscount`
+    // getters of the order line; the raw stored fields (`price_unit`,
+    // `discount`, `tax_ids`) are the fallback. This payload is only the
+    // local/offline fallback (the primary path calls the server, which
+    // computes exact amounts).
     const invoiceLines = [];
     for (const line of order?.lines || []) {
         const isEwallet =
@@ -227,13 +224,13 @@ export function l10nVeFiscalSerialPosBuildLocalPayload(pos, order) {
         if (isGlobalDiscount) {
             if (typeof order?._l10nVeGetFiscalGlobalDiscountAmount !== "function") {
                 globalDiscountAmount += Math.abs(
-                    Number(line.get_price_without_tax?.() ?? line.price_subtotal ?? 0)
+                    Number(line.priceExcl ?? line.price_subtotal ?? 0)
                 );
             }
             continue;
         }
         const product = line.product_id || {};
-        const tax = line.tax_ids?.[0] || line.get_taxes?.()?.[0];
+        const tax = line.tax_ids?.[0];
         const taxAmount = tax?.amount ?? 0;
         let name = product.display_name || product.name || line.full_product_name || "";
         let defaultCode = product.default_code || "";
@@ -242,20 +239,17 @@ export function l10nVeFiscalSerialPosBuildLocalPayload(pos, order) {
             defaultCode = "";
         }
         const priceUnit = Math.abs(
-            Number(line.get_unit_price?.() ?? line.price_unit) || 0
+            Number(line.price_unit) || 0
         );
         const quantity = Math.abs(Number(line.getQuantity?.() ?? line.qty) || 0);
         const discountPercent = Number(line.getDiscount?.() ?? line.discount) || 0;
         let discountAmount = 0;
-        if (discountPercent > 0 && typeof line.get_all_prices === "function") {
-            const prices = line.get_all_prices();
-            discountAmount = Math.max(
-                0,
-                Math.abs(
-                    Number(prices?.priceWithoutTaxBeforeDiscount || 0) -
-                        Number(prices?.priceWithoutTax || 0)
-                )
-            );
+        if (
+            discountPercent > 0 &&
+            Number.isFinite(line.priceExclNoDiscount) &&
+            Number.isFinite(line.priceExcl)
+        ) {
+            discountAmount = Math.abs(line.priceExclNoDiscount - line.priceExcl);
         } else if (discountPercent > 0) {
             discountAmount = (priceUnit * quantity * discountPercent) / 100;
         }

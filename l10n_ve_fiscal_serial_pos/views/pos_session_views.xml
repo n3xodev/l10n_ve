@@ -12,7 +12,7 @@
                     invisible="not l10n_ve_show_fiscal_report_z_button"
                 />
             </xpath>
-            <xpath expr="//field[@name='cash_control']" position="after">
+            <xpath expr="//field[@name='user_id']" position="after">
                 <field name="l10n_ve_journal_emission_medium" invisible="1" />
                 <field name="l10n_ve_show_fiscal_report_z_button" invisible="1" />
             </xpath>
