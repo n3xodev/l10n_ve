@@ -1,15 +1,14 @@
-import { proxy } from "@odoo/owl";
+import { proxy, signal } from "@odoo/owl";
 import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
 
 import {AccountReportLineCell} from "@l10n_ve_reports/components/account_report/line_cell/line_cell";
-import { useRef } from "@web/owl2/utils";
 
 export class AccountReportLineCellEditable extends AccountReportLineCell {
     static template = "l10n_ve_reports.AccountReportLineCellEditable";
 
     setup() {
         super.setup();
-        this.input = useRef("input");
+        this.input = signal.ref();
         this.focused = proxy({value: false});
 
         useHotkey(
@@ -34,10 +33,10 @@ export class AccountReportLineCellEditable extends AccountReportLineCell {
     }
 
     async onChange() {
-        if (!this.input.el.value.trim()) {
+        if (!this.input().value.trim()) {
             return;
         }
-        const editValue = this.input.el.value;
+        const editValue = this.input().value;
         const cellEditData = this.hasEditPopupData
             ? JSON.parse(this.props.cell.edit_popup_data)
             : {};
@@ -73,7 +72,7 @@ export class AccountReportLineCellEditable extends AccountReportLineCell {
     }
 
     onBlur() {
-        if (JSON.stringify(this.props.cell.no_format) === this.input.el.value) {
+        if (JSON.stringify(this.props.cell.no_format) === this.input().value) {
             this.focused.value = false;
         }
     }

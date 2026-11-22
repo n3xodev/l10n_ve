@@ -1,27 +1,24 @@
-import { Component, proxy, usePlugin } from "@odoo/owl";
+import { Component, proxy, signal, t, usePlugin, useProps } from "@odoo/owl";
 import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { useAutofocus } from "@web/core/utils/hooks";
 import {_t} from "@web/core/l10n/translation";
 import {DateTimeInput} from "@web/core/datetime/datetime_input";
-import { useLayoutEffect, useRef } from "@web/owl2/utils";
+import { useLayoutEffect } from "@web/owl2/utils";
 
 const {DateTime} = luxon;
 
 export class AnnotationPopoverLine extends Component {
     static template = "l10n_ve_reports.AnnotationPopoverLine";
-    static props = {
-        annotation: {
-            type: Object,
-            shape: {
-                date: {type: [DateTime, {value: false}, {value: null}], optional: true},
-                text: String,
-                lineID: String,
-                id: {type: Number, optional: true},
-            },
-        },
-        onEdit: Function,
-        onDelete: Function,
-    };
+    props = useProps({
+        annotation: t.object({
+            date: t.or([t.instanceOf(DateTime), t.literal(false), t.literal(null)]).optional(),
+            text: t.string(),
+            lineID: t.string(),
+            id: t.number().optional(),
+        }),
+        onEdit: t.function(),
+        onDelete: t.function(),
+    });
     static components = {
         DateTimeInput,
     };
@@ -30,10 +27,9 @@ export class AnnotationPopoverLine extends Component {
         this.applyAutoresizeToAll(".annotation_popover_autoresize_textarea");
         this.annotation = proxy(this.props.annotation);
         this.notificationService = usePlugin(NotificationPlugin);
-        if (this.annotation.text.length) {
-            this.textArea = useRef("annotationText");
-        } else {
-            this.textArea = useAutofocus({refName: "annotationText"});
+        this.textArea = signal.ref();
+        if (!this.annotation.text.length) {
+            useAutofocus({ref: this.textArea});
         }
     }
 
@@ -65,9 +61,9 @@ export class AnnotationPopoverLine extends Component {
     }
 
     annotationEditText() {
-        if (this.textArea.el.value) {
-            if (this.textArea.el.value !== this.annotation.text) {
-                this.annotation.text = this.textArea.el.value;
+        if (this.textArea().value) {
+            if (this.textArea().value !== this.annotation.text) {
+                this.annotation.text = this.textArea().value;
                 this.props.onEdit(this.annotation);
             }
         } else {

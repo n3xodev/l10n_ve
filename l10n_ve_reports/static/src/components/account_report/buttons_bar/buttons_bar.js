@@ -1,10 +1,10 @@
 /** @odoo-module */
 
-import { Component, proxy } from "@odoo/owl";
+import { Component, proxy, useProps } from "@odoo/owl";
 
 export class AccountReportButtonsBar extends Component {
     static template = "l10n_ve_reports.AccountReportButtonsBar";
-    static props = {};
+    props = useProps({});
 
     setup() {
         this.controller = proxy(this.env.controller);

@@ -11,7 +11,7 @@
                         type="radio"
                         value="1"
                         t-att-checked="this.props.cell.no_format"
-                        t-custom-ref="booleanTrue"
+                        t-ref="this.booleanTrue"
                     />
                     <label for="edit_popover_boolean_true">Yes</label>
 
@@ -22,13 +22,13 @@
                         type="radio"
                         value="0"
                         t-att-checked="!this.props.cell.no_format"
-                        t-custom-ref="booleanFalse"
+                        t-ref="this.booleanFalse"
                     />
                     <label for="edit_popover_boolean_false">No</label>
                 </div>
             </t>
             <t t-elif="this.props.cell.figure_type === 'string'">
-                <textarea class="edit_popover_string" rows="3" t-custom-ref="input">
+                <textarea class="edit_popover_string" rows="3" t-ref="this.input">
                     <t t-out="this.props.cell.no_format" />
                 </textarea>
             </t>
@@ -38,7 +38,7 @@
                         class="form-control"
                         type="text"
                         inputmode="numeric"
-                        t-custom-ref="input"
+                        t-ref="this.input"
                         t-att-value="this.props.cell.no_format"
                     />
                     <span class="input-group-text">%</span>
@@ -52,7 +52,7 @@
                         class="form-control"
                         type="text"
                         inputmode="numeric"
-                        t-custom-ref="input"
+                        t-ref="this.input"
                         t-att-value="this.props.cell.no_format"
                     />
                     <span class="input-group-text">
@@ -64,7 +64,7 @@
                 <input
                     type="text"
                     inputmode="numeric"
-                    t-custom-ref="input"
+                    t-ref="this.input"
                     t-att-value="this.props.cell.no_format"
                 />
             </t>

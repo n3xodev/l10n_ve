@@ -2,7 +2,7 @@
 <templates>
     <t t-name="l10n_ve_reports.AccountReportAnnotationsPopover">
         <div class="d-flex flex-column flex-start gap-2">
-            <table class="annotation_popover" t-custom-ref="popoverTable">
+            <table class="annotation_popover" t-ref="this.popoverTable">
                 <tr class="annotation_popover_line">
                     <th>Date</th>
                     <th>Annotation</th>

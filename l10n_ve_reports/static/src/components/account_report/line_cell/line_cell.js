@@ -6,18 +6,15 @@ import {useService} from "@web/core/utils/hooks";
 import {AccountReportCarryoverPopover} from "@l10n_ve_reports/components/account_report/line_cell/popover/carryover_popover";
 import {AccountReportEditPopover} from "@l10n_ve_reports/components/account_report/line_cell/popover/edit_popover";
 
-import { Component, markup, proxy, usePlugin } from "@odoo/owl";
+import { Component, markup, proxy, t, usePlugin, useProps } from "@odoo/owl";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportLineCell extends Component {
     static template = "l10n_ve_reports.AccountReportLineCell";
-    static props = {
-        line: {
-            type: Object,
-            optional: true,
-        },
-        cell: Object,
-    };
+    props = useProps({
+        line: t.object().optional(),
+        cell: t.object(),
+    });
 
     setup() {
         this.action = usePlugin(ActionPlugin);

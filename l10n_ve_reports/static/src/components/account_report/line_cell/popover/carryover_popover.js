@@ -1,17 +1,17 @@
 /** @odoo-module */
 
 import {useService} from "@web/core/utils/hooks";
-import { Component, usePlugin } from "@odoo/owl";
+import { Component, t, usePlugin, useProps } from "@odoo/owl";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 
 export class AccountReportCarryoverPopover extends Component {
     static template = "l10n_ve_reports.AccountReportCarryoverPopover";
-    static props = {
-        close: Function,
-        carryoverData: Object,
-        options: Object,
-        context: Object,
-    };
+    props = useProps({
+        close: t.function(),
+        carryoverData: t.object(),
+        options: t.object(),
+        context: t.object(),
+    });
 
     setup() {
         this.actionService = usePlugin(ActionPlugin);

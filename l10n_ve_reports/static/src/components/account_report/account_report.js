@@ -2,10 +2,10 @@
 
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
-import { useRef, useSubEnv } from "@web/owl2/utils";
+import { useSubEnv } from "@web/owl2/utils";
 import {ControlPanel} from "@web/search/control_panel/control_panel";
 
-import { Component, onWillStart, proxy, usePlugin } from "@odoo/owl";
+import { Component, onWillStart, proxy, signal, usePlugin, useProps } from "@odoo/owl";
 
 import {AccountReportController} from "@l10n_ve_reports/components/account_report/controller";
 import {AccountReportButtonsBar} from "@l10n_ve_reports/components/account_report/buttons_bar/buttons_bar";
@@ -18,12 +18,13 @@ import {AccountReportLineCell} from "@l10n_ve_reports/components/account_report/
 import {AccountReportLineName} from "@l10n_ve_reports/components/account_report/line_name/line_name";
 import {AccountReportSearchBar} from "@l10n_ve_reports/components/account_report/search_bar/search_bar";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
-import {standardActionServiceProps} from "@web/webclient/actions/action_service";
+import {standardActionServiceProps} from "@web/webclient/actions/action_plugin";
 import {useSetupAction} from "@web/search/action_hook";
 
 export class AccountReport extends Component {
     static template = "l10n_ve_reports.AccountReport";
-    static props = {...standardActionServiceProps};
+    props = useProps(standardActionServiceProps);
+    rootRef = signal.ref();
     static components = {
         ControlPanel,
         AccountReportButtonsBar,
@@ -42,7 +43,6 @@ export class AccountReport extends Component {
     static defaultComponentsMap = [];
 
     setup() {
-        this.rootRef = useRef("root");
         useSetupAction({
             rootRef: this.rootRef,
             getLocalState: () => {

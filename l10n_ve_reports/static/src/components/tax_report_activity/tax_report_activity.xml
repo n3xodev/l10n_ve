@@ -4,9 +4,9 @@
        t-inherit="mail.ActivityListPopoverItem"
        t-inherit-mode="extension">
         <xpath expr="//div[hasclass('align-items-center') and hasclass('flex-wrap')]" position="after">
-            <button t-if="isTaxReportActivity"
+            <button t-if="this.isTaxReportActivity"
                     class="btn btn-link p-0 mt-1 text-start o-mail-ActivityListPopoverItem-taxReport"
-                    t-on-click="onClickOpenTaxActivity">
+                    t-on-click="this.onClickOpenTaxActivity">
                 Open tax report
             </button>
         </xpath>
