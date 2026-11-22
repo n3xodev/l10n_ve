@@ -1263,13 +1263,8 @@ class TestFinancialReport(TestAccountReportsCommon):
 
     def test_option_hierarchy(self):
         """Check that the report lines are correct when the option "Hierarchy and subtotals is ticked"""
-        self.env["account.group"].create(
-            {
-                "name": "Sales",
-                "code_prefix_start": "40",
-                "code_prefix_end": "49",
-            }
-        )
+        sales = self._create_parent_account("40", "Sales")
+        self.company_data["default_account_revenue"].parent_id = sales
 
         move = self.env["account.move"].create(
             {
@@ -1308,20 +1303,17 @@ class TestFinancialReport(TestAccountReportsCommon):
             unfolded_lines,
             [
                 {"level": 1, "name": "Revenue"},
-                {"level": 2, "name": "40-49 Sales"},
+                {"level": 2, "name": "40 Sales"},
                 {"level": 3, "name": "400000 Product Sales"},
+                {"level": 2, "name": "Total 40 Sales"},
+                {"level": 1, "name": "Total Revenue"},
             ],
         )
 
     def test_option_hierarchy_with_no_group_lines(self):
-        """Check that the report lines of 'No Group' have correct ids with the option 'Hierarchy and subtotals'"""
-        self.env["account.group"].create(
-            {
-                "name": "Sales",
-                "code_prefix_start": "45",
-                "code_prefix_end": "49",
-            }
-        )
+        """Check that the accounts without parent account stay plain lines with the option 'Hierarchy and subtotals'"""
+        # A parent account exists (so the option is available) but not for the revenue account
+        self._create_parent_account("45", "Sales")
 
         move = self.env["account.move"].create(
             {
@@ -1356,8 +1348,8 @@ class TestFinancialReport(TestAccountReportsCommon):
             lines_array,
             [
                 {"name": "Revenue", "level": 1},
-                {"name": "(No Group)", "level": 2},
-                {"name": "400000 Product Sales", "level": 3},
+                {"name": "400000 Product Sales", "level": 2},
+                {"name": "Total Revenue", "level": 1},
                 {"name": "Less Costs of Revenue", "level": 1},
                 {"name": "Gross Profit", "level": 0},
                 {"name": "Less Operating Expenses", "level": 1},
@@ -1368,7 +1360,13 @@ class TestFinancialReport(TestAccountReportsCommon):
             ],
         )
 
-        self.assertEqual(lines[1]["id"], lines[0]["id"] + "|" + "~account.group~")
+        self.assertEqual(
+            lines[1]["id"],
+            lines[0]["id"]
+            + "|"
+            + '{"groupby": "account_id"}'
+            + f"~account.account~{self.company_data['default_account_revenue'].id}",
+        )
 
     def test_parse_line_id(self):
         line_id_1 = self.env["account.report"]._parse_line_id(

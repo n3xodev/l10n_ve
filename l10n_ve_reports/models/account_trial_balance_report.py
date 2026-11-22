@@ -2,6 +2,8 @@
 
 from odoo import _, api, fields, models
 
+from odoo.addons.l10n_ve_reports.models.account_report import PARENT_ACCOUNT_MARKUP
+
 TRIAL_BALANCE_END_COLUMN_GROUP_KEY = "_trial_balance_end_column_group"
 
 
@@ -283,8 +285,8 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         # If the hierarchy is enabled, ensure to add the o_account_coa_column_contrast class to the hierarchy lines
         if options.get("hierarchy"):
             for line in lines:
-                model, dummy = report._get_model_info_from_id(line["id"])
-                if model == "account.group":
+                markup = report._parse_line_id(line["id"], markup_as_string=True)[-1][0]
+                if markup == PARENT_ACCOUNT_MARKUP:
                     line_classes = line.get("class", "")
                     line["class"] = (
                         line_classes + " o_account_coa_column_contrast_hierarchy"
