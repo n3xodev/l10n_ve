@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-inherit="account.AccountPaymentField" t-inherit-mode="extension">
-        <xpath expr="//tr[1]" position="after">
+        <xpath expr="//t[@t-foreach='info.lines']/tr" position="after">
             <t t-if="line.l10n_ve_igtf_amount_formatted">
                 <tr class="text-muted text-end">
                     <td colspan="3">
