@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo auto_sequence="1">
+    <record id="ve_report_x" model="account.report">
+        <field name="name">🇻🇪 Reporte X</field>
+        <field name="filter_journals" eval="True" />
+        <field name="filter_show_draft" eval="False" />
+        <field name="filter_unfold_all" eval="True" />
+        <field name="filter_hierarchy">never</field>
+        <field name="filter_period_comparison" eval="False" />
+        <field name="filter_unreconciled" eval="False" />
+        <field name="filter_hide_0_lines">never</field>
+        <field name="filter_date_range" eval="False" />
+        <field name="default_opening_date_filter">today</field>
+        <field
+            name="custom_handler_model_id"
+            ref="model_l10n_ve_report_x_handler"
+        />
+        <field name="column_ids">
+            <record id="ve_report_x_detail" model="account.report.column">
+                <field name="name">Detalle</field>
+                <field name="expression_label">row_detail</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_report_x_amount" model="account.report.column">
+                <field name="name">Importe (moneda del informe)</field>
+                <field name="expression_label">row_amount</field>
+                <field name="figure_type">monetary</field>
+            </record>
+        </field>
+    </record>
+</odoo>

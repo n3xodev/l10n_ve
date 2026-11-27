@@ -1,8 +1,12 @@
-from odoo import models
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import fields, models
+from odoo.tools.misc import format_date
 
 
 class L10nVeBookReportMixin(models.AbstractModel):
     _name = "l10n.ve.book.report.mixin"
+    _inherit = ["l10n.ve.report.adapter.mixin"]
     _description = "Mixin for SENIAT sales and purchase book reports"
 
     _SALE_ALIQUOT_COLUMNS = {
@@ -163,7 +167,10 @@ class L10nVeBookReportMixin(models.AbstractModel):
             if include_third_party and label in third_party_labels:
                 if company.l10n_ve_on_behalf_of_third_party_enabled:
                     for aliquot_type in ordered_types:
-                        if aliquot_type == "exempt" or aliquot_type not in configured_types:
+                        if (
+                            aliquot_type == "exempt"
+                            or aliquot_type not in configured_types
+                        ):
                             continue
                         for col_label in third_party_map.get(aliquot_type, []):
                             matched = col_by_label.get(col_label)
@@ -171,7 +178,8 @@ class L10nVeBookReportMixin(models.AbstractModel):
                                 result.append(matched)
                 while (
                     index < len(columns)
-                    and columns[index].get("expression_label", "") in third_party_labels
+                    and columns[index].get("expression_label", "")
+                    in third_party_labels
                 ):
                     index += 1
                 continue
@@ -196,7 +204,8 @@ class L10nVeBookReportMixin(models.AbstractModel):
                     continue
 
             if label.startswith("third_party_") and not (
-                include_third_party and company.l10n_ve_on_behalf_of_third_party_enabled
+                include_third_party
+                and company.l10n_ve_on_behalf_of_third_party_enabled
             ):
                 index += 1
                 continue
@@ -256,3 +265,77 @@ class L10nVeBookReportMixin(models.AbstractModel):
             "amount_extend": 0.0,
             "percent_extend": default_rates.get("extend", 0.0),
         }
+
+    def _get_retention_iva_values(self, move, options):
+        """Get retention IVA values for a move."""
+        if (
+            not hasattr(move, "retention_iva_line_ids")
+            or not move.retention_iva_line_ids
+        ):
+            return {
+                "date_retention": "",
+                "number_retention": "",
+                "iva_retained": 0.0,
+            }
+
+        multiplier = -1 if move.move_type in ("in_refund", "out_refund") else 1
+        date_from_str = options.get("date", {}).get("date_from")
+        date_to_str = options.get("date", {}).get("date_to")
+
+        date_from = fields.Date.to_date(date_from_str) if date_from_str else None
+        date_to = fields.Date.to_date(date_to_str) if date_to_str else None
+
+        ret_lines = (
+            move.retention_iva_line_ids.filtered(
+                lambda x: x.retention_id.state == "emitted"
+            )
+            if move.state == "posted"
+            else move.retention_iva_line_ids
+        )
+
+        ret_vals = {
+            "date_retention": "",
+            "number_retention": "",
+            "iva_retained": 0.0,
+        }
+
+        if not ret_lines:
+            return ret_vals
+
+        for ret_line in ret_lines:
+            retention = ret_line.retention_id
+            if not retention:
+                continue
+
+            # Check if retention date is within the report date range
+            if date_from and retention.date_accounting:
+                if (
+                    retention.date_accounting < date_from
+                    or retention.date_accounting > date_to
+                ):
+                    continue
+
+            if ret_vals["date_retention"]:
+                # If we already have a date, append the new one (comma-separated)
+                ret_vals["date_retention"] += ", " + format_date(
+                    self.env, retention.date, date_format="dd/MM/yyyy"
+                )
+            else:
+                ret_vals["date_retention"] = (
+                    format_date(self.env, retention.date, date_format="dd/MM/yyyy")
+                    if retention.date
+                    else ""
+                )
+
+            if not ret_vals["number_retention"]:
+                ret_vals["number_retention"] = (
+                    move.iva_voucher_number
+                    if hasattr(move, "iva_voucher_number")
+                    else ""
+                )
+
+            if move.state != "cancel":
+                # Use retention_amount which is in company currency
+                ret_vals["iva_retained"] += ret_line.retention_amount * multiplier
+
+        return ret_vals

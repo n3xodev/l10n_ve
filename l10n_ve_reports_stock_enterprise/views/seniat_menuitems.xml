@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_seniat_report_inventory_book"
+        name="Libro de Inventario"
+        action="action_inventory_book_report"
+        parent="l10n_ve_seniat.menu_seniat_reports"
+        sequence="95"
+        groups="stock.group_stock_manager"
+    />
+    <menuitem
+        id="menu_stock_report_inventory_book"
+        name="Libro de Inventario"
+        action="action_inventory_book_report"
+        parent="stock.menu_warehouse_report"
+        sequence="95"
+        groups="stock.group_stock_manager"
+    />
+</odoo>

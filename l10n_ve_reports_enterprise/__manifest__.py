@@ -1,0 +1,45 @@
+{
+    "name": "Venezuela SENIAT - Enterprise Accounting Reports",
+    "version": "20.0.1.0.0",
+    "category": "Accounting/Localizations/Reporting",
+    "summary": "Native Odoo 20 Enterprise accounting reports for Venezuelan SENIAT books and display currency selector",
+    "author": "Nexodev",
+    "license": "OEEL-1",
+    "depends": [
+        "account_reports",
+        "l10n_ve_reports_base",
+        "l10n_ve_seniat",
+        "l10n_ve_withholding",
+    ],
+    "excludes": ["l10n_ve_reports"],
+    "auto_install": [
+        "account_reports",
+        "l10n_ve_seniat",
+        "l10n_ve_withholding",
+    ],
+    "data": [
+        "data/diary_book_report.xml",
+        "data/bank_book_report.xml",
+        "data/cash_book_report.xml",
+        "data/daily_payments_report.xml",
+        "data/purchases_book_report.xml",
+        "data/sales_book_report.xml",
+        "data/sales_book_fiscal_machine_report.xml",
+        "data/report_x.xml",
+        "data/report_actions.xml",
+        "data/menuitems.xml",
+    ],
+    "assets": {
+        "account_reports.assets_pdf_export": [
+            "l10n_ve_reports_enterprise/static/src/scss/sales_book_report.scss",
+            "l10n_ve_reports_enterprise/static/src/scss/daily_payments_report_pdf.scss",
+        ],
+        "web.assets_backend": [
+            "l10n_ve_reports_enterprise/static/src/components/account_report/filters/filters_display_currency.js",
+            "l10n_ve_reports_enterprise/static/src/components/account_report/filters/filter_display_currency.xml",
+            "l10n_ve_reports_enterprise/static/src/components/daily_payments_report/filters.js",
+            "l10n_ve_reports_enterprise/static/src/components/daily_payments_report/filters.xml",
+        ],
+    },
+    "installable": True,
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo auto_sequence="1">
+    <record id="cash_book_report" model="account.report">
+        <field name="name">🇻🇪 Libro de Caja</field>
+        <field name="filter_journals" eval="True" />
+        <field name="filter_show_draft" eval="False" />
+        <field name="filter_unfold_all" eval="True" />
+        <field name="filter_hierarchy">never</field>
+        <field name="filter_period_comparison" eval="False" />
+        <field name="filter_unreconciled" eval="False" />
+        <field name="filter_hide_0_lines">never</field>
+        <field name="filter_date_range" eval="True" />
+        <field name="default_opening_date_filter">this_month</field>
+        <field
+            name="custom_handler_model_id"
+            ref="model_l10n_ve_cash_book_report_handler"
+        />
+        <field name="column_ids">
+            <record id="cash_book_report_date" model="account.report.column">
+                <field name="name">Fecha</field>
+                <field name="expression_label">date</field>
+                <field name="figure_type">date</field>
+            </record>
+            <record id="cash_book_report_comp_number" model="account.report.column">
+                <field name="name">N° Comp.</field>
+                <field name="expression_label">comp_number</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="cash_book_report_document" model="account.report.column">
+                <field name="name">Documento</field>
+                <field name="expression_label">document</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="cash_book_report_detail" model="account.report.column">
+                <field name="name">Detalle</field>
+                <field name="expression_label">detail</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="cash_book_report_previous_balance"
+                model="account.report.column"
+            >
+                <field name="name">Saldo anterior</field>
+                <field name="expression_label">previous_balance</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record id="cash_book_report_debit" model="account.report.column">
+                <field name="name">Debe</field>
+                <field name="expression_label">debit</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record id="cash_book_report_credit" model="account.report.column">
+                <field name="name">Haber</field>
+                <field name="expression_label">credit</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record id="cash_book_report_balance" model="account.report.column">
+                <field name="name">Saldo</field>
+                <field name="expression_label">balance</field>
+                <field name="figure_type">monetary</field>
+            </record>
+        </field>
+    </record>
+</odoo>

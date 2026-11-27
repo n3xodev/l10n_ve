@@ -1,0 +1,75 @@
+.o_account_reports_body.sales_book_report,
+.o_account_reports_body.purchases_book_report {
+    .resume_separator {
+        height: 40px !important;
+        border-top: 3px solid #6c757d !important;
+        background-color: transparent !important;
+
+        td {
+            border: none !important;
+            padding: 20px 0 !important;
+            background-color: transparent !important;
+        }
+    }
+
+    .resume_title {
+        font-weight: bold;
+        font-size: 1.2em;
+        background-color: #e9ecef !important;
+        border-bottom: 2px solid #6c757d !important;
+        border-top: 2px solid #6c757d !important;
+
+        td {
+            padding: 12px 8px !important;
+            background-color: #e9ecef !important;
+        }
+
+        td:first-child {
+            padding-left: calc((100% - min(50vw, 600px)) / 2) !important;
+        }
+
+        td:last-child {
+            padding-right: calc((100% - min(50vw, 600px)) / 2) !important;
+        }
+
+        .line_name {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+
+    .resume {
+        background-color: #f8f9fa !important;
+
+        td {
+            background-color: #f8f9fa !important;
+        }
+
+        td:first-child {
+            padding-left: calc((100% - min(50vw, 600px)) / 2) !important;
+        }
+
+        td:last-child {
+            padding-right: calc((100% - min(50vw, 600px)) / 2) !important;
+        }
+    }
+
+    .resume.total {
+        font-weight: bold;
+        background-color: #e9ecef !important;
+        border-top: 2px solid #6c757d !important;
+        border-bottom: 2px solid #6c757d !important;
+
+        td {
+            background-color: #e9ecef !important;
+        }
+
+        td:first-child {
+            padding-left: calc((100% - min(50vw, 600px)) / 2) !important;
+        }
+
+        td:last-child {
+            padding-right: calc((100% - min(50vw, 600px)) / 2) !important;
+        }
+    }
+}

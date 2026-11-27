@@ -17,7 +17,7 @@ bank reconciliation, follow-up, customer statement, sales, analytic,
 budget reports and diary/bank/cash books). Installs standalone with
 only account and web, no localization dependency.
     """,
-    "depends": ["account", "web"],
+    "depends": ["account", "web", "l10n_ve_reports_base"],
     "excludes": ["account_reports"],
     "data": [
         "data/pdf_export_templates.xml",

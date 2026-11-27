@@ -14,13 +14,13 @@ Entradas y salidas de inventarios según Reglamento ISLR Art. 177.
     """,
     "depends": [
         "l10n_ve_reports",
+        "l10n_ve_reports_stock_base",
         "stock",
         "l10n_ve_seniat",
     ],
     "data": [
         "data/inventory_book_report.xml",
         "data/inventory_book_report_actions.xml",
-        "views/stock_warehouse_views.xml",
         "views/seniat_menuitems.xml",
     ],
     "assets": {

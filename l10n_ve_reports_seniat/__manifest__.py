@@ -27,7 +27,12 @@ Auto-installs as soon as ``l10n_ve_reports``, ``l10n_ve_seniat`` and
 Venezuelan installations keep the exact same reports and menus with
 no manual step required.
     """,
-    "depends": ["l10n_ve_reports", "l10n_ve_seniat", "l10n_ve_withholding"],
+    "depends": [
+        "l10n_ve_reports",
+        "l10n_ve_reports_base",
+        "l10n_ve_seniat",
+        "l10n_ve_withholding",
+    ],
     "auto_install": True,
     "license": "OEEL-1",
     "data": [

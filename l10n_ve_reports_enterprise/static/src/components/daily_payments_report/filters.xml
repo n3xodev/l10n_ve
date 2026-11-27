@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="l10n_ve_reports_enterprise.DailyPaymentsReportFilterDateType">
+        <Dropdown menuClass="'account_report_filter daily_payments_date_type'">
+            <button class="btn btn-secondary">
+                <i class="oi oi-filled me-1" data-icon="filter_alt" />
+                <t t-out="this.dailyPaymentsDateTypeLabel" />
+            </button>
+
+            <t t-set-slot="content">
+                <DropdownItem
+                    class="{ 'selected': this.controller.cachedFilterOptions().daily_payments_date_type === 'validation' }"
+                    onSelected="() => this.filterDailyPaymentsDateType('validation')"
+                >
+                    <t t-out="this.dailyPaymentsDateTypeOptionLabel('validation')" />
+                </DropdownItem>
+                <DropdownItem
+                    class="{ 'selected': this.controller.cachedFilterOptions().daily_payments_date_type === 'payment' }"
+                    onSelected="() => this.filterDailyPaymentsDateType('payment')"
+                >
+                    <t t-out="this.dailyPaymentsDateTypeOptionLabel('payment')" />
+                </DropdownItem>
+            </t>
+        </Dropdown>
+    </t>
+
+    <t
+        t-name="l10n_ve_reports_enterprise.DailyPaymentsReportFilters"
+        t-inherit="account_reports.AccountReportFiltersCustomizable"
+    >
+        <xpath expr="//div[@id='filter_date']" position="before">
+            <t t-if="'daily_payments_date_type' in this.controller.cachedFilterOptions()">
+                <div id="filter_daily_payments_date_type">
+                    <t t-call="l10n_ve_reports_enterprise.DailyPaymentsReportFilterDateType" />
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

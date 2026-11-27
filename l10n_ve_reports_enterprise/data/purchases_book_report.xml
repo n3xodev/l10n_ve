@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo auto_sequence="1">
+    <record id="purchases_book_report" model="account.report">
+        <field name="name">🇻🇪 Libro de Compras</field>
+        <field name="filter_journals" eval="True" />
+        <field name="filter_show_draft" eval="False" />
+        <field name="filter_unfold_all" eval="True" />
+        <field name="filter_hierarchy">never</field>
+        <field name="filter_period_comparison" eval="False" />
+        <field name="filter_unreconciled" eval="False" />
+        <field name="filter_hide_0_lines">never</field>
+        <field name="default_opening_date_filter">this_month</field>
+        <field
+            name="custom_handler_model_id"
+            ref="model_l10n_ve_purchase_book_report_handler"
+        />
+        <field name="column_ids">
+            <record id="purchases_book_report_index" model="account.report.column">
+                <field name="name">N° operacion</field>
+                <field name="expression_label">index</field>
+                <field name="figure_type">integer</field>
+            </record>
+            <record id="purchases_book_report_date" model="account.report.column">
+                <field name="name">Fecha del documento</field>
+                <field name="expression_label">document_date</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="purchases_book_report_vat" model="account.report.column">
+                <field name="name">RIF</field>
+                <field name="expression_label">vat</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_partner_name"
+                model="account.report.column"
+            >
+                <field name="name">Nombre/Razón Social</field>
+                <field name="expression_label">partner_name</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="purchases_book_report_move_type" model="account.report.column">
+                <field name="name">Tipo</field>
+                <field name="expression_label">move_type</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_document_number"
+                model="account.report.column"
+            >
+                <field name="name">N° de documento</field>
+                <field name="expression_label">document_number</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_correlative"
+                model="account.report.column"
+            >
+                <field name="name">Nª de Control</field>
+                <field name="expression_label">correlative</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_transaction_type"
+                model="account.report.column"
+            >
+                <field name="name">Tipo de Transacción</field>
+                <field name="expression_label">transaction_type</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_number_invoice_affected"
+                model="account.report.column"
+            >
+                <field name="name">N° Factura Afectada</field>
+                <field name="expression_label">number_invoice_affected</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_total_purchases_iva"
+                model="account.report.column"
+            >
+                <field name="name">Total compras con IVA</field>
+                <field name="expression_label">total_purchases_iva</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_total_purchases_not_iva"
+                model="account.report.column"
+            >
+                <field name="name">Total compras exentas</field>
+                <field name="expression_label">total_purchases_not_iva</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_tax_base_general_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">Base imponible (16%)</field>
+                <field name="expression_label">tax_base_general_aliquot</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_general_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">Alicuota (16%)</field>
+                <field name="expression_label">general_aliquot</field>
+                <field name="figure_type">percentage</field>
+            </record>
+            <record
+                id="purchases_book_report_amount_general_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">IVA 16%</field>
+                <field name="expression_label">amount_general_aliquot</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_tax_base_reduced_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">Base imponible (8%)</field>
+                <field name="expression_label">tax_base_reduced_aliquot</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_reduced_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">Alicuota (8%)</field>
+                <field name="expression_label">reduced_aliquot</field>
+                <field name="figure_type">percentage</field>
+            </record>
+            <record
+                id="purchases_book_report_amount_reduced_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">IVA 8%</field>
+                <field name="expression_label">amount_reduced_aliquot</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_tax_base_extend_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">Base imponible (31%)</field>
+                <field name="expression_label">tax_base_extend_aliquot</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_extend_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">Alicuota (31%)</field>
+                <field name="expression_label">extend_aliquot</field>
+                <field name="figure_type">percentage</field>
+            </record>
+            <record
+                id="purchases_book_report_amount_extend_aliquot"
+                model="account.report.column"
+            >
+                <field name="name">IVA 31%</field>
+                <field name="expression_label">amount_extend_aliquot</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record
+                id="purchases_book_report_date_retention"
+                model="account.report.column"
+            >
+                <field name="name">Fecha Retención</field>
+                <field name="expression_label">date_retention</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_number_retention"
+                model="account.report.column"
+            >
+                <field name="name">N° Retención</field>
+                <field name="expression_label">number_retention</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record
+                id="purchases_book_report_iva_retained"
+                model="account.report.column"
+            >
+                <field name="name">IVA retenido</field>
+                <field name="expression_label">iva_retained</field>
+                <field name="figure_type">monetary</field>
+            </record>
+        </field>
+    </record>
+</odoo>

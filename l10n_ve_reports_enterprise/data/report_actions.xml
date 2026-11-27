@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="action_account_report_diary_book" model="ir.actions.client">
+            <field name="name">🇻🇪 Libro Diario</field>
+            <field name="tag">account_report</field>
+            <field name="path">diary-book-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.diary_book_report')}"
+            />
+        </record>
+
+        <record id="action_account_report_bank_book" model="ir.actions.client">
+            <field name="name">🇻🇪 Libro de Banco</field>
+            <field name="tag">account_report</field>
+            <field name="path">bank-book-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.bank_book_report')}"
+            />
+        </record>
+
+        <record id="action_account_report_cash_book" model="ir.actions.client">
+            <field name="name">🇻🇪 Libro de Caja</field>
+            <field name="tag">account_report</field>
+            <field name="path">cash-book-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.cash_book_report')}"
+            />
+        </record>
+
+        <record id="action_account_report_daily_payments" model="ir.actions.client">
+            <field name="name">🇻🇪 Pagos por diario</field>
+            <field name="tag">account_report</field>
+            <field name="path">daily-payments-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.daily_payments_report')}"
+            />
+        </record>
+
+        <record id="action_account_report_ve_report_x" model="ir.actions.client">
+            <field name="name">🇻🇪 Reporte X</field>
+            <field name="tag">account_report</field>
+            <field name="path">report-x-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.ve_report_x')}"
+            />
+        </record>
+
+        <record id="action_account_report_sales_book" model="ir.actions.client">
+            <field name="name">🇻🇪 Libro de Ventas</field>
+            <field name="tag">account_report</field>
+            <field name="path">sales-book-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.sales_book_report')}"
+            />
+        </record>
+
+        <record
+            id="action_account_report_sales_book_fiscal_machine"
+            model="ir.actions.client"
+        >
+            <field name="name">🇻🇪 Libro de Ventas Maquina Fiscal</field>
+            <field name="tag">account_report</field>
+            <field name="path">sales-book-fiscal-machine-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.sales_book_fiscal_machine_report')}"
+            />
+        </record>
+
+        <record id="action_account_report_purchases_book" model="ir.actions.client">
+            <field name="name">🇻🇪 Libro de Compras</field>
+            <field name="tag">account_report</field>
+            <field name="path">purchases-book-ve</field>
+            <field
+                name="context"
+                eval="{'report_id': ref('l10n_ve_reports_enterprise.purchases_book_report')}"
+            />
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t
+        t-name="l10n_ve_reports_stock_enterprise.InventoryBookReportFilters"
+        t-inherit="account_reports.AccountReportFiltersCustomizable"
+    >
+        <xpath expr="//div[@id='filter_date']" position="after">
+            <t t-if="'warehouse_ids' in this.controller.cachedFilterOptions()">
+                <div id="filter_warehouse">
+                    <t
+                        t-call="l10n_ve_reports_stock_enterprise.InventoryBookReportFilterWarehouse"
+                    />
+                </div>
+            </t>
+        </xpath>
+    </t>
+
+    <t t-name="l10n_ve_reports_stock_enterprise.InventoryBookReportFilterWarehouse">
+        <Dropdown menuClass="'account_report_filter warehouse'">
+            <button class="btn btn-secondary">
+                <i class="fa fa-building me-1" />
+                <t t-out="this.selectedWarehouseName" />
+            </button>
+
+            <t t-set-slot="content">
+                <div class="dropdown-item gap-2 align-items-center">
+                    <label>Almacenes</label>
+                    <MultiRecordSelector
+                        t-props="this.getMultiRecordSelectorProps('stock.warehouse', 'warehouse_ids')"
+                    />
+                </div>
+                <div class="dropdown-divider" />
+                <DropdownItem
+                    t-if="'hide_zero_quantity_products' in this.controller.cachedFilterOptions()"
+                    class="{ 'selected': this.controller.cachedFilterOptions().hide_zero_quantity_products }"
+                    onSelected="() => this.filterClicked({ optionKey: 'hide_zero_quantity_products', reload: true })"
+                    closingMode="'none'"
+                >
+                    Ocultar productos con cantidades en 0
+                </DropdownItem>
+            </t>
+        </Dropdown>
+    </t>
+</templates>
