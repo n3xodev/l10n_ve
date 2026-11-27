@@ -51,7 +51,7 @@ msgstr "Changing el precio desde el Punto de venta es not allowed."
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/payment_screen.js:0
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/feedback_screen.js:0
 msgid "Control number"
-msgstr "Control número"
+msgstr "Número de control"
 
 #. module: l10n_ve_pos
 #. odoo-javascript
@@ -150,7 +150,7 @@ msgstr "Medio de emisión"
 #. odoo-javascript
 #: code:addons/l10n_ve_pos/static/src/overrides/screens/payment_screen.js:0
 msgid "Next control number"
-msgstr "Siguiente control número"
+msgstr "Siguiente número de control"
 
 #. module: l10n_ve_pos
 #. odoo-javascript

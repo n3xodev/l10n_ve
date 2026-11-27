@@ -496,7 +496,7 @@ msgstr "Contribuyente Formal"
 #: model:ir.model.fields,field_description:l10n_ve_seniat.field_account_bank_statement_line__l10n_ve_control_number
 #: model:ir.model.fields,field_description:l10n_ve_seniat.field_account_move__l10n_ve_control_number
 msgid "Control Number"
-msgstr "Control Número"
+msgstr "Número de Control"
 
 #. module: l10n_ve_seniat
 #: model:ir.model,name:l10n_ve_seniat.model_account_book_document
