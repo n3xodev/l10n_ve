@@ -1,0 +1,173 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_reports_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-27 20:30+0000\n"
+"PO-Revision-Date: 2026-11-27 20:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_VE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "Adjustments to Tax Credits from Previous Periods"
+msgstr "Ajustes a Créditos Fiscales de Períodos Anteriores"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "Adjustments to Tax Debits from Previous Periods"
+msgstr "Ajustes a Débitos Fiscales de Períodos Anteriores"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_report_adapter_mixin
+msgid "Edition-agnostic adapter mixin for Venezuelan accounting reports"
+msgstr "Mixin adaptador agnóstico de edición para reportes contables venezolanos"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "Exempt Internal Purchases"
+msgstr "Compras internas exentas"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "Exempt Internal Sales"
+msgstr "Ventas internas exentas"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "Extended Rate Exports"
+msgstr "Exportaciones alícuota adicional"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "Extended Rate Imports"
+msgstr "Importaciones alícuota adicional"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "General Rate Exports"
+msgstr "Exportaciones alícuota general"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "General Rate Imports"
+msgstr "Importaciones alícuota general"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "General Rate Internal Purchases"
+msgstr "Compras internas alícuota general"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "General Rate Internal Sales"
+msgstr "Ventas internas alícuota general"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+msgid "Grouped Moves"
+msgstr "Movimientos agrupados"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_book_report_mixin
+msgid "Mixin for SENIAT sales and purchase book reports"
+msgstr "Mixin para reportes de libros de ventas y compras SENIAT"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "Reduced Rate Internal Purchases"
+msgstr "Compras internas alícuota reducida"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "Reduced Rate Internal Sales"
+msgstr "Ventas internas alícuota reducida"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "SUMMARY"
+msgstr "RESUMEN"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_report_x_mixin
+msgid "Shared mixin for Venezuela Reporte X (consolidated summary)"
+msgstr "Mixin compartido para Reporte X de Venezuela (resumen consolidado)"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_liquidity_book_mixin
+msgid "Shared mixin for Venezuelan bank and cash auxiliary books"
+msgstr "Mixin compartido para libros auxiliares venezolanos de banco y caja"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_daily_payments_mixin
+msgid "Shared mixin for Venezuelan daily payments by journal report"
+msgstr "Mixin compartido para reporte venezolano de pagos diarios por diario"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_diary_book_mixin
+msgid "Shared mixin for Venezuelan diary book report"
+msgstr "Mixin compartido para reporte venezolano de libro diario"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_sales_book_fiscal_machine_mixin
+msgid "Shared mixin for Venezuelan SENIAT fiscal machine sales book report"
+msgstr "Mixin compartido para reporte venezolano de libro de ventas con máquina fiscal SENIAT"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_purchase_book_mixin
+msgid "Shared mixin for Venezuelan SENIAT purchase book report"
+msgstr "Mixin compartido para reporte venezolano de libro de compras SENIAT"
+
+#. module: l10n_ve_reports_base
+#: model:ir.model,name:l10n_ve_reports_base.model_l10n_ve_sales_book_mixin
+msgid "Shared mixin for Venezuelan SENIAT sales book report"
+msgstr "Mixin compartido para reporte venezolano de libro de ventas SENIAT"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_purchase_book_mixin.py:0
+msgid "Total Purchases and Tax Credits for the Period"
+msgstr "Total de compras y créditos fiscales del período"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_mixin.py:0
+msgid "Total Sales and Tax Debits for the Period"
+msgstr "Total ventas y débitos fiscales del período"
+
+#. module: l10n_ve_reports_base
+#. odoo-python
+#: code:addons/l10n_ve_reports_base/models/l10n_ve_sales_book_fiscal_machine_mixin.py:0
+msgid "View Grouped Moves"
+msgstr "Ver Movimientos Agrupados"

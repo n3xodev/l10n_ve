@@ -1,0 +1,22 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_reports_stock_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-27 20:30+0000\n"
+"PO-Revision-Date: 2026-11-27 20:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_VE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ve_reports_stock_base
+#: model:ir.model,name:l10n_ve_reports_stock_base.model_l10n_ve_inventory_book_mixin
+msgid "Shared mixin for Venezuelan SENIAT stock inventory book report"
+msgstr "Mixin compartido para reporte venezolano de libro de inventario SENIAT"

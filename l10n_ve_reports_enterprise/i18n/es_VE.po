@@ -1,0 +1,98 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_reports_enterprise
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-27 20:30+0000\n"
+"PO-Revision-Date: 2026-11-27 20:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_VE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ve_reports_enterprise
+#. odoo-javascript
+#: code:addons/l10n_ve_reports_enterprise/static/src/components/account_report/filters/filters_display_currency.js:0
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_enterprise_report_handler_mixin
+msgid "Enterprise account_reports adapter mixin for Venezuelan reports"
+msgstr "Mixin adaptador Enterprise de account_reports para reportes venezolanos"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.ui.menu,name:l10n_ve_reports_enterprise.menu_seniat_report_sales_book_fiscal_machine
+msgid "Libro de venta con maquina fiscal"
+msgstr "Libro de venta con máquina fiscal"
+
+#. module: l10n_ve_reports_enterprise
+#: model:account.report.column,name:l10n_ve_reports_enterprise.purchases_book_report_index
+#: model:account.report.column,name:l10n_ve_reports_enterprise.sales_book_fiscal_machine_report_index
+#: model:account.report.column,name:l10n_ve_reports_enterprise.sales_book_report_index
+msgid "N° operacion"
+msgstr "N° operación"
+
+#. module: l10n_ve_reports_enterprise
+#: model:account.report.column,name:l10n_ve_reports_enterprise.sales_book_fiscal_machine_report_serial_number
+msgid "Serial de Maquina"
+msgstr "Serial de Máquina"
+
+#. module: l10n_ve_reports_enterprise
+#. odoo-javascript
+#: code:addons/l10n_ve_reports_enterprise/static/src/components/account_report/filters/filter_display_currency.xml:0
+msgid "Updating report..."
+msgstr "Actualizando reporte..."
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_bank_book_report_handler
+msgid "Venezuela Enterprise Bank Book Report Handler"
+msgstr "Manejador Enterprise de Libro de Banco de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_cash_book_report_handler
+msgid "Venezuela Enterprise Cash Book Report Handler"
+msgstr "Manejador Enterprise de Libro de Caja de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_daily_payments_report_handler
+msgid "Venezuela Enterprise Daily Payments Report Handler"
+msgstr "Manejador Enterprise de Reporte de Pagos Diarios de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_diary_book_report_handler
+msgid "Venezuela Enterprise Diary Book Report Handler"
+msgstr "Manejador Enterprise de Libro Diario de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_purchase_book_report_handler
+msgid "Venezuela Enterprise Purchase Book Report Handler"
+msgstr "Manejador Enterprise de Libro de Compras de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_report_x_handler
+msgid "Venezuela Enterprise Report X Handler"
+msgstr "Manejador Enterprise de Reporte X de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_sales_book_fiscal_machine_report_handler
+msgid "Venezuela Enterprise Sales Book Fiscal Machine Report Handler"
+msgstr "Manejador Enterprise de Libro de Ventas con Máquina Fiscal de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:ir.model,name:l10n_ve_reports_enterprise.model_l10n_ve_sales_book_report_handler
+msgid "Venezuela Enterprise Sales Book Report Handler"
+msgstr "Manejador Enterprise de Libro de Ventas de Venezuela"
+
+#. module: l10n_ve_reports_enterprise
+#: model:account.report,name:l10n_ve_reports_enterprise.sales_book_fiscal_machine_report
+#: model:ir.actions.client,name:l10n_ve_reports_enterprise.action_account_report_sales_book_fiscal_machine
+#: model:ir.ui.menu,name:l10n_ve_reports_enterprise.menu_action_account_report_sales_book_fiscal_machine
+msgid "🇻🇪 Libro de Ventas Maquina Fiscal"
+msgstr "🇻🇪 Libro de Ventas Máquina Fiscal"
