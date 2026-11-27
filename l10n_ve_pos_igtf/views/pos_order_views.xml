@@ -10,7 +10,7 @@
                 <field name="igtf_amount" optional="hide"/>
                 <field name="foreign_igtf_amount" optional="hide"/>
             </xpath>
-            <xpath expr="//group[@name='order_fields']" position="after">
+            <xpath expr="//notebook" position="before">
                 <group string="IGTF POS" name="l10n_ve_pos_igtf_group" colspan="4">
                     <field name="igtf_amount"/>
                     <field name="bi_igtf"/>

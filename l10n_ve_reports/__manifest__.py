@@ -18,6 +18,7 @@ budget reports and diary/bank/cash books). Installs standalone with
 only account and web, no localization dependency.
     """,
     "depends": ["account", "web"],
+    "excludes": ["account_reports"],
     "data": [
         "data/pdf_export_templates.xml",
         "data/balance_sheet.xml",

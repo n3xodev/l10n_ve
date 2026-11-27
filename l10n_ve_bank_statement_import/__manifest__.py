@@ -11,6 +11,9 @@
     "depends": [
         "account_statement_import_sheet_file",
     ],
+    "excludes": [
+        "account_accountant",
+    ],
     "data": [
         "data/map_data.xml",
         "views/account_statement_import_sheet_mapping_views.xml",

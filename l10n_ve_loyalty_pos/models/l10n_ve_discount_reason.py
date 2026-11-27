@@ -8,7 +8,7 @@ class L10nVeDiscountReason(models.Model):
     _inherit = ["l10n.ve.discount.reason", "pos.load.mixin"]
 
     @api.model
-    def _load_pos_data_domain(self, data, config):
+    def _load_pos_data_domain(self, data):
         return [("active", "=", True)]
 
     @api.model

@@ -13,6 +13,9 @@
     "depends": [
         "account_reconcile_oca",
     ],
+    "excludes": [
+        "account_accountant",
+    ],
     "data": [
         "views/account_journal_views.xml",
     ],
