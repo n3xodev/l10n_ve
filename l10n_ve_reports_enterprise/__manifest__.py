@@ -36,6 +36,7 @@
         ],
         "web.assets_backend": [
             "l10n_ve_reports_enterprise/static/src/components/account_report/filters/filters_display_currency.js",
+            "l10n_ve_reports_enterprise/static/src/components/account_report/filters/filter_display_currency.scss",
             "l10n_ve_reports_enterprise/static/src/components/account_report/filters/filter_display_currency.xml",
             "l10n_ve_reports_enterprise/static/src/components/daily_payments_report/filters.js",
             "l10n_ve_reports_enterprise/static/src/components/daily_payments_report/filters.xml",

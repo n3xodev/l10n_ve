@@ -1,0 +1,10 @@
+.account_report #filter_rounding_unit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+
+    #filter_display_currency {
+        order: -1;
+    }
+}

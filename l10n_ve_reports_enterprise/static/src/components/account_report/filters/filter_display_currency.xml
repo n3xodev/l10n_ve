@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t
-        t-name="l10n_ve_reports_enterprise.AccountReportFiltersCustomizableDisplayCurrency"
-        t-inherit="account_reports.AccountReportFiltersCustomizable"
+        t-name="l10n_ve_reports_enterprise.AccountReportFilterRoundingUnitDisplayCurrency"
+        t-inherit="account_reports.AccountReportFilterRoundingUnit"
         t-inherit-mode="extension"
     >
-        <xpath expr="//div[@id='filter_rounding_unit']" position="before">
+        <xpath expr="//Dropdown" position="after">
             <t
                 t-if="this.controller.cachedFilterOptions().available_currencies and this.controller.cachedFilterOptions().available_currencies.length > 1"
             >
