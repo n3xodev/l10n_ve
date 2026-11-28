@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 
 class PaymentExtensionRetentionIvaVoucher(models.AbstractModel):
     _name = "report.l10n_ve_withholding.retention_voucher_template"
+    _description = "Retention Voucher Report"
 
     @api.model
     def _get_report_values(self, docids, data=None):
@@ -23,5 +24,4 @@ class PaymentExtensionRetentionIvaVoucher(models.AbstractModel):
         }
 
     def get_digits(self):
-        decimal_places = self.env.ref("base.VEF").decimal_places
-        return decimal_places
+        return self.env.company.currency_id.decimal_places

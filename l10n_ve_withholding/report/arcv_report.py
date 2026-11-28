@@ -9,5 +9,5 @@ class ArcvReport(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         return {
             "data": data,
-            "currency": self.env.ref("base.VEF"),
+            "currency": self.env.company.currency_id,
         }

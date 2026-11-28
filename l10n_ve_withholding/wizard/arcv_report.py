@@ -1,6 +1,7 @@
 from collections import defaultdict
 
-from odoo import fields, models
+from odoo import _, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ArcvReport(models.TransientModel):
@@ -12,13 +13,26 @@ class ArcvReport(models.TransientModel):
     date_end = fields.Date(required=True)
 
     def print_arcv(self):
+        if self.date_start > self.date_end:
+            raise ValidationError(
+                _("The start date cannot be greater than the end date.")
+            )
         retentions_by_month_and_percentage_fees = (
             self._get_islr_retention_lines_grouped_by_year_month_and_percentage_fees()
         )
         data = self._construct_report_data(retentions_by_month_and_percentage_fees)
         return self.env.ref("l10n_ve_withholding.action_report_arcv").report_action(
-            None, data=data
+            None, data=data, config=False
         )
+
+    def _format_partner_vat(self, partner):
+        prefix = (partner.prefix_vat or "").strip().upper()
+        vat = (partner.vat or "").strip().upper()
+        if not vat:
+            return ""
+        if prefix and not vat.startswith(prefix):
+            return f"{prefix}-{vat}"
+        return vat
 
     def _get_islr_retention_lines_grouped_by_year_month_and_percentage_fees(self):
         """
@@ -32,6 +46,7 @@ class ArcvReport(models.TransientModel):
             - Type of retention: ISLR.
             - Type of invoice: Supplier invoice.
             - Partner: The partner selected in the wizard.
+            - Company: Current active company.
             - State: Emitted.
             - Date accounting: Between the start and end date selected in the wizard.
 
@@ -49,6 +64,7 @@ class ArcvReport(models.TransientModel):
                 ("retention_id.type_retention", "=", "islr"),
                 ("retention_id.type", "=", "in_invoice"),
                 ("retention_id.partner_id", "=", self.partner_id.id),
+                ("retention_id.company_id", "=", self.env.company.id),
                 ("state", "=", "emitted"),
                 ("retention_id.date_accounting", ">=", self.date_start),
                 ("retention_id.date_accounting", "<=", self.date_end),
@@ -138,7 +154,7 @@ class ArcvReport(models.TransientModel):
                 "street": self.partner_id.street,
                 "street2": self.partner_id.street2,
                 "phone": self.partner_id.phone,
-                "vat": f"{self.partner_id.prefix_vat}-{self.partner_id.vat}",
+                "vat": self._format_partner_vat(self.partner_id),
             },
             "retentions": retentions_data,
         }

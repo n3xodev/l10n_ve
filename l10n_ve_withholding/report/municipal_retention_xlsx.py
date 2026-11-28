@@ -11,10 +11,11 @@ from odoo import models, tools
 
 class MunicipalRetentionXlsx(models.AbstractModel):
     _name = "municipal.retention.xlsx"
+    _description = "Municipal Retention XLSX Report"
 
     def xlsx_file(self, tabla, nombre, retention_id):
         company = self.env.company
-        currency_symbol = self.env.ref("base.VEF").symbol
+        currency_symbol = company.currency_id.symbol
         retention = self.env["account.retention"].browse(retention_id)
         data2 = BytesIO()
         workbook = xlsxwriter.Workbook(data2, {"in_memory": True})

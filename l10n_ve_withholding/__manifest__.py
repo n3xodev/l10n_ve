@@ -33,7 +33,7 @@
         # "report/retention_line_report_views.xml",
         "report/retention_voucher_templates.xml",
         "report/retention_voucher_reports.xml",
-        # "report/arcv_report.xml",
+        "report/arcv_report.xml",
         "views/ir_sequence.xml",
         "views/res_config_settings.xml",
         "views/fees_retention.xml",
