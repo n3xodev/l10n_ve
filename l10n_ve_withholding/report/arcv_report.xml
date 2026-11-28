@@ -120,7 +120,7 @@
                                             class="fw tal"
                                             t-out="res_company.partner_id.street"
                                         />
-                                        <span t-esc="res_company.partner_id.street2" />
+                                        <span t-out="res_company.partner_id.street2" />
                                         <br />
                                         <span class="tal">Teléfono: </span>
                                         <span
@@ -148,7 +148,7 @@
                                             class="fw tal"
                                             t-out="data['partner']['street']"
                                         />
-                                        <span t-esc="data['partner']['street2']" />
+                                        <span t-out="data['partner']['street2']" />
                                         <br />
                                         <span class="tal">Teléfono: </span>
                                         <span

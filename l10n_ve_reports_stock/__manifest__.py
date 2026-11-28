@@ -30,5 +30,6 @@ Entradas y salidas de inventarios según Reglamento ISLR Art. 177.
         ],
     },
     "installable": True,
+    "auto_install": ["l10n_ve_reports", "stock", "l10n_ve_seniat"],
     "license": "OEEL-1",
 }

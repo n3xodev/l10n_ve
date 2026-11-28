@@ -34,7 +34,7 @@ class StockInventoryBookReportHandler(models.AbstractModel):
 
     def _get_warehouses(self, options):
         warehouse_ids = options.get("warehouse_ids", [])
-        warehouses = self.env["stock.warehouse"].search(
+        warehouses = self.env["stock.warehouse"].sudo().search(
             [("company_id", "=", self.env.company.id)]
         )
         if warehouse_ids:
@@ -85,10 +85,11 @@ class StockInventoryBookReportHandler(models.AbstractModel):
     def _get_product_data(
         self, warehouses, date_from, date_to, company_currency
     ):
+        Location = self.env["stock.location"].sudo()
         stock_location_ids = []
         for wh in warehouses:
             if wh.lot_stock_id and wh.lot_stock_id.parent_path:
-                stock_locs = self.env["stock.location"].search(
+                stock_locs = Location.search(
                     [
                         "|",
                         ("id", "=", wh.lot_stock_id.id),
@@ -109,7 +110,7 @@ class StockInventoryBookReportHandler(models.AbstractModel):
             if wh.l10n_ve_location_retiros_id:
                 loc = wh.l10n_ve_location_retiros_id
                 if loc.parent_path:
-                    retiros_locs = self.env["stock.location"].search(
+                    retiros_locs = Location.search(
                         [
                             "|",
                             ("id", "=", loc.id),
@@ -122,7 +123,7 @@ class StockInventoryBookReportHandler(models.AbstractModel):
             if wh.l10n_ve_location_autoconsumos_id:
                 loc = wh.l10n_ve_location_autoconsumos_id
                 if loc.parent_path:
-                    autoconsumos_locs = self.env["stock.location"].search(
+                    autoconsumos_locs = Location.search(
                         [
                             "|",
                             ("id", "=", loc.id),
@@ -135,9 +136,10 @@ class StockInventoryBookReportHandler(models.AbstractModel):
 
         from datetime import timedelta
 
-        Move = self.env["stock.move"].with_context(active_test=False)
+        Move = self.env["stock.move"].sudo().with_context(active_test=False)
         date_to_end = date_to + timedelta(days=1)
         move_domain = [
+            ("company_id", "=", self.env.company.id),
             ("state", "=", "done"),
             ("product_id.is_storable", "=", True),
             ("date", "<", fields.Datetime.to_string(date_to_end)),

@@ -1698,7 +1698,12 @@ Please create a credit note instead.
         ve = self.env.ref("base.ve").code
         if self.country_code != ve:
             return False
-        if self.move_type not in ("out_invoice", "out_refund", "in_invoice"):
+        if self.move_type not in (
+            "out_invoice",
+            "out_refund",
+            "in_invoice",
+            "in_refund",
+        ):
             return False
         if self.move_type in ("out_invoice", "out_refund"):
             if (
@@ -1718,7 +1723,7 @@ Please create a credit note instead.
             and self.journal_id.type == "sale"
         ):
             return True
-        if self.move_type == "in_invoice" and self.state == "draft":
+        if self.move_type in ("in_invoice", "in_refund") and self.state == "draft":
             return True
         if (
             self.state == "draft"

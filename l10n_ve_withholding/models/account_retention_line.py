@@ -353,19 +353,17 @@ class AccountRetentionLine(models.Model):
                 continue
             lines_without_duplicate_invoices |= line
 
+        total_paid_amount = 0.0
         for line in lines_without_duplicate_invoices:
+            payable_lines = line.move_id.line_ids.filtered(
+                lambda move_line: move_line.account_id.account_type
+                == "liability_payable"
+                and move_line.credit > 0
+            )
+            if not payable_lines:
+                continue
             partials = self.env["account.partial.reconcile"].search(
-                [
-                    (
-                        "credit_move_id",
-                        "=",
-                        line.move_id.line_ids.filtered(
-                            lambda line: line.account_id.account_type
-                            == "liability_payable"
-                            and line.credit > 0
-                        )[0].id,
-                    )
-                ]
+                [("credit_move_id", "in", payable_lines.ids)]
             )
             retention_payments = self.env["account.payment"].search(
                 [
@@ -380,11 +378,11 @@ class AccountRetentionLine(models.Model):
             # The invoice paid amount not related with retentions is the sum of
             # the debit amounts of the partials that are not related with the
             # retention payments.
-            invoice_paid_amount_not_related_with_retentions = sum(
-                partial.debit_amount_currency
+            total_paid_amount += sum(
+                partial.amount
                 for partial in partials.filtered(
                     lambda p: p.debit_move_id
                     not in retention_payments.mapped("move_id.line_ids")  # noqa: B023
                 )
             )
-            return invoice_paid_amount_not_related_with_retentions
+        return total_paid_amount
